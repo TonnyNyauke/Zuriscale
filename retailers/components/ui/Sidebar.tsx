@@ -6,6 +6,7 @@ const Sidebar = () => {
     { name: 'Dashboard', href: '/dashboard', icon: '📊' },
     { name: 'Customers', href: '/customers', icon: '👥' },
     { name: 'Campaigns', href: '/campaigns', icon: '📢' },
+    { name: 'WhatsApp Inbox', href: '/inbox', icon: '💬' },
   ];
 
   return (

@@ -6,6 +6,10 @@ export interface Customer {
     last_purchase: string;
     total_spent: number;
     status: 'new' | 'repeat' | 'churned';
+    total_orders: number;
+    last_order: string;
+    tags: string[];
+    notes: string
   }
   
   export interface Campaign {
@@ -35,3 +39,22 @@ export interface Customer {
       last_purchase: string;
     }[];
   }
+
+
+export interface Message {
+  id: string;
+  text: string;
+  sender: 'customer' | 'agent';
+  timestamp: string;
+  status: 'sent' | 'delivered' | 'read';
+}
+
+export interface Conversation {
+  id: string;
+  customer_id: string;
+  last_message: string;
+  unread_count: number;
+  last_activity: string;
+  status: 'open' | 'closed' | 'pending';
+  messages: Message[]; // Add this line
+}

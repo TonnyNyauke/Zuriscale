@@ -1,6 +1,8 @@
+'use client'
+
+import { Customer } from '@/app/types/types';
 import React from 'react';
-import EngagementButton from './EngagementButton';
-import { Customer } from '@/types/types';
+import EngagementButton from '../ui/EngagementButton';
 
 interface CustomerTableProps {
   customers: Customer[];
