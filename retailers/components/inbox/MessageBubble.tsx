@@ -1,4 +1,4 @@
-// src/components/inbox/MessageBubble.tsx
+//Scomponents/inbox/MessageBubble.tsx
 import React from 'react';
 import { format } from 'date-fns';
 import { Message } from '@/app/types/types';

@@ -2,6 +2,7 @@
 
 import { Campaign, Conversation, Customer } from "../types/types";
 
+// Enhanced mock data with more customers and realistic scenarios
 export const fetchInboxData = async () => {
   await new Promise(resolve => setTimeout(resolve, 300));
 
@@ -47,52 +48,137 @@ export const fetchInboxData = async () => {
     {
       id: "conv_001",
       customer_id: "cust_001",
-      last_message: "When will my order arrive?",
-      unread_count: 2,
+      customer_name: "Sarah Mwangi",
+      last_message: "That's great news! Thanks for your help.",
+      unread_count: 0,
       last_activity: "2024-05-20T14:30:00Z",
       status: "open",
+      priority: "normal",
+      assigned_to: "John Doe",
+      customer_type: "vip",
       messages
     },
     {
       id: "conv_002",
       customer_id: "cust_002",
-      last_message: "Thanks for the discount!",
-      unread_count: 0,
-      last_activity: "2024-05-19T11:15:00Z",
-      status: "closed",
+      customer_name: "Grace Njeri",
+      last_message: "Do you have any new arrivals in dresses?",
+      unread_count: 3,
+      last_activity: "2024-05-20T15:45:00Z",
+      status: "open",
+      priority: "high",
+      assigned_to: null,
+      customer_type: "repeat",
       messages: []
     },
     {
       id: "conv_003",
       customer_id: "cust_003",
+      customer_name: "Mary Wanjiku",
       last_message: "Do you have this in size L?",
       unread_count: 1,
       last_activity: "2024-05-20T09:45:00Z",
       status: "open",
+      priority: "normal",
+      assigned_to: "Jane Smith",
+      customer_type: "new",
+      messages: []
+    },
+    {
+      id: "conv_004",
+      customer_id: "cust_004",
+      customer_name: "Alice Adhiambo",
+      last_message: "Thanks for the discount code!",
+      unread_count: 0,
+      last_activity: "2024-05-19T11:15:00Z",
+      status: "resolved",
+      priority: "normal",
+      assigned_to: "John Doe",
+      customer_type: "repeat",
+      messages: []
+    },
+    {
+      id: "conv_005",
+      customer_id: "cust_005",
+      customer_name: "Faith Akinyi",
+      last_message: "Is my order ready for pickup?",
+      unread_count: 2,
+      last_activity: "2024-05-20T16:20:00Z",
+      status: "open",
+      priority: "high",
+      assigned_to: null,
+      customer_type: "vip",
+      messages: []
+    },
+    {
+      id: "conv_006",
+      customer_id: "cust_006",
+      customer_name: "Rose Chebet",
+      last_message: "What are your store hours?",
+      unread_count: 1,
+      last_activity: "2024-05-20T08:30:00Z",
+      status: "open",
+      priority: "low",
+      assigned_to: "Jane Smith",
+      customer_type: "new",
       messages: []
     }
   ];
 
   const activeConversation = conversations[0];
 
-  const customer: Customer = {
-    id: "cust_001",
-    name: "Sarah K.",
-    phone: "+254722111222",
-    first_purchase: "2024-05-01",
-    last_purchase: "2024-05-20",
-    last_order: "2024-05-17",
-    total_orders: 5,
-    total_spent: 12500,
-    status: "repeat",
-    tags: ["VIP", "Loyal"],
-    notes: "Prefers evening deliveries"
+  const customers = {
+    "cust_001": {
+      id: "cust_001",
+      name: "Sarah Mwangi",
+      phone: "+254722111222",
+      first_purchase: "2024-03-15",
+      last_purchase: "2024-05-20",
+      last_order: "2024-05-17",
+      total_orders: 8,
+      total_spent: 25400,
+      status: "repeat",
+      status_level: 'Gold',
+      tags: ["VIP", "Loyal", "Evening Delivery"],
+      notes: "Prefers evening deliveries. Loves floral dresses. Size M."
+    },
+    "cust_002": {
+      id: "cust_002", 
+      name: "Grace Njeri",
+      phone: "+254733222333",
+      first_purchase: "2024-04-01",
+      last_purchase: "2024-05-15",
+      last_order: "2024-05-15",
+      total_orders: 4,
+      total_spent: 18200,
+      status: "repeat",
+      status_level: 'Regular',
+      tags: ["Frequent Buyer", "Corporate"],
+      notes: "Works in corporate, prefers professional wear. Size L."
+    },
+    "cust_003": {
+      id: "cust_003",
+      name: "Mary Wanjiku", 
+      phone: "+254744333444",
+      first_purchase: "2024-05-18",
+      last_purchase: "2024-05-18",
+      last_order: "2024-05-18",
+      total_orders: 1,
+      total_spent: 3200,
+      status: "new",
+      status_level: 'Regular',
+      tags: ["New Customer"],
+      notes: "First time buyer. Interested in casual wear."
+    }
   };
+
+  const customer = customers["cust_001"] as Customer;
 
   return {
     conversations,
     activeConversation,
-    customer
+    customer,
+    customers
   };
 };
 

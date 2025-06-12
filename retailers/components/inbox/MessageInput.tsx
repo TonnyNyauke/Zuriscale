@@ -1,4 +1,4 @@
-// src/components/inbox/MessageInput.tsx
+//components/inbox/MessageInput.tsx
 'use client';
 
 import React, { useState } from 'react';

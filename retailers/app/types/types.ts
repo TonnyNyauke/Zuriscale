@@ -6,6 +6,7 @@ export interface Customer {
     last_purchase: string;
     total_spent: number;
     status: 'new' | 'repeat' | 'churned';
+    status_level: string;
     total_orders: number;
     last_order: string;
     tags: string[];
@@ -60,9 +61,13 @@ export interface Message {
 export interface Conversation {
   id: string;
   customer_id: string;
+  customer_name: string;
+  customer_type: string;
+  priority: string;
+  assigned_to: string | null; 
   last_message: string;
   unread_count: number;
   last_activity: string;
-  status: 'open' | 'closed' | 'pending';
+  status: 'open' | 'closed' | 'pending' | 'resolved';
   messages: Message[]; // Add this line
 }
