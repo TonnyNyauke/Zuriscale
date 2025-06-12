@@ -11,16 +11,24 @@ export interface Customer {
     tags: string[];
     notes: string
   }
-  
-  export interface Campaign {
-    id: string;
-    name: string;
-    type: 'whatsapp' | 'sms';
-    status: 'draft' | 'sent' | 'failed';
-    created_at: string;
-    message: string;
-    sent_to: string[];
-  }
+
+export interface Campaign {
+  id: string;
+  name: string;
+  type: 'whatsapp' | 'sms' | 'instagram' | 'facebook';
+  status: 'draft' | 'scheduled' | 'sent' | 'failed';
+  target_count: number;
+  delivered_count: number;
+  open_rate: number;
+  created_at: string;
+  scheduled_at?: string;
+  message: string;
+  criteria: {
+    min_orders?: number;
+    last_purchase_days?: number;
+    tags?: string[];
+  };
+}
   
   export interface Analytics {
     new_customers: number;

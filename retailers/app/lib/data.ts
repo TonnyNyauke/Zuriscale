@@ -1,6 +1,6 @@
 //lib/data.ts
 
-import { Conversation, Customer } from "../types/types";
+import { Campaign, Conversation, Customer } from "../types/types";
 
 export const fetchInboxData = async () => {
   await new Promise(resolve => setTimeout(resolve, 300));
@@ -146,5 +146,71 @@ export const fetchCustomerData = async () => {
         status: "repeat"
       }
     ]
+  };
+};
+
+//Campaign
+export const fetchCampaignData = async () => {
+  await new Promise(resolve => setTimeout(resolve, 300));
+  
+  return {
+    campaigns: [
+      {
+        id: "camp_001",
+        name: "Loyalty Discount",
+        type: "whatsapp" as const,
+        status: "sent" as const,
+        target_count: 120,
+        delivered_count: 118,
+        open_rate: 78,
+        created_at: "2024-05-15T10:00:00Z",
+        message: "Hi {name}! Enjoy 15% off your next purchase with code LOYAL15.",
+        criteria: {
+          min_orders: 3,
+          last_purchase_days: 90,
+          tags: ["loyal"]
+        }
+      },
+      {
+        id: "camp_002",
+        name: "New Collection Launch",
+        type: "instagram" as const,
+        status: "scheduled" as const,
+        target_count: 250,
+        delivered_count: 0,
+        open_rate: 0,
+        created_at: "2024-05-18T14:30:00Z",
+        scheduled_at: "2024-05-25T10:00:00Z",
+        message: "Our new summer collection is here! First 50 orders get free shipping.",
+        criteria: {
+          last_purchase_days: 180
+        }
+      },
+      {
+        id: "camp_003",
+        name: "Abandoned Cart Reminder",
+        type: "sms" as const,
+        status: "draft" as const,
+        target_count: 42,
+        delivered_count: 0,
+        open_rate: 0,
+        created_at: "2024-05-20T09:15:00Z",
+        message: "Complete your purchase! Your cart is waiting with special items.",
+        criteria: {
+          last_purchase_days: 7
+        }
+      }
+    ] as Campaign[],
+    analytics: {
+      total_campaigns: 24,
+      successful_rate: 85,
+      avg_engagement: 42,
+      channel_distribution: {
+        whatsapp: 65,
+        sms: 20,
+        instagram: 10,
+        facebook: 5
+      }
+    }
   };
 };
