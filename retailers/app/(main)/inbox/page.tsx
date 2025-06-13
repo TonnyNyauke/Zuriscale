@@ -6,16 +6,16 @@ import ConversationList from '@/components/inbox/ConversationList';
 import MessageThread from '@/components/inbox/MessageThread';
 import CustomerProfile from '@/components/inbox/CustomerProfile';
 import { fetchInboxData } from '@/app/lib/data';
-import { Conversation } from '@/app/types/types';
+import { Conversation, Customer } from '@/app/types/types';
 
 // Mobile view states
 type MobileView = 'conversations' | 'chat' | 'profile';
 
 export default function InboxPage() {
   const [mobileView, setMobileView] = useState<MobileView>('conversations');
-  const [selectedConversation, setSelectedConversation] = useState(null);
-  const [conversations, setConversations] = useState([]);
-  const [customer, setCustomer] = useState(null);
+  const [selectedConversation, setSelectedConversation] = useState<Conversation>();
+  const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [customer, setCustomer] = useState<Customer>();
   const [loading, setLoading] = useState(true);
 
   // Fetch data on component mount
