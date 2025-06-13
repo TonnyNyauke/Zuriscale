@@ -71,3 +71,30 @@ export interface Conversation {
   status: 'open' | 'closed' | 'pending' | 'resolved';
   messages: Message[]; // Add this line
 }
+
+// Add these interfaces to your component files or a shared types file
+
+// For ConversationList component
+export interface ConversationListProps {
+  conversations: Conversation[];
+  onSelectConversation: (conversation: Conversation) => void;
+  selectedId?: string;
+}
+
+// For MessageThread component
+export interface MessageThreadProps {
+  conversation: Conversation;
+  onShowProfile: () => void;
+  hideHeader?: boolean;
+}
+
+// For CustomerProfile component
+export interface CustomerProfileProps {
+  customer: Customer;
+}
+
+// For MessageInput component (if it needs props)
+export interface MessageInputProps {
+  // Add any props MessageInput might need
+  onSendMessage?: (message: string) => void;
+}
