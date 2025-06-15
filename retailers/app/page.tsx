@@ -5,10 +5,15 @@ import { Badge } from '@/components/ui/badge';
 import { Check, ArrowRight, MessageSquare, TrendingUp, Users, ShoppingBag, Star } from 'lucide-react';
 import MobileNav from '@/components/MobileNav';
 
-// SEO Metadata
+// Page-specific metadata that overrides layout defaults
 export const metadata: Metadata = {
+  // Specific title for landing page
   title: 'Zuriscale - WhatsApp Customer Retention for Kenyan Fashion Retailers | Reach KES 1M Sales',
+  
+  // Specific description for landing page
   description: 'Turn one-time buyers into repeat customers with Zuriscale\'s WhatsApp messaging platform. Trusted by 500+ Kenyan fashion retailers. Pay-as-you-use starting at KES 1.25/message. 24/6 support included.',
+  
+  // Landing page specific keywords (more targeted)
   keywords: [
     'fashion retail Kenya',
     'WhatsApp business Kenya',
@@ -19,20 +24,18 @@ export const metadata: Metadata = {
     'WhatsApp marketing Kenya',
     'fashion boutique software',
     'M-Pesa payments',
-    'Nairobi fashion retailers'
+    'Nairobi fashion retailers',
+    'KES 1M sales',
+    'repeat customers',
+    'automated WhatsApp follow-ups'
   ],
-  authors: [{ name: 'Zuriscale Team' }],
-  creator: 'Zuriscale',
-  publisher: 'Zuriscale',
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
-  metadataBase: new URL('https://zuriscale.com'),
+  
+  // Canonical URL for this specific page
   alternates: {
-    canonical: '/',
+    canonical: 'https://zuriscale.com/',
   },
+  
+  // Page-specific Open Graph data
   openGraph: {
     title: 'Zuriscale - WhatsApp Customer Retention for Fashion Retailers',
     description: 'Help your fashion business reach KES 1M in sales with automated WhatsApp follow-ups and customer analytics. Used by 500+ Kenyan retailers.',
@@ -49,6 +52,8 @@ export const metadata: Metadata = {
     locale: 'en_KE',
     type: 'website',
   },
+  
+  // Page-specific Twitter data
   twitter: {
     card: 'summary_large_image',
     title: 'Zuriscale - WhatsApp Customer Retention for Fashion Retailers',
@@ -56,23 +61,9 @@ export const metadata: Metadata = {
     images: ['/twitter-image.jpg'],
     creator: '@zuriscale',
   },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
-  },
-  verification: {
-    google: 'your-google-verification-code',
-  },
 };
 
-// Structured Data
+// Your existing structured data
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
@@ -89,7 +80,7 @@ const structuredData = {
       },
       "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "+254-700-123-456",
+        "telephone": "+254-742-065-623",
         "contactType": "customer service",
         "availableLanguage": ["English", "Swahili"],
         "areaServed": "KE"
