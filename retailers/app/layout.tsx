@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   
   // Default description - will be overridden by page-specific descriptions
-  description: 'Turn one-time buyers into repeat customers with Zuriscale\'s WhatsApp messaging platform. Trusted by 500+ Kenyan fashion retailers. Pay-as-you-use starting at KES 1.25/message.',
+  description: 'Turn one-time buyers into repeat customers with Zuriscale\'s WhatsApp messaging platform. Trusted by 500+ Kenyan fashion retailers. Pay-as-you-use starting at KES 1.5/message.',
   
   // Global keywords that apply to your entire site
   keywords: [

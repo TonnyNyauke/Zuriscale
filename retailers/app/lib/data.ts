@@ -230,6 +230,15 @@ export const fetchCustomerData = async () => {
         last_purchase: "2024-05-20",
         total_spent: 12500,
         status: "repeat"
+      },
+      {
+        id: "cust_002",
+        name: "Tonny N.",
+        phone: "+254742065623",
+        first_purchase: "2024-05-01",
+        last_purchase: "2024-05-20",
+        total_spent: 12500,
+        status: "repeat"
       }
     ]
   };
@@ -282,6 +291,20 @@ export const fetchCampaignData = async () => {
         open_rate: 0,
         created_at: "2024-05-20T09:15:00Z",
         message: "Complete your purchase! Your cart is waiting with special items.",
+        criteria: {
+          last_purchase_days: 7
+        }
+      },
+      {
+        id: "camp_004",
+        name: "New Trend",
+        type: "sms" as const,
+        status: "draft" as const,
+        target_count: 42,
+        delivered_count: 0,
+        open_rate: 0,
+        created_at: "2024-05-20T09:15:00Z",
+        message: "New blouses to match the new trend.",
         criteria: {
           last_purchase_days: 7
         }

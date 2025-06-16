@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   title: 'Zuriscale - WhatsApp Customer Retention for Kenyan Fashion Retailers | Reach KES 1M Sales',
   
   // Specific description for landing page
-  description: 'Turn one-time buyers into repeat customers with Zuriscale\'s WhatsApp messaging platform. Trusted by 500+ Kenyan fashion retailers. Pay-as-you-use starting at KES 1.25/message. 24/6 support included.',
+  description: 'Turn one-time buyers into repeat customers with Zuriscale\'s WhatsApp messaging platform. Trusted by 500+ Kenyan fashion retailers. Pay-as-you-use starting at KES 1.5/message. 24/6 support included.',
   
   // Landing page specific keywords (more targeted)
   keywords: [
@@ -114,11 +114,11 @@ const structuredData = {
       "operatingSystem": "Web, iOS, Android",
       "offers": {
         "@type": "Offer",
-        "price": "1.25",
+        "price": "1.5",
         "priceCurrency": "KES",
         "priceSpecification": {
           "@type": "UnitPriceSpecification",
-          "price": "1.25",
+          "price": "1.5",
           "priceCurrency": "KES",
           "unitText": "per message"
         }
@@ -146,7 +146,7 @@ const structuredData = {
           "name": "How does the pay-as-you-use model work?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "You only pay for WhatsApp messages you send. Buy message bundles with M-Pesa, and use them whenever you need to contact customers. All other features are included for free."
+            "text": "You only pay for WhatsApp messages you send. Buy message bundles with M-Pesa, and use them whenever you need to contact customers. All other basic features are included for free."
           }
         },
         {
@@ -209,8 +209,8 @@ export default function ZuriscaleLanding() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Button size="lg" className="bg-red-500 hover:bg-red-600 text-white shadow-lg" aria-label="Start using Zuriscale for KES 1.25 per message">
-              Start for KES 1.25/Message
+            <Button size="lg" className="bg-red-500 hover:bg-red-600 text-white shadow-lg" aria-label="Start using Zuriscale for KES 1.5 per message">
+              Start for KES 1.5/Message
               <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
             </Button>
             <Button variant="outline" size="lg" className="border-teal-200 text-teal-700 hover:bg-teal-50" aria-label="Learn how Zuriscale works">
@@ -330,7 +330,7 @@ export default function ZuriscaleLanding() {
                   <MessageSquare className="h-6 w-6 text-white" aria-hidden="true" />
                 </div>
                 <h3 className="text-xl font-bold mb-3 text-gray-800">WhatsApp Customer Retention</h3>
-                <p className="text-gray-600 mb-4">Send personalized messages to bring customers back. Start at KES 1.25 per message with M-Pesa payments.</p>
+                <p className="text-gray-600 mb-4">Send personalized messages to bring customers back. Start at KES 1.5 per message with M-Pesa payments.</p>
                 <div className="text-sm text-teal-600 font-medium">
                   ✓ Automated follow-ups
                   <br />✓ New arrival alerts
@@ -440,7 +440,7 @@ export default function ZuriscaleLanding() {
                     Pay As You Use
                   </Badge>
                   <div className="text-4xl font-bold text-gray-800 mb-2">
-                    KES 1.25
+                    KES 1.5
                     <span className="text-lg text-gray-500 font-normal">/message</span>
                   </div>
                   <p className="text-gray-600">Plus WhatsApp messaging bundles available with M-Pesa</p>
@@ -495,18 +495,18 @@ export default function ZuriscaleLanding() {
               <div className="grid sm:grid-cols-3 gap-4">
                 <article className="bg-white p-4 rounded-lg border border-teal-100 text-center">
                   <div className="font-bold text-lg text-gray-800">Starter Bundle</div>
-                  <div className="text-2xl font-bold text-teal-600 my-2">KES 120</div>
+                  <div className="text-2xl font-bold text-teal-600 my-2">KES 135</div>
                   <div className="text-sm text-gray-600">100 WhatsApp messages</div>
-                  <div className="text-xs text-gray-500 mt-1">KES 1.20 per message</div>
+                  <div className="text-xs text-gray-500 mt-1">KES 1.35 per message</div>
                 </article>
                 <article className="bg-white p-4 rounded-lg border-2 border-red-200 text-center relative">
                   <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-red-500 text-white">
                     Most Popular
                   </Badge>
                   <div className="font-bold text-lg text-gray-800">Growth Bundle</div>
-                  <div className="text-2xl font-bold text-teal-600 my-2">KES 550</div>
+                  <div className="text-2xl font-bold text-teal-600 my-2">KES 600</div>
                   <div className="text-sm text-gray-600">500 WhatsApp messages</div>
-                  <div className="text-xs text-gray-500 mt-1">KES 1.10 per message</div>
+                  <div className="text-xs text-gray-500 mt-1">KES 1.20 per message</div>
                 </article>
                 <article className="bg-white p-4 rounded-lg border border-teal-100 text-center">
                   <div className="font-bold text-lg text-gray-800">Scale Bundle</div>
@@ -531,7 +531,7 @@ export default function ZuriscaleLanding() {
           <div className="max-w-3xl mx-auto space-y-6">
             <article className="border rounded-lg p-6 hover:border-teal-200 transition-colors">
               <h3 className="font-bold mb-2 text-gray-800">How does the pay-as-you-use model work?</h3>
-              <p className="text-gray-600">You only pay for WhatsApp messages you send. Buy message bundles with M-Pesa, and use them whenever you need to contact customers. All other features are included for free.</p>
+              <p className="text-gray-600">You only pay for WhatsApp messages you send. Buy message bundles with M-Pesa, and use them whenever you need to contact customers. All other basic features are included for free.</p>
             </article>
             
             <article className="border rounded-lg p-6 hover:border-teal-200 transition-colors">
