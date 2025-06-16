@@ -1,3 +1,4 @@
+// src/components/dashboard/RevenueChart.tsx
 'use client'
 
 import React, { useEffect, useRef } from 'react';
@@ -30,7 +31,6 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
   useEffect(() => {
     if (!chartRef.current || !data.length) return;
 
-    // Destroy existing chart instance
     if (chartInstance.current) {
       chartInstance.current.destroy();
     }
@@ -38,7 +38,6 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
     const ctx = chartRef.current.getContext('2d');
     if (!ctx) return;
 
-    // Prepare data for Chart.js
     const labels = data.map(item => 
       new Date(item.date).toLocaleDateString('en-KE', { day: 'numeric' })
     );
@@ -52,33 +51,44 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
           label: 'Revenue',
           data: revenues,
           backgroundColor: (ctx) => {
-            const gradient = ctx.chart.ctx.createLinearGradient(0, 0, 0, 160);
+            const gradient = ctx.chart.ctx.createLinearGradient(0, 0, 0, 120);
             gradient.addColorStop(0, '#FF9E58');
             gradient.addColorStop(1, '#FF6B35');
             return gradient;
           },
           borderRadius: {
-            topLeft: 4,
-            topRight: 4,
+            topLeft: 6,
+            topRight: 6,
             bottomLeft: 0,
             bottomRight: 0
           },
-          borderSkipped: false,
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        interaction: {
+          intersect: false,
+          mode: 'index',
+        },
         plugins: {
           legend: {
             display: false
           },
           tooltip: {
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
             titleColor: 'white',
             bodyColor: 'white',
-            cornerRadius: 6,
+            cornerRadius: 8,
             displayColors: false,
+            padding: 12,
+            titleFont: {
+              size: 14,
+              weight: 'bold'
+            },
+            bodyFont: {
+              size: 13
+            },
             callbacks: {
               title: (context) => {
                 const dataIndex = context[0].dataIndex;
@@ -89,7 +99,7 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
                 });
               },
               label: (context) => {
-                return `Revenue: KSh ${context.parsed.y.toLocaleString()}`;
+                return `KSh ${context.parsed.y.toLocaleString()}`;
               }
             }
           }
@@ -105,8 +115,10 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
             ticks: {
               color: '#6B7280',
               font: {
-                size: 12
-              }
+                size: 11,
+                weight: 'bold'
+              },
+              maxTicksLimit: 7
             }
           },
           y: {
@@ -116,7 +128,9 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
         },
         layout: {
           padding: {
-            top: 10
+            top: 12,
+            left: 4,
+            right: 4
           }
         }
       }
@@ -130,10 +144,15 @@ const RevenueChart: React.FC<RevenueChartProps> = ({ data }) => {
   }, [data]);
 
   return (
-    <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
-      <h3 className="text-gray-900 font-medium mb-4">Daily Revenue</h3>
-      <div className="h-40">
-        <canvas ref={chartRef} />
+    <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+      <div className="p-4 pb-3 border-b border-gray-100">
+        <h3 className="text-gray-900 font-semibold text-lg">Daily Revenue</h3>
+        <p className="text-sm text-gray-500 mt-1">Last 7 days</p>
+      </div>
+      <div className="p-4">
+        <div className="h-32 sm:h-40">
+          <canvas ref={chartRef} />
+        </div>
       </div>
     </div>
   );

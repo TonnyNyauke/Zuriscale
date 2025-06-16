@@ -2,26 +2,38 @@
 import MetricCard from '@/components/dashboard/MetricCard';
 import RevenueChart from '@/components/dashboard/RevenueChart';
 import CustomerList from '@/components/dashboard/CustomerList';
+import QuickActions from '@/components/dashboard/QuickActions';
 import { fetchDashboardData } from '@/app/lib/data';
 
 export default async function Dashboard() {
   const { analytics } = await fetchDashboardData();
   
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Business Dashboard</h1>
+    <div className="px-4 py-6 pb-24 max-w-sm mx-auto sm:max-w-none sm:px-6">
+      {/* Header */}
+      <div className="mb-6">
+        <h1 className="text-xl font-bold text-gray-900 mb-1">
+          Business Dashboard
+        </h1>
+        <p className="text-sm text-gray-500">
+          Track your customer retention & growth
+        </p>
+      </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+      {/* Priority Metrics - Mobile: 2x2 grid */}
+      <div className="grid grid-cols-2 gap-3 mb-6">
         <MetricCard 
           title="Repeat Customers" 
           value={analytics.repeat_customers} 
           trend="positive"
+          priority
         />
         <MetricCard 
           title="Repeat Rate" 
           value={analytics.repeat_rate} 
-          description="Higher than last month"
+          description="vs last month"
           trend="positive"
+          priority
         />
         <MetricCard 
           title="Churn Rate" 
@@ -29,21 +41,29 @@ export default async function Dashboard() {
           trend="negative"
         />
         <MetricCard 
-          title="Avg Customer Value" 
+          title="Avg Value" 
           value={analytics.avg_clv} 
         />
       </div>
+
+      {/* Quick Actions */}
+      <div className="mb-6">
+        <QuickActions />
+      </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-        <div className="lg:col-span-2">
-          <RevenueChart data={analytics.revenue_trends.daily} />
-        </div>
+      {/* Customer List - Priority Section */}
+      <div className="mb-6">
         <CustomerList customers={analytics.top_customers.map(customer => ({
           ...customer,
-          phone: '', // Add required fields with default values
+          phone: '',
           first_purchase: '',
           status: 'repeat' as const
         }))} />
+      </div>
+
+      {/* Revenue Chart - Secondary */}
+      <div className="mb-6">
+        <RevenueChart data={analytics.revenue_trends.daily} />
       </div>
     </div>
   );
