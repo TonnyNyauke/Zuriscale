@@ -1,6 +1,6 @@
 'use client';
 
-import { Conversation, Customer } from '@/app/types/types';
+import { Customer } from '@/app/types/types';
 import React, { useState } from 'react';
 import { useEnergy } from '../ui/EnergyProvider';
 
