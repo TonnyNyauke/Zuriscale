@@ -229,7 +229,11 @@ export const fetchCustomerData = async () => {
         first_purchase: "2024-05-01",
         last_purchase: "2024-05-20",
         total_spent: 12500,
-        status: "repeat"
+        status: "repeat" as const,
+        status_level: "Gold",
+        total_orders: 5,
+        last_order: "5000",
+        notes: "Loves Green Clothes"
       },
       {
         id: "cust_002",
@@ -238,7 +242,11 @@ export const fetchCustomerData = async () => {
         first_purchase: "2024-05-01",
         last_purchase: "2024-05-20",
         total_spent: 12500,
-        status: "repeat"
+        status: "repeat" as const,
+        status_level: "Gold",
+        total_orders: 5,
+        last_order: "5000",
+        notes: "Loves Green Clothes"
       }
     ]
   };
