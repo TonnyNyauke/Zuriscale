@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Check, ArrowRight, MessageSquare, TrendingUp, Users, ShoppingBag, Star } from 'lucide-react';
 import MobileNav from '@/components/MobileNav';
+import Link from 'next/link';
 
 // Page-specific metadata that overrides layout defaults
 export const metadata: Metadata = {
@@ -209,14 +210,18 @@ export default function ZuriscaleLanding() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Button size="lg" className="bg-red-500 hover:bg-red-600 text-white shadow-lg" aria-label="Start using Zuriscale for KES 1.5 per message">
+          <Button size="lg" className="bg-red-500 hover:bg-red-600 text-white shadow-lg" asChild>
+            <Link href="/dashboard" aria-label="Start using Zuriscale for KES 1.5 per message">
               Start for KES 1.5/Message
               <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-            </Button>
-            <Button variant="outline" size="lg" className="border-teal-200 text-teal-700 hover:bg-teal-50" aria-label="Learn how Zuriscale works">
+            </Link>
+          </Button>
+          <Button variant="outline" size="lg" className="border-teal-200 text-teal-700 hover:bg-teal-50" asChild>
+            <Link href="#" aria-label="Learn how Zuriscale works">
               See How It Works
-            </Button>
-          </div>
+            </Link>
+          </Button>
+        </div>
 
           {/* Trust Indicators */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-gray-500">

@@ -207,7 +207,7 @@ export default function InboxLayout({ children }: { children: React.ReactNode })
       )}
       
       {/* Main Content Area */}
-      <div className="flex flex-1 overflow-hidden">
+      <div className="overflow-hidden">
         {children}
       </div>
 

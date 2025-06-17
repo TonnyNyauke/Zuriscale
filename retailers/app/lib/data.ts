@@ -2,7 +2,7 @@
 
 import { Campaign, Conversation, Customer } from "../types/types";
 
-// Enhanced mock data with more customers and realistic scenarios
+// Enhanced mock data structured like real database responses
 export const fetchInboxData = async () => {
   await new Promise(resolve => setTimeout(resolve, 300));
 
@@ -127,8 +127,9 @@ export const fetchInboxData = async () => {
 
   const activeConversation = conversations[0];
 
-  const customers = {
-    "cust_001": {
+  // Structure as an array like a real database would return
+  const customers: Customer[] = [
+    {
       id: "cust_001",
       name: "Sarah Mwangi",
       phone: "+254722111222",
@@ -142,7 +143,7 @@ export const fetchInboxData = async () => {
       tags: ["VIP", "Loyal", "Evening Delivery"],
       notes: "Prefers evening deliveries. Loves floral dresses. Size M."
     },
-    "cust_002": {
+    {
       id: "cust_002", 
       name: "Grace Njeri",
       phone: "+254733222333",
@@ -156,7 +157,7 @@ export const fetchInboxData = async () => {
       tags: ["Frequent Buyer", "Corporate"],
       notes: "Works in corporate, prefers professional wear. Size L."
     },
-    "cust_003": {
+    {
       id: "cust_003",
       name: "Mary Wanjiku", 
       phone: "+254744333444",
@@ -170,9 +171,10 @@ export const fetchInboxData = async () => {
       tags: ["New Customer"],
       notes: "First time buyer. Interested in casual wear."
     }
-  };
+  ];
 
-  const customer = customers["cust_001"] as Customer;
+  // Return the first customer as active (like you'd get from a DB query)
+  const customer = customers.find(c => c.id === "cust_001") || null;
 
   return {
     conversations,
@@ -180,6 +182,12 @@ export const fetchInboxData = async () => {
     customer,
     customers
   };
+};
+
+// Helper function to find customer by ID (mimics database query)
+export const fetchCustomerById = async (customerId: string): Promise<Customer | null> => {
+  const { customers } = await fetchInboxData();
+  return customers.find(customer => customer.id === customerId) || null;
 };
 
 

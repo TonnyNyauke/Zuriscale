@@ -6,9 +6,14 @@ import { Conversation } from '@/app/types/types';
 
 interface ConversationListProps {
   conversations: Conversation[];
+  selectedConversation?: Conversation | null;
+  onConversationSelect: (conversation: Conversation) => void;
 }
 
-export default function ConversationList({ conversations }: ConversationListProps) {
+export default function ConversationList({ conversations,
+  selectedConversation,
+  onConversationSelect
+ }: ConversationListProps) {
   const [filter, setFilter] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -97,8 +102,9 @@ export default function ConversationList({ conversations }: ConversationListProp
             <div 
               key={conversation.id}
               className={`p-4 cursor-pointer hover:bg-gray-50 transition-colors relative ${
-                conversation.id === "conv_001" ? 'bg-blue-50 border-r-4 border-blue-500' : ''
+                selectedConversation?.id === conversation.id ? 'bg-blue-50 border-r-4 border-blue-500' : ''
               } ${getPriorityIndicator(conversation.priority)}`}
+              onClick={() => onConversationSelect(conversation)}
             >
               {/* Customer Info Row */}
               <div className="flex items-center justify-between mb-2">

@@ -5,7 +5,7 @@ import MessageInput from '@/components/inbox/MessageInput';
 import ConversationList from '@/components/inbox/ConversationList';
 import MessageThread from '@/components/inbox/MessageThread';
 import CustomerProfile from '@/components/inbox/CustomerProfile';
-import { fetchInboxData } from '@/app/lib/data';
+import { fetchInboxData, fetchCustomerById } from '@/app/lib/data';
 import { Conversation, Customer } from '@/app/types/types';
 
 // Mobile view states
@@ -36,10 +36,20 @@ export default function InboxPage() {
     loadInboxData();
   }, []);
 
-  // const handleConversationSelect = (conversation: Conversation) => {
-  //   setSelectedConversation(conversation);
-  //   setMobileView('chat');
-  // };
+  const handleConversationSelect = async (conversation: Conversation) => {
+    setSelectedConversation(conversation);
+    setMobileView('chat');
+    
+    // Fetch customer data for the selected conversation
+    // This mimics how you'd query the database by customer ID
+    try {
+      const selectedCustomer = await fetchCustomerById(conversation.customer_id);
+      setCustomer(selectedCustomer);
+    } catch (error) {
+      console.error('Error loading customer data:', error);
+      setCustomer(null);
+    }
+  };
 
   const handleBackToConversations = () => {
     setMobileView('conversations');
@@ -67,7 +77,11 @@ export default function InboxPage() {
       {/* Desktop Layout - Only show on large screens */}
       <div className="hidden lg:flex flex-1 overflow-hidden">
         <div className="w-1/3 border-r border-gray-200 flex flex-col">
-          <ConversationList conversations={conversations} />
+          <ConversationList 
+            conversations={conversations}
+            selectedConversation={selectedConversation}
+            onConversationSelect={handleConversationSelect}
+          />
         </div>
         
         <div className="w-2/3 flex flex-col">
@@ -93,7 +107,11 @@ export default function InboxPage() {
         
         <div className="w-1/4 border-l border-gray-200 flex flex-col">
           {customer ? (
-            <CustomerProfile customer={customer} />
+            <CustomerProfile 
+              customer={customer}
+              selectedConversation={selectedConversation}
+              onConversationSelect={handleConversationSelect}
+            />
           ) : (
             <div className="flex items-center justify-center h-full text-gray-500">
               No customer selected
@@ -109,7 +127,11 @@ export default function InboxPage() {
           mobileView === 'conversations' ? 'translate-x-0' : '-translate-x-full'
         }`}>
           <div className="h-full flex flex-col">
-            <ConversationList conversations={conversations} />
+            <ConversationList 
+              conversations={conversations}
+              selectedConversation={selectedConversation}
+              onConversationSelect={handleConversationSelect} 
+           />
           </div>
         </div>
 
