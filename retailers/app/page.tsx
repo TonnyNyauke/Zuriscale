@@ -244,7 +244,7 @@ export default function ZuriscaleLanding() {
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
                 Most Kenyan fashion retailers are stuck in a cycle of finding new customers 
-                but never keeping them. Here's how Zuriscale breaks that cycle:
+                but never keeping them. Here&apos;s how Zuriscale breaks that cycle:
               </p>
             </header>
 
@@ -344,7 +344,7 @@ export default function ZuriscaleLanding() {
                   <TrendingUp className="h-6 w-6 text-white" aria-hidden="true" />
                 </div>
                 <h3 className="text-xl font-bold mb-3 text-gray-800">Customer Analytics Dashboard</h3>
-                <p className="text-gray-600 mb-4">See who buys what, when they buy, and predict what they're likely to purchase next.</p>
+                <p className="text-gray-600 mb-4">See who buys what, when they buy, and predict what they&apos;re likely to purchase next.</p>
                 <div className="text-sm text-teal-600 font-medium">
                   ✓ Sales tracking
                   <br />✓ Customer behavior analysis
@@ -409,9 +409,9 @@ export default function ZuriscaleLanding() {
                   ))}
                 </div>
                 <blockquote className="text-lg md:text-xl font-medium mb-4">
-                  "Before Zuriscale, I was making KES 30,000 per month from my fashion boutique in Nairobi. 
-                  Now I'm consistently hitting KES 80,000+ because my customers keep coming back. 
-                  The WhatsApp follow-ups work like magic for repeat sales!"
+                  &quot;Before Zuriscale, I was making KES 30,000 per month from my fashion boutique in Nairobi. 
+                  Now I&apos;m consistently hitting KES 80,000+ because my customers keep coming back. 
+                  The WhatsApp follow-ups work like magic for repeat sales!&quot;
                 </blockquote>
                 <cite className="text-teal-100">
                   - Sarah M., Fashion Boutique Owner, Nairobi

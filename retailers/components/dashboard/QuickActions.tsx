@@ -12,10 +12,10 @@ const QuickActions: React.FC = () => {
     router.push('/pos'); // Adjust the route as needed
   };
 
-  const handleViewCustomers = () => {
-    // Navigate to customers page
-    router.push('/customers'); // Adjust the route as needed
-  };
+  // const handleViewCustomers = () => {
+  //   // Navigate to customers page
+  //   router.push('/customers'); // Adjust the route as needed
+  // };
 
   const handleSendCampaign = () => {
     // Navigate to campaigns page

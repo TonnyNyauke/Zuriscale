@@ -177,7 +177,7 @@ export default function MessageThread({
               <span className="font-medium text-sm sm:text-base">New Customer Alert!</span>
             </div>
             <p className="text-xs sm:text-sm text-blue-700 mt-1">
-              This is {conversation.customer_name}'s first conversation. Make it count!
+              This is {conversation.customer_name}&apos;s first conversation. Make it count!
             </p>
           </div>
         )}

@@ -36,10 +36,10 @@ export default function InboxPage() {
     loadInboxData();
   }, []);
 
-  const handleConversationSelect = (conversation: Conversation) => {
-    setSelectedConversation(conversation);
-    setMobileView('chat');
-  };
+  // const handleConversationSelect = (conversation: Conversation) => {
+  //   setSelectedConversation(conversation);
+  //   setMobileView('chat');
+  // };
 
   const handleBackToConversations = () => {
     setMobileView('conversations');
