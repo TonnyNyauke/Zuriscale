@@ -107,10 +107,7 @@ export default function InboxPage() {
         
         <div className="w-1/4 border-l border-gray-200 flex flex-col">
           {customer ? (
-            <CustomerProfile 
-              customer={customer}
-              selectedConversation={selectedConversation}
-              onConversationSelect={handleConversationSelect}
+            <CustomerProfile customer={customer}
             />
           ) : (
             <div className="flex items-center justify-center h-full text-gray-500">
