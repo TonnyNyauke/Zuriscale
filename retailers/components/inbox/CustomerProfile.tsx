@@ -1,6 +1,6 @@
 'use client';
 
-import { Customer } from '@/app/types/types';
+import { Conversation, Customer } from '@/app/types/types';
 import React, { useState } from 'react';
 import { useEnergy } from '../ui/EnergyProvider';
 
@@ -8,7 +8,8 @@ interface CustomerProfileProps {
   customer: Customer;
 }
 
-export default function CustomerProfile({ customer }: CustomerProfileProps) {
+export default function CustomerProfile({ customer,
+ }: CustomerProfileProps) {
   const { energyMode } = useEnergy();
   const [activeTab, setActiveTab] = useState('details');
 
@@ -33,8 +34,10 @@ export default function CustomerProfile({ customer }: CustomerProfileProps) {
           <div className="relative mx-auto w-16 h-16 mb-3">
             <div className={`w-full h-full rounded-full bg-gradient-to-br ${
               getCustomerStatusColor(customer.status)
-            } flex items-center justify-center text-white font-bold text-xl shadow-lg`}>
+            } flex items-center justify-center text-white font-bold text-xl shadow-lg`}
+            >
               {customer.name.split(' ').map(n => n[0]).join('')}
+              
             </div>
             {customer.status_level === 'vip' && (
               <div className="absolute -top-1 -right-1 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg">
