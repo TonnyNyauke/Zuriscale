@@ -1,10 +1,10 @@
 //components/dashboard/CustomerList.tsx
 'use client';
 
-import { Customer } from '@/app/types/types';
+import { DashboardCustomer } from '@/app/types/types';
 import EngagementButton from '@/components/ui/EngagementButton';
 
-export default function CustomerList({ customers }: { customers: Customer[] }) {
+export default function CustomerList({ customers }: { customers: DashboardCustomer[] }) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
       <div className="p-4 pb-3 border-b border-gray-100">

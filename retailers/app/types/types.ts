@@ -1,3 +1,11 @@
+
+export interface DashboardCustomer {
+  id: string;
+  name: string;
+  total_spent: number;
+  last_purchase: string;
+}
+
 export interface Customer {
     id: string;
     name: string;
