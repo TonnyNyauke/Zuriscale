@@ -233,6 +233,7 @@ export const fetchCustomerData = async () => {
         status_level: "Gold",
         total_orders: 5,
         last_order: "5000",
+        tags:["Green Clothes"],
         notes: "Loves Green Clothes"
       },
       {
@@ -246,6 +247,7 @@ export const fetchCustomerData = async () => {
         status_level: "Gold",
         total_orders: 5,
         last_order: "5000",
+        tags:[],
         notes: "Loves Green Clothes"
       }
     ]
