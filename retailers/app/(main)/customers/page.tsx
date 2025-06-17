@@ -1,4 +1,4 @@
-// src/app/(main)/customers/page.tsx
+//app/(main)/customers/page.tsx
 import { fetchCustomerData } from '@/app/lib/data';
 import CustomerTable from '@/components/customers/CustomerTable';
 

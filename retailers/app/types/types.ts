@@ -9,7 +9,6 @@ export interface Customer {
     status_level: string;
     total_orders: number;
     last_order: string;
-    tags: string[];
     notes: string
   }
 
