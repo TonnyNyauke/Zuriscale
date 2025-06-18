@@ -106,3 +106,23 @@ export interface MessageInputProps {
   // Add any props MessageInput might need
   onSendMessage?: (message: string) => void;
 }
+
+// src/types/types.ts
+// Add to existing types
+
+export interface Product {
+  id: string;
+  name: string;
+  price: number;
+  stock: number;
+  sku: string;
+  category: string;
+  description?: string;
+  costPrice?: number;
+}
+
+export interface Category {
+  id: string;
+  name: string;
+  productCount: number;
+}
