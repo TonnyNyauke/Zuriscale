@@ -2,7 +2,7 @@
 import React from 'react';
 import ProductGrid from '@/components/pos/ProductGrid';
 import CartPanel from '@/components/pos/CartPanel';
-import { fetchPOSData } from '@/lib/inventoryData';
+import { fetchPOSData } from '@/app/lib/inventoryData';
 
 export default async function POSPage() {
   const { products, categories } = await fetchPOSData();

@@ -1,7 +1,7 @@
 // src/app/(main)/products/[id]/page.tsx
-import React from 'react';
-import { fetchProductDetail } from '@/lib/inventoryData';
+import { fetchProductDetail } from '@/app/lib/inventoryData';
 import ProductForm from '@/components/products/ProductForm';
+import React from 'react';
 
 export default async function ProductDetailPage({ params }: { params: { id: string } }) {
   const product = await fetchProductDetail(params.id);

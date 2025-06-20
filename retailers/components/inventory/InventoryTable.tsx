@@ -2,9 +2,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Product } from '@/types/types';
 import StockAdjustment from './StockAdjustment';
-import { useEnergy } from '@/context/EnergyContext';
+import { Product } from '@/app/types/types';
+import { useEnergy } from '../ui/EnergyProvider';
 
 interface InventoryTableProps {
   products: Product[];

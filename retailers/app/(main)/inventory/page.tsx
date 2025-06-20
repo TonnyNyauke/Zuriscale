@@ -1,8 +1,8 @@
-// src/app/(main)/inventory/page.tsx
+//app/(main)/inventory/page.tsx
 import React from 'react';
 import InventoryTable from '@/components/inventory/InventoryTable';
 import InventoryChart from '@/components/inventory/InventoryChart';
-import { fetchInventoryData } from '@/lib/inventoryData';
+import { fetchInventoryData } from '@/app/lib/inventoryData';
 
 export default async function InventoryPage() {
   const { products, lowStockItems, categories } = await fetchInventoryData();

@@ -1,9 +1,9 @@
 // src/components/inventory/StockAdjustment.tsx
 'use client';
 
+import { Product } from '@/app/types/types';
 import React, { useState } from 'react';
-import { Product } from '@/types/types';
-import { useEnergy } from '@/context/EnergyContext';
+import { useEnergy } from '../ui/EnergyProvider';
 
 interface StockAdjustmentProps {
   product: Product;

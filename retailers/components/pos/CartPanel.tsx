@@ -2,8 +2,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useEnergy } from '@/context/EnergyContext';
 import PaymentModal from './PaymentModal';
+import { useEnergy } from '../ui/EnergyProvider';
 
 interface CartItem {
   id: string;

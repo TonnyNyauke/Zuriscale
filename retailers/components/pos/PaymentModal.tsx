@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useEnergy } from '@/context/EnergyContext';
+import { useEnergy } from '../ui/EnergyProvider';
 
 interface PaymentModalProps {
   total: number;

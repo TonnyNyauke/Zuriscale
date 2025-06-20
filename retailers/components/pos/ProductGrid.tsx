@@ -1,9 +1,9 @@
 // src/components/pos/ProductGrid.tsx
 'use client';
 
+import { Category, Product } from '@/app/types/types';
 import React, { useState } from 'react';
-import { Product, Category } from '@/types/types';
-import { useEnergy } from '@/context/EnergyContext';
+import { useEnergy } from '../ui/EnergyProvider';
 
 interface ProductGridProps {
   products: Product[];

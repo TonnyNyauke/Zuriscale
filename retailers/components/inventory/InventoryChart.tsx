@@ -2,7 +2,7 @@
 'use client';
 
 import React from 'react';
-import { useEnergy } from '@/context/EnergyContext';
+import { useEnergy } from '../ui/EnergyProvider';
 
 interface InventoryChartProps {
   lowStockItems: { name: string; stock: number }[];
