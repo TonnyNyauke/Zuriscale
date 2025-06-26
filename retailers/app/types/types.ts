@@ -126,3 +126,15 @@ export interface Category {
   name: string;
   productCount: number;
 }
+
+// src/types/types.ts
+export interface Bundle {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  original_price?: number;
+  whatsapp_credits: number;
+  sms_credits: number;
+  features: string[];
+}

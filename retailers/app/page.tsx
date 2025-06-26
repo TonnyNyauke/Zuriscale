@@ -211,7 +211,7 @@ export default function ZuriscaleLanding() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
           <Button size="lg" className="bg-red-500 hover:bg-red-600 text-white shadow-lg" asChild>
-            <Link href="/dashboard" aria-label="Start using Zuriscale for KES 1.5 per message">
+            <Link href="/signup" aria-label="Start using Zuriscale for KES 1.5 per message">
               Start for KES 1.5/Message
               <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
             </Link>
@@ -483,7 +483,9 @@ export default function ZuriscaleLanding() {
                 </div>
 
                 <Button size="lg" className="w-full bg-red-500 hover:bg-red-600 text-white shadow-lg" aria-label="Create your Zuriscale account">
-                  Start Now - Create Account
+                  <Link href='/signup'>
+                    Start Now - Create Account
+                  </Link>
                 </Button>
                 
                 <p className="text-center text-sm text-gray-500 mt-4">

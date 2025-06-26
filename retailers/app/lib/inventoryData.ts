@@ -1,5 +1,4 @@
-// src/lib/inventoryData.ts
-import { Product, Category } from '@/types/types';
+//lib/inventoryData.ts
 
 export const fetchPOSData = async () => {
   return {

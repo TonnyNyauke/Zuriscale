@@ -341,3 +341,53 @@ export const fetchCampaignData = async () => {
     }
   };
 };
+
+export const fetchBundles = async () => {
+  return [
+    {
+      id: 'bundle_1',
+      name: 'Starter Pack',
+      description: 'Perfect for small businesses',
+      price: 500,
+      original_price: 600,
+      whatsapp_credits: 1000,
+      sms_credits: 200,
+      features: ['Basic analytics', '24hr support']
+    },
+    {
+      id: 'bundle_2',
+      name: 'Growth Pack',
+      description: 'For growing retailers',
+      price: 1200,
+      original_price: 1500,
+      whatsapp_credits: 3000,
+      sms_credits: 600,
+      features: ['Advanced analytics', 'AI campaign suggestions']
+    },
+    {
+      id: 'bundle_3',
+      name: 'Pro Pack',
+      description: 'For established businesses',
+      price: 2500,
+      original_price: 3000,
+      whatsapp_credits: 6000,
+      sms_credits: 1200,
+      features: ['Priority support', 'Dedicated account manager']
+    },
+  ];
+};
+
+export const fetchUsage = async () => {
+  return {
+    whatsapp_used: 850,
+    whatsapp_total: 1000,
+    sms_used: 150,
+    sms_total: 200
+  };
+};
+
+export const purchaseBundle = async (bundleId: string) => {
+  // Simulate API call
+  await new Promise(resolve => setTimeout(resolve, 1500));
+  return { success: true };
+};
