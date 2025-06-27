@@ -141,10 +141,11 @@ export const fetchInboxData = async () => {
       status: "repeat",
       status_level: 'Gold',
       tags: ["VIP", "Loyal", "Evening Delivery"],
-      notes: "Prefers evening deliveries. Loves floral dresses. Size M."
+      notes: "Prefers evening deliveries. Loves floral dresses. Size M.",
+      purchase_count: 4
     },
     {
-      id: "cust_002", 
+      id: "cust_002",
       name: "Grace Njeri",
       phone: "+254733222333",
       first_purchase: "2024-04-01",
@@ -155,11 +156,12 @@ export const fetchInboxData = async () => {
       status: "repeat",
       status_level: 'Regular',
       tags: ["Frequent Buyer", "Corporate"],
-      notes: "Works in corporate, prefers professional wear. Size L."
+      notes: "Works in corporate, prefers professional wear. Size L.",
+      purchase_count: 3
     },
     {
       id: "cust_003",
-      name: "Mary Wanjiku", 
+      name: "Mary Wanjiku",
       phone: "+254744333444",
       first_purchase: "2024-05-18",
       last_purchase: "2024-05-18",
@@ -169,7 +171,8 @@ export const fetchInboxData = async () => {
       status: "new",
       status_level: 'Regular',
       tags: ["New Customer"],
-      notes: "First time buyer. Interested in casual wear."
+      notes: "First time buyer. Interested in casual wear.",
+      purchase_count: 2
     }
   ];
 

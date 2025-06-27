@@ -1,17 +1,172 @@
-'use client'
-
-import { Customer } from '@/app/types/types';
+// components/customers/CustomersTable.tsx
 import React from 'react';
-import EngagementButton from '../ui/EngagementButton';
+import { Phone, Calendar, DollarSign, ShoppingBag, User } from 'lucide-react';
+import WhatsAppButton from './WhatsAppButton';
+import { Customer, Prospect } from '@/app/types/customers';
 
-interface CustomerTableProps {
+interface CustomersTableProps {
   customers: Customer[];
+  prospects: Prospect[];
+  selectedFilter: 'all' | 'customers' | 'prospects';
 }
 
-const CustomerTable: React.FC<CustomerTableProps> = ({ customers }) => {
-  const handleWhatsApp = (phone: string) => {
-    console.log(`Initiating WhatsApp to ${phone}`);
-    // Actual implementation would use Twilio API
+const CustomersTable: React.FC<CustomersTableProps> = ({ 
+  customers, 
+  prospects, 
+  selectedFilter 
+}) => {
+  const getStatusBadge = (status: string, type: 'customer' | 'prospect') => {
+    const statusColors = {
+      // Customer statuses
+      new: 'bg-blue-100 text-blue-800',
+      repeat: 'bg-green-100 text-green-800',
+      vip: 'bg-purple-100 text-purple-800',
+      churned: 'bg-red-100 text-red-800',
+      // Prospect statuses
+      contacted: 'bg-yellow-100 text-yellow-800',
+      interested: 'bg-emerald-100 text-emerald-800',
+      not_interested: 'bg-gray-100 text-gray-800',
+      converted: 'bg-green-100 text-green-800'
+    };
+
+    return (
+      <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
+        statusColors[status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800'
+      }`}>
+        {status.replace('_', ' ').toUpperCase()}
+      </span>
+    );
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+  };
+
+  const renderCustomerRow = (customer: Customer) => (
+    <tr key={`customer-${customer.id}`} className="hover:bg-gray-50">
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center">
+          <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center mr-3">
+            <User className="w-4 h-4 text-teal-600" />
+          </div>
+          <div>
+            <div className="text-sm font-medium text-gray-900">{customer.name}</div>
+            <div className="text-sm text-gray-500 flex items-center mt-1">
+              <Phone className="w-3 h-3 mr-1" />
+              {customer.phone}
+            </div>
+          </div>
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <span className="text-sm font-medium text-teal-600">Customer</span>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        {getStatusBadge(customer.status, 'customer')}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+        <div className="flex items-center">
+          <DollarSign className="w-4 h-4 mr-1 text-gray-400" />
+          KES {customer.total_spent.toLocaleString()}
+        </div>
+        <div className="text-xs text-gray-500 mt-1 flex items-center">
+          <ShoppingBag className="w-3 h-3 mr-1" />
+          {customer.purchase_count} purchase{customer.purchase_count !== 1 ? 's' : ''}
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        <div className="flex items-center">
+          <Calendar className="w-4 h-4 mr-1" />
+          {formatDate(customer.last_purchase_date)}
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <WhatsAppButton
+          phone={customer.phone}
+          name={customer.name}
+          type={customer.status === 'churned' ? 'retention' : 'promotion'}
+        />
+      </td>
+    </tr>
+  );
+
+  const renderProspectRow = (prospect: Prospect) => (
+    <tr key={`prospect-${prospect.id}`} className="hover:bg-gray-50">
+      <td className="px-6 py-4 whitespace-nowrap">
+        <div className="flex items-center">
+          <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-3">
+            <User className="w-4 h-4 text-orange-600" />
+          </div>
+          <div>
+            <div className="text-sm font-medium text-gray-900">{prospect.name}</div>
+            <div className="text-sm text-gray-500 flex items-center mt-1">
+              {prospect.phone ? (
+                <>
+                  <Phone className="w-3 h-3 mr-1" />
+                  {prospect.phone}
+                </>
+              ) : (
+                <span className="text-gray-400 italic">No phone number</span>
+              )}
+            </div>
+          </div>
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <span className="text-sm font-medium text-orange-600">Prospect</span>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        {getStatusBadge(prospect.status, 'prospect')}
+      </td>
+      <td className="px-6 py-4">
+        <div className="text-sm text-gray-900">{prospect.inquiry}</div>
+        {prospect.budget && (
+          <div className="text-xs text-gray-500 mt-1 flex items-center">
+            <DollarSign className="w-3 h-3 mr-1" />
+            Budget: KES {prospect.budget.toLocaleString()}
+          </div>
+        )}
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+        <div className="flex items-center">
+          <Calendar className="w-4 h-4 mr-1" />
+          {formatDate(prospect.visit_date)}
+        </div>
+      </td>
+      <td className="px-6 py-4 whitespace-nowrap">
+        <WhatsAppButton
+          phone={prospect.phone}
+          name={prospect.name}
+          type="follow-up"
+          inquiry={prospect.inquiry}
+          disabled={!prospect.phone}
+        />
+      </td>
+    </tr>
+  );
+
+  const renderRows = () => {
+    const rows = [];
+    
+    if (selectedFilter === 'all' || selectedFilter === 'customers') {
+      rows.push(...customers.map(renderCustomerRow));
+    }
+    
+    if (selectedFilter === 'all' || selectedFilter === 'prospects') {
+      rows.push(...prospects.map(renderProspectRow));
+    }
+    
+    return rows;
+  };
+
+  const getEmptyMessage = () => {
+    if (selectedFilter === 'customers') return 'No customers found';
+    if (selectedFilter === 'prospects') return 'No prospects found';
+    return 'No records found';
   };
 
   return (
@@ -19,53 +174,44 @@ const CustomerTable: React.FC<CustomerTableProps> = ({ customers }) => {
       <table className="min-w-full divide-y divide-gray-200">
         <thead>
           <tr className="bg-gray-50">
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Purchase</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Spent</th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Contact
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Type
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Status
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Details
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Last Activity
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Actions
+            </th>
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {customers.map((customer) => (
-            <tr key={customer.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="flex items-center">
-                  <div className="ml-4">
-                    <div className="text-sm font-medium text-gray-900">{customer.name}</div>
-                    <div className="text-sm text-gray-500">{customer.phone}</div>
-                  </div>
+          {renderRows().length > 0 ? (
+            renderRows()
+          ) : (
+            <tr>
+              <td colSpan={6} className="px-6 py-12 text-center text-gray-500">
+                <div className="flex flex-col items-center">
+                  <User className="w-12 h-12 text-gray-300 mb-4" />
+                  <p className="text-lg font-medium">{getEmptyMessage()}</p>
+                  <p className="text-sm">Try adjusting your search or filters</p>
                 </div>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                  customer.status === 'repeat' 
-                    ? 'bg-green-100 text-green-800' 
-                    : customer.status === 'churned' 
-                      ? 'bg-red-100 text-red-800' 
-                      : 'bg-blue-100 text-blue-800'
-                }`}>
-                  {customer.status}
-                </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {customer.last_purchase}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                KES {customer.total_spent.toLocaleString()}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                <EngagementButton 
-                  type="whatsapp" 
-                  onClick={() => handleWhatsApp(customer.phone)} 
-                />
-              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>
   );
 };
 
-export default CustomerTable;
+export default CustomersTable;

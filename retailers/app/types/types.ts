@@ -12,6 +12,7 @@ export interface Customer {
     phone: string;
     first_purchase: string;
     last_purchase: string;
+    purchase_count: number,
     total_spent: number;
     status: 'new' | 'repeat' | 'churned';
     status_level: string;
@@ -127,7 +128,6 @@ export interface Category {
   productCount: number;
 }
 
-// src/types/types.ts
 export interface Bundle {
   id: string;
   name: string;
@@ -137,4 +137,15 @@ export interface Bundle {
   whatsapp_credits: number;
   sms_credits: number;
   features: string[];
+}
+
+export interface Prospect {
+  id: string;
+  name: string;
+  phone?: string;
+  inquiry: string;
+  visit_date: string;
+  budget?: number;
+  status: 'new' | 'contacted' | 'interested' | 'not_interested' | 'converted';
+  created_at: string;
 }
