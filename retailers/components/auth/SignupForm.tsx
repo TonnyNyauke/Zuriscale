@@ -197,7 +197,7 @@ export default function ZuriscaleSignup() {
                   <div className="text-sm text-teal-100">Average Revenue Growth</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-amber-300">8 Months</div>
+                  <div className="text-3xl font-bold text-amber-300">12 Months</div>
                   <div className="text-sm text-teal-100">Average Time to KES 1M</div>
                 </div>
               </div>
@@ -379,7 +379,7 @@ export default function ZuriscaleSignup() {
                         <div>
                           <p className="text-sm font-medium text-amber-800">Your Goal: KES 1M in Sales</p>
                           <p className="text-xs text-amber-700 mt-1">
-                            The average Zuriscale user reaches this milestone in 8 months with our customer retention system.
+                            The average Zuriscale user reaches this milestone in 12 months with our customer retention system.
                           </p>
                         </div>
                       </div>
