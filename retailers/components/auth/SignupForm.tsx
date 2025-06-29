@@ -4,6 +4,14 @@ import React, { useState } from 'react';
 import { z } from 'zod';
 import { Check, ArrowRight, ArrowLeft, Sparkles, Shield, Clock, Users, Eye, EyeOff, AlertCircle, Star, Phone, User, Lock, Zap, TrendingUp, MessageSquare } from 'lucide-react';
 
+type SignupFormProps = {
+  signupAction: (formData: {
+    businessName: string,
+    phone: string,
+    email: string,
+    password: string,
+  }) => Promise<any>
+}
 // Zod validation schemas for each step
 const step1Schema = z.object({
   businessName: z.string()
@@ -14,7 +22,7 @@ const step1Schema = z.object({
 
 const step2Schema = z.object({
   phone: z.string()
-    .regex(/^07\d{8}$/, 'Please enter a valid Kenyan phone number (07XXXXXXXX)'),
+    .regex(/^7\d{8}$/, 'Please enter a valid Kenyan phone number (+254 7XXXXXXXX)'),
   email: z.string()
     .email('Please enter a valid email address')
     .toLowerCase(),
@@ -31,7 +39,7 @@ const fullSchema = step1Schema.merge(step2Schema).merge(step3Schema);
 
 type SignupFormData = z.infer<typeof fullSchema>;
 
-export default function ZuriscaleSignup() {
+export default function ZuriscaleSignup({signupAction}: SignupFormProps) {
   const [formData, setFormData] = useState<SignupFormData>({
     businessName: '',
     phone: '',
@@ -135,8 +143,24 @@ export default function ZuriscaleSignup() {
       fullSchema.parse(formData);
       setIsLoading(true);
       
-      // Simulate account creation
-      await new Promise(resolve => setTimeout(resolve, 2000));
+     //Uploading data to database
+     try {
+      fullSchema.parse(formData)
+      setIsLoading(true)
+
+      //Call Erver Action
+      await signupAction({
+        businessName: formData.businessName,
+        phone: formData.phone,
+        email: formData.email,
+        password: formData.password
+      })
+     } catch (error) {
+      console.error(error)
+      //setErrors({ password: error.message || 'Failed to create account' });
+     }finally{
+      setIsLoading(false)
+     }
       
       // Redirect to onboarding
       console.log('Account created successfully! Redirecting to onboarding...');
