@@ -3,6 +3,11 @@
 import React, { useState } from 'react';
 import { z } from 'zod';
 import { Check, ArrowRight, ArrowLeft, Sparkles, Shield, Clock, Users, Eye, EyeOff, AlertCircle, Star, Phone, User, Lock, Zap, TrendingUp, MessageSquare } from 'lucide-react';
+import { error } from 'console';
+import { createClient } from '@/utils/supabase/client';
+import { createRetailerAction } from '@/app/actions/create-retailer';
+
+const supabase = createClient();
 
 type SignupFormProps = {
   signupAction: (formData: {
@@ -55,6 +60,7 @@ export default function ZuriscaleSignup({signupAction}: SignupFormProps) {
   const [isVerifying, setIsVerifying] = useState(false);
   const [otpCode, setOtpCode] = useState('');
   const [showOtpInput, setShowOtpInput] = useState(false);
+  const [userId, setUserId] = useState('')
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -115,6 +121,10 @@ export default function ZuriscaleSignup({signupAction}: SignupFormProps) {
   };
 
   const handleVerifyOtp = async () => {
+    if(!userId){
+      setErrors({phone: "Signup session expired. Please restart"})
+    }
+
     if (otpCode.length !== 6) {
       setErrors({ phone: 'Please enter the 6-digit verification code' });
       return;
@@ -122,11 +132,22 @@ export default function ZuriscaleSignup({signupAction}: SignupFormProps) {
     
     setIsVerifying(true);
     try {
-      // Simulate OTP verification
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      setCurrentStep(3);
-      setShowOtpInput(false);
-      setErrors({});
+      // Step 1: Verify OTP
+      const {error: verifyError} = await supabase.auth.verifyOtp({
+        phone: `+254${formData.phone}`,
+        token: otpCode,
+        type: 'sms'
+      })
+
+      if(verifyError) throw verifyError;
+
+      //Step 2: Create retailer after successful verification
+      await createRetailerAction(
+        userId,
+        formData.businessName,
+        formData.email,
+        formData.phone,
+      )
     } catch (error) {
       setErrors({ phone: 'Invalid verification code. Please try again.' });
     } finally {
@@ -148,13 +169,21 @@ export default function ZuriscaleSignup({signupAction}: SignupFormProps) {
       fullSchema.parse(formData)
       setIsLoading(true)
 
-      //Call Erver Action
-      await signupAction({
+      //Call Server Action to create user
+      const result = await signupAction({
         businessName: formData.businessName,
         phone: formData.phone,
         email: formData.email,
         password: formData.password
       })
+
+      //Store userId for later use
+      console.log(result.userId)
+      setUserId(result.userId)
+
+      //Show OTP Input
+      setShowOtpInput(true)
+
      } catch (error) {
       console.error(error)
       //setErrors({ password: error.message || 'Failed to create account' });
