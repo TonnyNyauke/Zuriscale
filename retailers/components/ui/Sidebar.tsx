@@ -60,7 +60,7 @@ const Sidebar = () => {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-4">
+        <nav className="flex-1 p-4 ">
           <ul className="space-y-1">
             {navItems.map((item) => {
               const IconComponent = item.icon;

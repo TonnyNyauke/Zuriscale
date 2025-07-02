@@ -7,13 +7,18 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="h-screen overflow-hidden">
+    <div className="h-screen">
       <EnergyProvider>
-        {/* Desktop: Traditional sidebar layout */}
+        {/* Desktop Layout */}
         <div className="hidden md:flex h-full">
-          <Sidebar />
-          <div className="flex flex-col flex-1 overflow-hidden">
-            <main className="flex-1 overflow-hidden">
+          {/* Sticky Sidebar */}
+          <div className="sticky top-0 h-screen">
+            <Sidebar />
+          </div>
+          
+          {/* Scrollable Content Area */}
+          <div className="flex flex-col flex-1 min-w-0">
+            <main className="flex-1 overflow-y-auto">
               {children}
             </main>
             <footer className="py-3 px-6 text-center text-sm text-gray-600 border-t bg-white flex-shrink-0">
@@ -24,8 +29,13 @@ export default function MainLayout({
 
         {/* Mobile Layout */}
         <div className="md:hidden h-full flex flex-col">
-          <Sidebar />
-          <main className="flex-1 overflow-hidden">
+          {/* Sticky Topbar */}
+          <div className="sticky top-0 z-10">
+            <Sidebar />
+          </div>
+          
+          {/* Scrollable Content Area */}
+          <main className="flex-1 overflow-y-auto">
             {children}
           </main>
           <footer className="py-2 px-4 text-center text-xs text-gray-600 border-t bg-white flex-shrink-0">

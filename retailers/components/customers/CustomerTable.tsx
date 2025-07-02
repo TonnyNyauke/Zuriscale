@@ -2,7 +2,7 @@
 import React from 'react';
 import { Phone, Calendar, DollarSign, ShoppingBag, User } from 'lucide-react';
 import WhatsAppButton from './WhatsAppButton';
-import { Customer, Prospect } from '@/app/types/customers';
+import { Customer, Prospect } from '@/app/types/types';
 
 interface CustomersTableProps {
   customers: Customer[];
@@ -81,7 +81,7 @@ const CustomersTable: React.FC<CustomersTableProps> = ({
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         <div className="flex items-center">
           <Calendar className="w-4 h-4 mr-1" />
-          {formatDate(customer.last_purchase_date)}
+          {formatDate(customer.last_purchase)}
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">

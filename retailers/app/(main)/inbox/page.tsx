@@ -9,7 +9,7 @@ import { fetchInboxData, fetchCustomerById } from '@/app/lib/data';
 import { Conversation, Customer } from '@/app/types/types';
 
 // Mobile view states
-type MobileView = 'conversations' | 'chat' | 'profile';
+export type MobileView = 'conversations' | 'chat' | 'profile';
 
 export default function InboxPage() {
   const [mobileView, setMobileView] = useState<MobileView>('conversations');

@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { Prospect } from '@/app/types/types';
+import { addProspect } from '@/app/actions/add-prospect';
 
 interface AddProspectModalProps {
   isOpen: boolean;
@@ -24,11 +25,11 @@ const AddProspectModal: React.FC<AddProspectModalProps> = ({ isOpen, onClose, on
     setIsSubmitting(true);
     
     try {
-      await onAdd({
+      await addProspect({
         name: formData.name.trim(),
-        phone: formData.phone.trim() || undefined,
+        phone: formData.phone.trim(),
         inquiry: formData.inquiry.trim(),
-        budget: formData.budget ? parseInt(formData.budget) : undefined,
+        budget: parseInt(formData.budget)
       });
       
       // Reset form
