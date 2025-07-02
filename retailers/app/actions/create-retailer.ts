@@ -8,17 +8,17 @@ userId: string, businessName: string, email: string, phone: string) {
   
   try {
     // Verify user exists and is authenticated
-    const { data: { user }, error: authError } = await (await supabase).auth.getUser();
+    //const { data: { user }, error: authError } = await (await supabase).auth.getUser();
     
-    if (authError || !user || user.id !== userId) {
-      throw new Error('User authentication failed');
-    }
+    // if (authError || !user || user.id !== userId) {
+    //   throw new Error('User authentication failed');
+    // }
 
     // Create retailer record
     const { error } = await (await supabase)
       .from('retailers')
       .insert({
-        user_id: userId,
+        retailer_id: userId,
         business_name: businessName,
         email: email,
         phone: phone,

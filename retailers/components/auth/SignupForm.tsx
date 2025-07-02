@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { z } from 'zod';
-import { Check, ArrowRight, ArrowLeft, Sparkles, Shield, Clock, Users, Eye, EyeOff, AlertCircle, Star, Phone, User, Lock, Zap, TrendingUp, MessageSquare } from 'lucide-react';
+import { Check, ArrowRight, ArrowLeft, Sparkles, Shield, Clock, Users, Eye, EyeOff, AlertCircle, Star, Phone, User, Lock, Zap, TrendingUp, MessageSquare, Mail, CheckCircle } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 import { createRetailerAction } from '@/app/actions/create-retailer';
 import { useRouter } from 'next/navigation';
@@ -10,14 +10,6 @@ import { signupAction } from '@/app/actions/signup';
 
 const supabase = createClient();
 
-type SignupFormProps = {
-  signupAction: (formData: {
-    businessName: string,
-    phone: string,
-    email: string,
-    password: string,
-  }) => Promise<any>
-}
 // Zod validation schemas for each step
 const step1Schema = z.object({
   businessName: z.string()
@@ -58,11 +50,8 @@ export default function ZuriscaleSignup() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
-  const [isVerifying, setIsVerifying] = useState(false);
-  const [otpCode, setOtpCode] = useState('');
-  const [showOtpInput, setShowOtpInput] = useState(false);
+  const [showEmailConfirmation, setShowEmailConfirmation] = useState(false);
   const [userId, setUserId] = useState('')
-  const [authUserId, setAuthUserId] = useState<string | null>(null);
   const [isSessionChecked, setIsSessionChecked] = useState(false);
   const router = useRouter();
 
@@ -116,73 +105,7 @@ export default function ZuriscaleSignup() {
 
   const handleNext = async () => {
     if (!validateCurrentStep()) return;
-    
-    if (currentStep === 2) {
-      // Send OTP when moving from step 2 to 3
-      setIsVerifying(true);
-      try {
-        // Simulate OTP sending
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        setShowOtpInput(true);
-      } catch (error) {
-        setErrors({ phone: 'Failed to send verification code. Please try again.' });
-      } finally {
-        setIsVerifying(false);
-      }
-    } else {
-      setCurrentStep(prev => prev + 1);
-    }
-  };
-
-  const handleVerifyOtp = async () => {
-    if (!authUserId) {
-      setErrors({ phone: 'Signup session expired. Please restart.' });
-      return;
-    }
-    
-    if (otpCode.length !== 6) {
-      setErrors({ phone: 'Please enter the 6-digit verification code' });
-      return;
-    }
-    
-    setIsVerifying(true);
-    
-    try {
-      // Step 2: Verify OTP
-      const { error: verifyError } = await supabase.auth.verifyOtp({
-        phone: `+254${formData.phone}`,
-        token: otpCode,
-        type: 'sms'
-      });
-      
-      if (verifyError) throw verifyError;
-      
-      // Step 3: Create retailer after successful verification
-      await createRetailerAction(
-        authUserId,
-        formData.businessName,
-        formData.phone,
-        formData.email,
-      );
-      
-      // Step 4: Complete signup
-      setShowOtpInput(false);
-      setErrors({});
-      
-      // Redirect to onboarding
-      router.push('/onboarding');
-      
-    } catch (error: any) {
-      setErrors({ phone: error.message || 'Verification failed' });
-      
-      // Clean up auth user if verification fails
-      if (authUserId) {
-        await supabase.auth.admin.deleteUser(authUserId);
-        setAuthUserId(null);
-      }
-    } finally {
-      setIsVerifying(false);
-    }
+    setCurrentStep(prev => prev + 1);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -194,26 +117,31 @@ export default function ZuriscaleSignup() {
       fullSchema.parse(formData);
       setIsLoading(true);
 
-      // Step 1: Create auth user only
-      const result = await signupAction(formData.phone, formData.password);
+      // Create user account with email verification
+      const result = await signupAction(
+        formData.businessName,
+        formData.email,
+        formData.phone,
+        formData.password
+      );
+
+      setUserId(result.userId)
+      console.log("This is the user Id:  " + userId)
       
-      // Store auth user ID for later use
-      setAuthUserId(result.userId);
+      // Show email confirmation screen
+      setShowEmailConfirmation(true);
       
-      // Show OTP input
-      setShowOtpInput(true);
       
     } catch (error: any) {
-      setErrors({ password: error.message || 'Failed to initiate signup' });
+      setErrors({ password: error.message || 'Failed to create account' });
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleBack = () => {
-    if (showOtpInput) {
-      setShowOtpInput(false);
-      setOtpCode('');
+    if (showEmailConfirmation) {
+      setShowEmailConfirmation(false);
       setErrors({});
     } else {
       setCurrentStep(prev => prev - 1);
@@ -349,65 +277,63 @@ export default function ZuriscaleSignup() {
               })}
             </div>
             <h2 className="text-2xl font-bold text-gray-800 text-center">
-              {stepTitles[currentStep - 1]}
+              {showEmailConfirmation ? 'Check your email' : stepTitles[currentStep - 1]}
             </h2>
             <p className="text-gray-600 text-center mt-2">
-              Step {currentStep} of 3
+              {showEmailConfirmation ? 'We sent you a confirmation link' : `Step ${currentStep} of 3`}
             </p>
           </div>
 
-          {/* OTP Verification Modal */}
-          {showOtpInput && (
+          {/* Email Confirmation Screen */}
+          {showEmailConfirmation && (
             <div className="mb-8 p-6 bg-teal-50 rounded-xl border border-teal-200">
               <div className="text-center mb-4">
-                <Phone className="w-12 h-12 text-teal-600 mx-auto mb-3" />
-                <h3 className="text-lg font-bold text-gray-800">Verify Your Phone</h3>
+                <Mail className="w-12 h-12 text-teal-600 mx-auto mb-3" />
+                <h3 className="text-lg font-bold text-gray-800">Confirm Your Email</h3>
+                <p className="text-gray-600 text-sm mb-4">
+                  We sent a confirmation link to <strong>{formData.email}</strong>
+                </p>
                 <p className="text-gray-600 text-sm">
-                  We sent a 6-digit code to +254{formData.phone}
+                  Click the link in your email to activate your account and complete your setup.
                 </p>
               </div>
               
               <div className="space-y-4">
-                <input
-                  type="text"
-                  value={otpCode}
-                  onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                  placeholder="Enter 6-digit code"
-                  className="w-full px-4 py-3 text-center text-2xl font-mono border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 tracking-widest"
-                  maxLength={6}
-                />
-                
-                {errors.phone && (
+                {errors.email && (
                   <div className="flex items-center space-x-2 text-red-600 text-sm">
                     <AlertCircle className="w-4 h-4" />
-                    <span>{errors.phone}</span>
+                    <span>{errors.email}</span>
                   </div>
                 )}
                 
-                <div className="flex space-x-3">
-                  <button
-                    type="button"
-                    onClick={handleBack}
-                    className="flex-1 py-3 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    <ArrowLeft className="w-4 h-4 inline mr-2" />
-                    Back
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleVerifyOtp}
-                    disabled={isVerifying || otpCode.length !== 6}
-                    className="flex-1 py-3 px-4 bg-teal-600 text-white rounded-lg hover:bg-teal-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
-                  >
-                    {isVerifying ? 'Verifying...' : 'Verify'}
-                  </button>
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <div className="flex items-start space-x-2">
+                    <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="text-sm font-medium text-blue-800">Next Steps:</p>
+                      <ol className="text-xs text-blue-700 mt-1 list-decimal list-inside space-y-1">
+                        <li>Check your email inbox (and spam folder)</li>
+                        <li>Click the confirmation link</li>
+                        <li>You'll be automatically logged in and taken to onboarding</li>
+                      </ol>
+                    </div>
+                  </div>
                 </div>
+                
+                <button
+                  type="button"
+                  onClick={handleBack}
+                  className="w-full py-3 px-4 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  <ArrowLeft className="w-4 h-4 inline mr-2" />
+                  Back to Form
+                </button>
               </div>
             </div>
           )}
 
           {/* Form */}
-          {!showOtpInput && (
+          {!showEmailConfirmation && (
             <form onSubmit={currentStep === 3 ? handleSubmit : (e) => { e.preventDefault(); handleNext(); }}>
               <div className="space-y-6">
                 {/* Step 1: Business Info */}
@@ -454,6 +380,31 @@ export default function ZuriscaleSignup() {
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        placeholder="grace@yourstore.com"
+                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 transition-colors ${
+                          errors.email ? 'border-red-500' : 'border-gray-300'
+                        }`}
+                      />
+                      {errors.email && (
+                        <div className="flex items-center space-x-2 text-red-600 text-sm mt-2">
+                          <AlertCircle className="w-4 h-4" />
+                          <span>{errors.email}</span>
+                        </div>
+                      )}
+                      <p className="text-xs text-gray-500 mt-1">
+                        We'll send a confirmation link to this email
+                      </p>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-2">
                         Phone Number *
                       </label>
                       <div className="flex">
@@ -478,30 +429,8 @@ export default function ZuriscaleSignup() {
                         </div>
                       )}
                       <p className="text-xs text-gray-500 mt-1">
-                        We'll send a verification code to this number
+                        For WhatsApp notifications and support
                       </p>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Email Address *
-                      </label>
-                      <input
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        placeholder="grace@yourstore.com"
-                        className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-teal-500 transition-colors ${
-                          errors.email ? 'border-red-500' : 'border-gray-300'
-                        }`}
-                      />
-                      {errors.email && (
-                        <div className="flex items-center space-x-2 text-red-600 text-sm mt-2">
-                          <AlertCircle className="w-4 h-4" />
-                          <span>{errors.email}</span>
-                        </div>
-                      )}
                     </div>
                   </div>
                 )}
@@ -579,15 +508,13 @@ export default function ZuriscaleSignup() {
                   
                   <button
                     type="submit"
-                    disabled={isLoading || isVerifying}
+                    disabled={isLoading}
                     className={`py-3 px-6 bg-gradient-to-r from-teal-600 to-teal-700 text-white rounded-lg font-semibold hover:from-teal-700 hover:to-teal-800 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl ${
                       currentStep === 1 ? 'w-full' : 'flex-1'
                     }`}
                   >
                     {isLoading ? (
                       'Creating Account...'
-                    ) : isVerifying ? (
-                      'Sending Code...'
                     ) : currentStep === 3 ? (
                       'Create Account'
                     ) : (
