@@ -2,7 +2,7 @@
 'use client';
 
 import { Category } from '@/app/types/types';
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { useEnergy } from '../ui/EnergyProvider';
 
 

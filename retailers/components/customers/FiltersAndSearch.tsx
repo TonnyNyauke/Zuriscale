@@ -70,7 +70,7 @@ const FiltersAndSearch: React.FC<FiltersAndSearchProps> = ({
             return (
               <button
                 key={option.value}
-                onClick={() => setSelectedFilter(option.value as any)}
+                onClick={() => setSelectedFilter(option.value as typeof selectedFilter)}
                 className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                   selectedFilter === option.value
                     ? 'bg-white text-teal-700 shadow-sm'

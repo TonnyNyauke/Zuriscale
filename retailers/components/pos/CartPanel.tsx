@@ -21,19 +21,19 @@ export default function CartPanel() {
   const tax = subtotal * 0.16; // 16% VAT in Kenya
   const total = subtotal + tax;
   
-  const addToCart = (product: { id: string; name: string; price: number }) => {
-    setCart(prev => {
-      const existing = prev.find(item => item.id === product.id);
-      if (existing) {
-        return prev.map(item => 
-          item.id === product.id 
-            ? { ...item, quantity: item.quantity + 1 } 
-            : item
-        );
-      }
-      return [...prev, { ...product, quantity: 1 }];
-    });
-  };
+  // const addToCart = (product: { id: string; name: string; price: number }) => {
+  //   setCart(prev => {
+  //     const existing = prev.find(item => item.id === product.id);
+  //     if (existing) {
+  //       return prev.map(item => 
+  //         item.id === product.id 
+  //           ? { ...item, quantity: item.quantity + 1 } 
+  //           : item
+  //       );
+  //     }
+  //     return [...prev, { ...product, quantity: 1 }];
+  //   });
+  // };
   
   const removeFromCart = (id: string) => {
     setCart(prev => prev.filter(item => item.id !== id));

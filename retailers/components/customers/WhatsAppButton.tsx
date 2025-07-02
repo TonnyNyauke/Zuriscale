@@ -1,6 +1,6 @@
 // components/customers/WhatsAppButton.tsx
 import React, { useState } from 'react';
-import { MessageCircle, Send } from 'lucide-react';
+import { MessageCircle } from 'lucide-react';
 
 interface WhatsAppButtonProps {
   phone?: string;
