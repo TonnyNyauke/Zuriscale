@@ -29,6 +29,8 @@ const CustomersTable: React.FC<CustomersTableProps> = ({
       converted: 'bg-green-100 text-green-800'
     };
 
+    console.log(p0)
+
     return (
       <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
         statusColors[status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800'
