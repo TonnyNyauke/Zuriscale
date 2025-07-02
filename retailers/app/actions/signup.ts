@@ -1,36 +1,27 @@
-// @/actions/signup.ts
 'use server';
 
 import { createClient } from '@/utils/supabase/server';
 
-export async function signupAction(formData: {
-  businessName: string;
-  phone: string;
-  email: string;
-  password: string;
-}) {
+export async function signupAction(phone: string, password: string) {
   const supabase = createClient();
   
   try {
-    // 1. Create auth user
-    const { data, error: authError } = await (await supabase).auth.signUp({
-      phone: `+254${formData.phone}`,
-      password: formData.password,
-      options: {
-        data: {
-          business_name: formData.businessName,
-          email: formData.email
-        }
-      }
+    // Create auth user only (no metadata yet)
+    const { data, error } = await (await supabase).auth.signUp({
+      phone: `+254${phone}`,
+      password: password,
     });
 
-    if (authError) throw authError;
+    if (error) throw error;
     if (!data.user) throw new Error('User creation failed');
 
-    // Return user ID without creating retailer yet
-    return { userId: data.user.id };
+    // Return only the essential data
+    return { 
+      userId: data.user.id,
+      phone: data.user.phone! 
+    };
   } catch (error) {
     console.error('Signup error:', error);
-    throw new Error('Failed to create user account');
+    throw new Error('Failed to initiate signup process');
   }
 }

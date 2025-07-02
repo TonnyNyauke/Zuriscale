@@ -1,11 +1,12 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { z } from 'zod';
 import { Check, ArrowRight, ArrowLeft, Sparkles, Shield, Clock, Users, Eye, EyeOff, AlertCircle, Star, Phone, User, Lock, Zap, TrendingUp, MessageSquare } from 'lucide-react';
-import { error } from 'console';
 import { createClient } from '@/utils/supabase/client';
 import { createRetailerAction } from '@/app/actions/create-retailer';
+import { useRouter } from 'next/navigation';
+import { signupAction } from '@/app/actions/signup';
 
 const supabase = createClient();
 
@@ -44,7 +45,7 @@ const fullSchema = step1Schema.merge(step2Schema).merge(step3Schema);
 
 type SignupFormData = z.infer<typeof fullSchema>;
 
-export default function ZuriscaleSignup({signupAction}: SignupFormProps) {
+export default function ZuriscaleSignup() {
   const [formData, setFormData] = useState<SignupFormData>({
     businessName: '',
     phone: '',
@@ -61,6 +62,19 @@ export default function ZuriscaleSignup({signupAction}: SignupFormProps) {
   const [otpCode, setOtpCode] = useState('');
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [userId, setUserId] = useState('')
+  const [authUserId, setAuthUserId] = useState<string | null>(null);
+  const [isSessionChecked, setIsSessionChecked] = useState(false);
+  const router = useRouter();
+
+  // Check existing session on mount
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) router.push('/dashboard');
+      setIsSessionChecked(true);
+    };
+    checkSession();
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -121,35 +135,51 @@ export default function ZuriscaleSignup({signupAction}: SignupFormProps) {
   };
 
   const handleVerifyOtp = async () => {
-    if(!userId){
-      setErrors({phone: "Signup session expired. Please restart"})
+    if (!authUserId) {
+      setErrors({ phone: 'Signup session expired. Please restart.' });
+      return;
     }
-
+    
     if (otpCode.length !== 6) {
       setErrors({ phone: 'Please enter the 6-digit verification code' });
       return;
     }
     
     setIsVerifying(true);
+    
     try {
-      // Step 1: Verify OTP
-      const {error: verifyError} = await supabase.auth.verifyOtp({
+      // Step 2: Verify OTP
+      const { error: verifyError } = await supabase.auth.verifyOtp({
         phone: `+254${formData.phone}`,
         token: otpCode,
         type: 'sms'
-      })
-
-      if(verifyError) throw verifyError;
-
-      //Step 2: Create retailer after successful verification
+      });
+      
+      if (verifyError) throw verifyError;
+      
+      // Step 3: Create retailer after successful verification
       await createRetailerAction(
-        userId,
+        authUserId,
         formData.businessName,
-        formData.email,
         formData.phone,
-      )
-    } catch (error) {
-      setErrors({ phone: 'Invalid verification code. Please try again.' });
+        formData.email,
+      );
+      
+      // Step 4: Complete signup
+      setShowOtpInput(false);
+      setErrors({});
+      
+      // Redirect to onboarding
+      router.push('/onboarding');
+      
+    } catch (error: any) {
+      setErrors({ phone: error.message || 'Verification failed' });
+      
+      // Clean up auth user if verification fails
+      if (authUserId) {
+        await supabase.auth.admin.deleteUser(authUserId);
+        setAuthUserId(null);
+      }
     } finally {
       setIsVerifying(false);
     }
@@ -163,39 +193,18 @@ export default function ZuriscaleSignup({signupAction}: SignupFormProps) {
     try {
       fullSchema.parse(formData);
       setIsLoading(true);
+
+      // Step 1: Create auth user only
+      const result = await signupAction(formData.phone, formData.password);
       
-     //Uploading data to database
-     try {
-      fullSchema.parse(formData)
-      setIsLoading(true)
-
-      //Call Server Action to create user
-      const result = await signupAction({
-        businessName: formData.businessName,
-        phone: formData.phone,
-        email: formData.email,
-        password: formData.password
-      })
-
-      //Store userId for later use
-      console.log(result.userId)
-      setUserId(result.userId)
-
-      //Show OTP Input
-      setShowOtpInput(true)
-
-     } catch (error) {
-      console.error(error)
-      //setErrors({ password: error.message || 'Failed to create account' });
-     }finally{
-      setIsLoading(false)
-     }
+      // Store auth user ID for later use
+      setAuthUserId(result.userId);
       
-      // Redirect to onboarding
-      console.log('Account created successfully! Redirecting to onboarding...');
+      // Show OTP input
+      setShowOtpInput(true);
       
-    } catch (error) {
-      setErrors({ password: 'Failed to create account. Please try again.' });
+    } catch (error: any) {
+      setErrors({ password: error.message || 'Failed to initiate signup' });
     } finally {
       setIsLoading(false);
     }

@@ -1,26 +1,28 @@
-// @/actions/create-retailer.ts
 'use server';
 
 import { createClient } from '@/utils/supabase/server';
-import { cookies } from 'next/headers';
 
 export async function createRetailerAction(
-  userId: string,
-  businessName: string,
-  phone: string,
-  email: string
-) {
+userId: string, businessName: string, email: string, phone: string) {
   const supabase = createClient();
   
   try {
-    // 1. Create retailer record
+    // Verify user exists and is authenticated
+    const { data: { user }, error: authError } = await (await supabase).auth.getUser();
+    
+    if (authError || !user || user.id !== userId) {
+      throw new Error('User authentication failed');
+    }
+
+    // Create retailer record
     const { error } = await (await supabase)
       .from('retailers')
       .insert({
         user_id: userId,
         business_name: businessName,
         email: email,
-        phone: phone
+        phone: phone,
+        is_verified: true // Only set after verification
       });
 
     if (error) throw error;
