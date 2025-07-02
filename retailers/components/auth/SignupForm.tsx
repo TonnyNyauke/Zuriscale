@@ -1,10 +1,9 @@
 'use client'
 
 import React, { useEffect, useState } from 'react';
-import { z } from 'zod';
+import { unknown, z } from 'zod';
 import { Check, ArrowRight, ArrowLeft, Sparkles, Shield, Clock, Users, Eye, EyeOff, AlertCircle, Star, Phone, User, Lock, Zap, TrendingUp, MessageSquare, Mail, CheckCircle } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
-import { createRetailerAction } from '@/app/actions/create-retailer';
 import { useRouter } from 'next/navigation';
 import { signupAction } from '@/app/actions/signup';
 
@@ -63,7 +62,7 @@ export default function ZuriscaleSignup() {
       setIsSessionChecked(true);
     };
     checkSession();
-  }, []);
+  }, [router]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -127,13 +126,15 @@ export default function ZuriscaleSignup() {
 
       setUserId(result.userId)
       console.log("This is the user Id:  " + userId)
+      console.log(isSessionChecked)
       
       // Show email confirmation screen
       setShowEmailConfirmation(true);
       
       
-    } catch (error: any) {
-      setErrors({ password: error.message || 'Failed to create account' });
+    } catch (error) {
+      //setErrors("Failed to create account");
+      console.error(error)
     } finally {
       setIsLoading(false);
     }
@@ -225,7 +226,7 @@ export default function ZuriscaleSignup() {
             ))}
           </div>
           <blockquote className="text-lg font-medium mb-3">
-            "I went from KES 45,000 to KES 120,000 monthly sales in just 6 months using Zuriscale. The WhatsApp automation is incredible!"
+            &quot;I went from KES 45,000 to KES 120,000 monthly sales in just 6 months using Zuriscale. The WhatsApp automation is incredible!&quot;
           </blockquote>
           <cite className="text-teal-200 font-medium">
             - Grace K., Fashion Boutique Owner, Nakuru
@@ -314,7 +315,7 @@ export default function ZuriscaleSignup() {
                       <ol className="text-xs text-blue-700 mt-1 list-decimal list-inside space-y-1">
                         <li>Check your email inbox (and spam folder)</li>
                         <li>Click the confirmation link</li>
-                        <li>You'll be automatically logged in and taken to onboarding</li>
+                        <li>You&apos;ll be automatically logged in and taken to onboarding</li>
                       </ol>
                     </div>
                   </div>
@@ -341,7 +342,7 @@ export default function ZuriscaleSignup() {
                   <div className="space-y-4">
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        What's your business name? *
+                        What&apos;s your business name? *
                       </label>
                       <input
                         type="text"
@@ -399,7 +400,7 @@ export default function ZuriscaleSignup() {
                         </div>
                       )}
                       <p className="text-xs text-gray-500 mt-1">
-                        We'll send a confirmation link to this email
+                        We&apos;ll send a confirmation link to this email
                       </p>
                     </div>
 
@@ -478,7 +479,7 @@ export default function ZuriscaleSignup() {
                         className="mt-1 w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"
                       />
                       <label className="text-sm text-gray-600">
-                        I agree to Zuriscale's{' '}
+                        I agree to Zuriscale&apos;s{' '}
                         <a href="#" className="text-teal-600 hover:underline">Terms of Service</a>
                         {' '}and{' '}
                         <a href="#" className="text-teal-600 hover:underline">Privacy Policy</a>

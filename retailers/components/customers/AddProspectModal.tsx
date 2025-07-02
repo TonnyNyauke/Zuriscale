@@ -10,7 +10,7 @@ interface AddProspectModalProps {
   onAdd: (prospect: Omit<Prospect, 'id' | 'visit_date' | 'status' | 'created_at'>) => void;
 }
 
-const AddProspectModal: React.FC<AddProspectModalProps> = ({ isOpen, onClose, onAdd }) => {
+const AddProspectModal: React.FC<AddProspectModalProps> = ({ isOpen, onClose }) => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',

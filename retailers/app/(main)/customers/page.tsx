@@ -93,7 +93,8 @@ const mockCustomers: Customer[] = [
 ];
 
 export default function CustomersPage() {
-  const [customers, setCustomers] = useState<Customer[]>(mockCustomers);
+  //const [customers, setCustomers] = useState<Customer[]>(mockCustomers);
+  const customers = mockCustomers;
   const [prospects, setProspects] = useState<Prospect[]>(mockProspects);
   
   // Filter and search states

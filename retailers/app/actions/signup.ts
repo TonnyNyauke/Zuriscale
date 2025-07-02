@@ -3,13 +3,6 @@
 import { createClient } from '@/utils/supabase/server';
 import { createRetailerAction } from './create-retailer';
 
-interface SignupFormProps {
-    businessName: string,
-    phone: string,
-    email: string,
-    password: string,
-}
-
 export async function signupAction(businessName: string, email: string, phone: string, password: string) {
   const supabase = createClient();
   

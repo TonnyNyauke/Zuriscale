@@ -54,7 +54,7 @@ export default function CustomBundleForm({ credits, onChange }: CustomBundleForm
           />
         </div>
         <p className="mt-2 text-sm text-gray-500">
-          Minimum 10 messages. You'll get 20% SMS credits free.
+          Minimum 10 messages. You&apos;ll get 20% SMS credits free.
         </p>
       </div>
     </div>

@@ -389,7 +389,7 @@ export const fetchUsage = async () => {
   };
 };
 
-export const purchaseBundle = async (bundleId: string) => {
+export const purchaseBundle = async () => {
   // Simulate API call
   await new Promise(resolve => setTimeout(resolve, 1500));
   return { success: true };

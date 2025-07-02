@@ -15,7 +15,7 @@ const CustomersTable: React.FC<CustomersTableProps> = ({
   prospects, 
   selectedFilter 
 }) => {
-  const getStatusBadge = (status: string, type: 'customer' | 'prospect') => {
+  const getStatusBadge = (status: string, p0: string) => {
     const statusColors = {
       // Customer statuses
       new: 'bg-blue-100 text-blue-800',

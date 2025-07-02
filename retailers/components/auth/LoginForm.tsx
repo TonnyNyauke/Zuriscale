@@ -15,7 +15,6 @@ import {
   Star,
   TrendingUp,
   MessageSquare,
-  Zap,
   CheckCircle,
   Smartphone
 } from 'lucide-react';
@@ -108,6 +107,7 @@ export default function ZuriscaleLogin() {
         setErrors({ 
           email: 'Too many failed attempts. Please reset your password or try again later.' 
         });
+        console.error(error)
       } else {
         setErrors({ 
           email: 'Invalid email or password. Please check your credentials and try again.' 
@@ -134,6 +134,7 @@ export default function ZuriscaleLogin() {
       setErrors({});
     } catch (error) {
       setErrors({ email: 'Failed to send reset email. Please try again.' });
+      console.error(error)
     } finally {
       setIsLoading(false);
     }
@@ -166,7 +167,7 @@ export default function ZuriscaleLogin() {
                 </div>
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">Check Your Email</h2>
                 <p className="text-gray-600 mb-6">
-                  We've sent password reset instructions to{' '}
+                  We&apos;ve sent password reset instructions to{' '}
                   <span className="font-semibold text-gray-800">{forgotPasswordEmail}</span>
                 </p>
                 <button
@@ -181,7 +182,7 @@ export default function ZuriscaleLogin() {
                 <div className="text-center mb-8">
                   <h2 className="text-2xl font-bold text-gray-800 mb-2">Reset Password</h2>
                   <p className="text-gray-600">
-                    Enter your email address and we'll send you instructions to reset your password.
+                    Enter your email address and we&apos;ll send you instructions to reset your password.
                   </p>
                 </div>
 
@@ -254,7 +255,7 @@ export default function ZuriscaleLogin() {
                 </span>
               </h1>
               <p className="text-xl text-teal-100 leading-relaxed">
-                Your customers are waiting. Let's get you back to building that KES 1M revenue goal.
+                Your customers are waiting. Let&apos;s get you back to building that KES 1M revenue goal.
               </p>
             </div>
 
@@ -275,7 +276,7 @@ export default function ZuriscaleLogin() {
 
             {/* Recent Updates */}
             <div className="space-y-4">
-              <h3 className="text-lg font-semibold">What's New</h3>
+              <h3 className="text-lg font-semibold">What&apos;s New</h3>
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center flex-shrink-0">
@@ -308,7 +309,7 @@ export default function ZuriscaleLogin() {
             ))}
           </div>
           <blockquote className="text-sm font-medium mb-3">
-            "Just logged in to see I hit KES 1.2M this month! Zuriscale's automation made it possible while I focused on sourcing new inventory."
+            &quot;Just logged in to see I hit KES 1.2M this month! Zuriscale&apos;s automation made it possible while I focused on sourcing new inventory.&quot;
           </blockquote>
           <cite className="text-teal-200 text-sm">
             - Margaret W., Boutique Owner, Kisumu
@@ -456,7 +457,7 @@ export default function ZuriscaleLogin() {
           {/* Sign Up Link */}
           <div className="mt-8 text-center">
             <p className="text-gray-600">
-              Don't have an account?{' '}
+              Don&apos;t have an account?{' '}
               <button 
                 onClick={() => console.log('Navigate to signup')}
                 className="text-teal-600 hover:text-teal-700 font-semibold hover:underline transition-colors"
@@ -524,6 +525,7 @@ function PhoneLoginSection({ onSuccess }: { onSuccess: () => void }) {
       setOtpSent(true);
     } catch (err) {
       setError('Failed to send OTP. Please try again.');
+      console.log(err)
     } finally {
       setIsLoading(false);
     }
@@ -544,6 +546,7 @@ function PhoneLoginSection({ onSuccess }: { onSuccess: () => void }) {
       onSuccess();
     } catch (err) {
       setError('Invalid verification code. Please try again.');
+      console.log(err)
     } finally {
       setIsLoading(false);
     }
