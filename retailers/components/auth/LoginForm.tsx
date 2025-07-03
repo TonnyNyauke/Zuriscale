@@ -18,6 +18,9 @@ import {
   CheckCircle,
   Smartphone
 } from 'lucide-react';
+import { loginAction } from '@/app/actions/login';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 // Zod validation schema
 const loginSchema = z.object({
@@ -45,6 +48,7 @@ export default function ZuriscaleLogin() {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
   const [resetEmailSent, setResetEmailSent] = useState(false);
+  const router = useRouter()
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -91,7 +95,11 @@ export default function ZuriscaleLogin() {
       setErrors({});
       
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      const authData = await loginAction(formData.email, formData.password)
+
+       if (authData?.user){
+        router.push('/dashboard')
+       }
       
       // Simulate login failure for demo
       if (loginAttempts < 2) {
@@ -337,7 +345,7 @@ export default function ZuriscaleLogin() {
           </div>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form  className="space-y-6">
             {/* Email Field */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -423,6 +431,7 @@ export default function ZuriscaleLogin() {
             <button
               type="submit"
               disabled={isLoading}
+              onClick={handleSubmit}
               className="w-full py-3 px-4 bg-gradient-to-r from-teal-600 to-teal-700 text-white rounded-lg font-semibold hover:from-teal-700 hover:to-teal-800 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
             >
               {isLoading ? (
@@ -462,7 +471,7 @@ export default function ZuriscaleLogin() {
                 onClick={() => console.log('Navigate to signup')}
                 className="text-teal-600 hover:text-teal-700 font-semibold hover:underline transition-colors"
               >
-                Create free account
+                <Link href='/signup'>Create free account</Link> 
               </button>
             </p>
             <p className="text-xs text-gray-500 mt-2">

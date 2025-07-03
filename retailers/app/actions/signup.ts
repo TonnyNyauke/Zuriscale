@@ -33,7 +33,7 @@ export async function signupAction(businessName: string, email: string, phone: s
       email: data.user.email!
     };
   } catch (error) {
-    console.error('Signup error:', error);
-    throw new Error('Failed to initiate signup process');
+    console.log('Signup error:', error);
+    //throw new Error('Failed to initiate signup process');
   }
 }
