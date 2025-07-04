@@ -94,7 +94,7 @@ export default function ZuriscaleLogin() {
       setIsLoading(true);
       setErrors({});
       
-      // Simulate API call
+      //Login
       const authData = await loginAction(formData.email, formData.password)
 
        if (authData?.user){
@@ -120,6 +120,7 @@ export default function ZuriscaleLogin() {
         setErrors({ 
           email: 'Invalid email or password. Please check your credentials and try again.' 
         });
+        console.error(error)
       }
     } finally {
       setIsLoading(false);

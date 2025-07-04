@@ -5,7 +5,6 @@ import { z } from 'zod';
 import { Check, ArrowRight, ArrowLeft, Sparkles, Shield, Clock, Users, Eye, EyeOff, AlertCircle, Star, Phone, User, Lock, Zap, TrendingUp, MessageSquare, Mail, CheckCircle } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
-import { signupAction } from '@/app/actions/signup';
 
 const supabase = createClient();
 
@@ -36,7 +35,17 @@ const fullSchema = step1Schema.merge(step2Schema).merge(step3Schema);
 
 type SignupFormData = z.infer<typeof fullSchema>;
 
-export default function ZuriscaleSignup() {
+interface SignupProps {
+  signupAction: (
+    businessName: string,
+    email: string,
+    phone: string,
+    password: string
+  ) => Promise<{ userId: string }>;
+}
+
+
+export default function ZuriscaleSignup({signupAction}: SignupProps) {
   const [formData, setFormData] = useState<SignupFormData>({
     businessName: '',
     phone: '',
@@ -124,6 +133,7 @@ export default function ZuriscaleSignup() {
         formData.password
       );
 
+      console.log("This is the result:  " + result)
       setUserId(result.userId)
       console.log("This is the user Id:  " + userId)
       console.log(isSessionChecked)

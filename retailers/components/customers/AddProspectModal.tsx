@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { Prospect } from '@/app/types/types';
-import { addProspect } from '@/app/actions/add-prospect';
+import { addProspect } from '@/app/actions/prospects/add-prospect';
 
 interface AddProspectModalProps {
   isOpen: boolean;

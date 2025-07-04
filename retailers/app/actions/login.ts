@@ -1,8 +1,8 @@
-'use server'
+//'use server'
 
-import { createClient } from "@/utils/supabase/server"
+import { createClient } from "@/utils/supabase/client"
 
-const supabase = createClient()
+const supabase = await createClient()
 
 export async function loginAction(email: string, password: string) {
     try {
@@ -16,6 +16,7 @@ export async function loginAction(email: string, password: string) {
 
         return data;
     } catch (error) {
-        
+        console.error('Login error:', error);
+        throw error;
     }
 }
