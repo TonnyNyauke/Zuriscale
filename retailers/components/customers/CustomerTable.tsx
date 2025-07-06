@@ -15,7 +15,7 @@ const CustomersTable: React.FC<CustomersTableProps> = ({
   prospects, 
   selectedFilter 
 }) => {
-  const getStatusBadge = (status: string, p0: string) => {
+  const getStatusBadge = (status: string | null | undefined, p0: string) => {
     const statusColors = {
       // Customer statuses
       new: 'bg-blue-100 text-blue-800',
@@ -28,9 +28,18 @@ const CustomersTable: React.FC<CustomersTableProps> = ({
       not_interested: 'bg-gray-100 text-gray-800',
       converted: 'bg-green-100 text-green-800'
     };
-
-    console.log(p0)
-
+  
+    console.log(p0);
+  
+    // Handle null, undefined, or empty status
+    if (!status) {
+      return (
+        <span className="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+          UNKNOWN
+        </span>
+      );
+    }
+  
     return (
       <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
         statusColors[status as keyof typeof statusColors] || 'bg-gray-100 text-gray-800'
@@ -38,7 +47,7 @@ const CustomersTable: React.FC<CustomersTableProps> = ({
         {status.replace('_', ' ').toUpperCase()}
       </span>
     );
-  };
+  };  
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-GB', {
@@ -136,7 +145,7 @@ const CustomersTable: React.FC<CustomersTableProps> = ({
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         <div className="flex items-center">
           <Calendar className="w-4 h-4 mr-1" />
-          {formatDate(prospect.visit_date)}
+          {formatDate(prospect.created_at)}
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">

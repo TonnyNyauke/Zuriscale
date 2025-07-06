@@ -8,11 +8,11 @@ userId: string, businessName: string, email: string, phone: string) {
   
   try {
     // Verify user exists and is authenticated
-    //const { data: { user }, error: authError } = await (await supabase).auth.getUser();
+    const { data: { user }, error: authError } = await (await supabase).auth.getUser();
     
-    // if (authError || !user || user.id !== userId) {
-    //   throw new Error('User authentication failed');
-    // }
+    if (authError || !user || user.id !== userId) {
+      throw new Error('User authentication failed');
+    }
 
     // Create retailer record
     const { error } = await (await supabase)
@@ -23,7 +23,8 @@ userId: string, businessName: string, email: string, phone: string) {
         email: email,
         phone: phone,
         is_verified: true // Only set after verification
-      });
+      })
+      .eq('retailer_id', userId);
 
     if (error) throw error;
     

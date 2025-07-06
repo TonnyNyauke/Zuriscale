@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { 
   BarChart3, 
@@ -13,9 +13,107 @@ import {
   Menu,
   X
 } from 'lucide-react';
+import { createClient } from '@/utils/supabase/client';
+import { useRouter } from 'next/navigation';
+import { User as SupabaseUser } from '@supabase/supabase-js';
+
+const supabase = createClient();
 
 const Sidebar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [businessName, setBusinessName] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState<SupabaseUser | null>(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchUserAndBusiness = async () => {
+      try {
+        setIsLoading(true);
+        
+        // Get current session
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+        
+        if (sessionError) {
+          console.error('Session error:', sessionError);
+          return;
+        }
+
+        if (!session?.user) {
+          console.log('No session found, redirecting to login');
+          router.push('/login');
+          return;
+        }
+
+        setUser(session.user);
+        console.log('User ID:', session.user.id);
+
+        // Fetch business name
+        const { data: retailerData, error: retailerError } = await supabase
+          .from('retailers')
+          .select('business_name')
+          .eq('retailer_id', session.user.id)
+          .single();
+
+        if (retailerError) {
+          console.error('Error fetching retailer data:', retailerError);
+          // Don't return here, just log the error
+        } else if (retailerData) {
+          setBusinessName(retailerData.business_name);
+        }
+
+      } catch (error) {
+        console.error('Error in fetchUserAndBusiness:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserAndBusiness();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        console.log('Auth state changed:', event, session?.user?.id);
+        
+        if (event === 'SIGNED_OUT' || !session) {
+          setUser(null);
+          setBusinessName('');
+          router.push('/login');
+        } else if (event === 'SIGNED_IN' && session?.user) {
+          setUser(session.user);
+          
+          // Fetch business name for the new session
+          const { data: retailerData, error } = await supabase
+            .from('retailers')
+            .select('business_name')
+            .eq('retailer_id', session.user.id)
+            .single();
+
+          if (retailerData && !error) {
+            setBusinessName(retailerData.business_name);
+          }
+        }
+      }
+    );
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []); // Remove businessName from dependency array to prevent infinite loop
+
+  const handleSignOut = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Error signing out:', error);
+      } else {
+        router.push('/login');
+      }
+    } catch (error) {
+      console.error('Unexpected error during sign out:', error);
+    }
+  };
 
   const navItems = [
     { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
@@ -27,6 +125,34 @@ const Sidebar = () => {
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="hidden md:flex w-64 bg-white border-r border-gray-200 flex-col">
+        <div className="p-6 border-b border-gray-100">
+          <div className="animate-pulse">
+            <div className="h-6 bg-gray-200 rounded mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+          </div>
+        </div>
+        <div className="flex-1 p-4">
+          <div className="space-y-2">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="animate-pulse">
+                <div className="h-10 bg-gray-200 rounded-lg"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render if no user (will redirect)
+  if (!user) {
+    return null;
+  }
 
   return (
     <>
@@ -92,10 +218,13 @@ const Sidebar = () => {
           </div>
           
           <div className="text-xs text-gray-500 mb-3 px-3">
-            Retailer: Nairobi Fashion Hub
+            Retailer: {businessName || 'Loading...'}
           </div>
           
-          <button className="flex items-center w-full px-3 py-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+          <button 
+            onClick={handleSignOut}
+            className="flex items-center w-full px-3 py-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+          >
             <LogOut size={16} className="mr-2" />
             <span className="text-sm">Sign out</span>
           </button>
@@ -147,10 +276,13 @@ const Sidebar = () => {
             {/* Bottom Section */}
             <div className="p-4 border-t border-gray-100">
               <div className="text-xs text-gray-500 mb-4 px-3">
-                Retailer: Nairobi Fashion Hub
+                Retailer: {businessName || 'Loading...'}
               </div>
               
-              <button className="flex items-center w-full px-3 py-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors mb-2">
+              <button 
+                onClick={handleSignOut}
+                className="flex items-center w-full px-3 py-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors mb-2"
+              >
                 <LogOut size={16} className="mr-2" />
                 <span className="text-sm">Sign out</span>
               </button>

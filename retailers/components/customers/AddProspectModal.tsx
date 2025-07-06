@@ -1,13 +1,11 @@
 // components/customers/AddProspectModal.tsx
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
-import { Prospect } from '@/app/types/types';
 import { addProspect } from '@/app/actions/prospects/add-prospect';
 
 interface AddProspectModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onAdd: (prospect: Omit<Prospect, 'id' | 'visit_date' | 'status' | 'created_at'>) => void;
 }
 
 const AddProspectModal: React.FC<AddProspectModalProps> = ({ isOpen, onClose }) => {

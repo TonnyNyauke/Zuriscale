@@ -1,101 +1,23 @@
 // app/(main)/customers/page.tsx
 'use client'
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { UserPlus } from 'lucide-react';
 import DashboardStats from '@/components/customers/DashboardStats';
 import FiltersAndSearch from '@/components/customers/FiltersAndSearch';
 import AddProspectModal from '@/components/customers/AddProspectModal';
 import { Customer, Prospect } from '@/app/types/types';
 import CustomersTable from '@/components/customers/CustomerTable';
+import { getProspects } from '@/app/actions/prospects/getProspect';
 
-// Mock data - replace with actual data fetching
-const mockProspects: Prospect[] = [
-  {
-    id: '1',
-    name: 'Jane Mutua',
-    phone: '+254712345678',
-    inquiry: 'Looking for wedding dress',
-    visit_date: '2024-06-25',
-    budget: 50000,
-    status: 'new',
-    created_at: '2024-06-25T10:30:00Z'
-  },
-  {
-    id: '2',
-    name: 'Peter Kimani',
-    phone: '+254723456789',
-    inquiry: 'Casual wear for office',
-    visit_date: '2024-06-24',
-    budget: 15000,
-    status: 'contacted',
-    created_at: '2024-06-24T14:15:00Z'
-  },
-  {
-    id: '3',
-    name: 'Grace Achieng',
-    inquiry: 'Evening gown for event',
-    visit_date: '2024-06-23',
-    status: 'interested',
-    created_at: '2024-06-23T16:20:00Z'
-  }
-];
 
 const mockCustomers: Customer[] = [
-  {
-    id: '1',
-    //retailer_id: 'ret_001',
-    phone: '+254734567890',
-    name: 'Mary Wanjiku',
-    first_purchase: '2024-05-15',
-    last_purchase: '2024-06-20',
-    total_spent: 45000,
-    purchase_count: 5,
-    status: 'repeat',
-    status_level: '',
-    total_orders: 0,
-    last_order: '',
-    tags: [],
-    notes: ''
-  },
-  {
-    id: '2',
-    //retailer_id: 'ret_001',
-    phone: '+254745678901',
-    name: 'John Mwangi',
-    first_purchase: '2024-06-10',
-    last_purchase: '2024-06-10',
-    total_spent: 12000,
-    purchase_count: 1,
-    status: 'new',
-    status_level: '',
-    total_orders: 0,
-    last_order: '',
-    tags: [],
-    notes: ''
-  },
-  {
-    id: '3',
-    //retailer_id: 'ret_001',
-    phone: '+254756789012',
-    name: 'Sarah Njeri',
-    first_purchase: '2024-04-20',
-    last_purchase: '2024-04-20',
-    total_spent: 8500,
-    purchase_count: 1,
-    status: 'churned',
-    status_level: '',
-    total_orders: 0,
-    last_order: '',
-    tags: [],
-    notes: ''
-  }
 ];
 
 export default function CustomersPage() {
   //const [customers, setCustomers] = useState<Customer[]>(mockCustomers);
   const customers = mockCustomers;
-  const [prospects, setProspects] = useState<Prospect[]>(mockProspects);
+  const [prospects, setProspects] = useState<Prospect[]>([]);
   
   // Filter and search states
   const [searchTerm, setSearchTerm] = useState('');
@@ -104,6 +26,14 @@ export default function CustomersPage() {
   
   // Modal state
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  useEffect(() => {
+    const fetchProspects = async () => {
+      const prospects = await getProspects();
+      setProspects(prospects);
+    };
+    fetchProspects();
+  }, []);
 
   // Filter data based on search and filters
   const filteredData = useMemo(() => {
@@ -141,29 +71,7 @@ export default function CustomersPage() {
     return filteredData.customers.length + filteredData.prospects.length;
   };
 
-  // Handle adding new prospect
-  const handleAddProspect = async (prospectData: Omit<Prospect, 'id' | 'visit_date' | 'status' | 'created_at'>) => {
-    try {
-      // TODO: Replace with actual API call to Supabase
-      const newProspect: Prospect = {
-        ...prospectData,
-        id: Date.now().toString(), // In real app, this would be handled by Supabase
-        visit_date: new Date().toISOString().split('T')[0],
-        status: 'new',
-        created_at: new Date().toISOString()
-      };
-
-      setProspects(prev => [newProspect, ...prev]);
-      
-      // Show success message (you might want to use a toast library)
-      console.log('Prospect added successfully:', newProspect);
-      
-    } catch (error) {
-      console.error('Error adding prospect:', error);
-      throw error; // Re-throw to handle in modal
-    }
-  };
-
+  
   return (
     <div className="p-6 max-w-7xl mx-auto">
       {/* Header */}
@@ -209,7 +117,6 @@ export default function CustomersPage() {
       <AddProspectModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onAdd={handleAddProspect}
       />
     </div>
   );

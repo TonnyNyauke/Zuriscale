@@ -142,10 +142,10 @@ export interface Bundle {
 export interface Prospect {
   id: string;
   name: string;
-  phone?: string;
+  phone: string;
   inquiry: string;
   visit_date: string;
-  budget?: number;
+  budget: number;
   status: 'new' | 'contacted' | 'interested' | 'not_interested' | 'converted';
   created_at: string;
 }
