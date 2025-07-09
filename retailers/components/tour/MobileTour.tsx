@@ -36,7 +36,6 @@ const MobileTour: React.FC<MobileTourProps> = ({
   const [tooltipPosition, setTooltipPosition] = useState<Position | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isReady, setIsReady] = useState(false);
-  const overlayRef = useRef<HTMLDivElement>(null);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const retryTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -112,7 +111,7 @@ const MobileTour: React.FC<MobileTourProps> = ({
     const padding = isMobile ? 12 : 16;
     const placement = steps[currentStep].placement || (isMobile ? 'bottom' : 'bottom');
 
-    let tooltipPos: Position = {
+    const tooltipPos: Position = {
       top: 0,
       left: 0,
       width: tooltipWidth,
@@ -282,10 +281,6 @@ const MobileTour: React.FC<MobileTourProps> = ({
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
-  };
-
-  const handleOverlayClick = (e: React.MouseEvent | React.TouchEvent) => {
-    // Removed overlay click handler since there's no overlay anymore
   };
 
   // Reset step when tour opens

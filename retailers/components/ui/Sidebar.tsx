@@ -100,7 +100,7 @@ const Sidebar = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, []); // Remove businessName from dependency array to prevent infinite loop
+  }, [router]); 
 
   const handleSignOut = async () => {
     try {
