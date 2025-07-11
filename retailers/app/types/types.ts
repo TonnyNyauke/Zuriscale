@@ -149,3 +149,22 @@ export interface Prospect {
   status: 'new' | 'contacted' | 'interested' | 'not_interested' | 'converted';
   created_at: string;
 }
+
+// types/blog.ts
+export interface Article {
+  id: string;
+  title: string;
+  description: string;
+  content: string;
+  author: {
+    name: string;
+    bio: string;
+    avatar?: string;
+  };
+  coverImage?: string;
+  readTime: number;
+  publishedAt: string;
+  updatedAt?: string;
+  featured: boolean;
+  tags: string[];
+}

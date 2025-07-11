@@ -3,73 +3,131 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Star, DollarSign, BookOpen, LogIn, Play } from 'lucide-react';
+import Link from 'next/link';
 
 export default function MobileNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-teal-100">
-      <div className="container mx-auto px-4 py-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-to-br from-teal-600 to-teal-700 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-sm">Z</span>
+    <>
+      <nav className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-teal-100">
+        <div className="container mx-auto px-4 py-3">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gradient-to-br from-teal-600 to-teal-700 rounded-lg flex items-center justify-center">
+                <span className="text-white font-bold text-sm">Z</span>
+              </div>
+              <span className="text-xl font-bold text-teal-800">
+                <Link href='/'>Zuriscale</Link>
+              </span>
             </div>
-            <span className="text-xl font-bold text-teal-800">Zuriscale</span>
-          </div>
-          
-          {/* Mobile menu button */}
-          <button 
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
-            aria-label="Toggle mobile menu"
-          >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-          
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center space-x-6">
-            <a href="#features" className="text-gray-600 hover:text-teal-600 transition-colors">
-              Features
-            </a>
-            <a href="#pricing" className="text-gray-600 hover:text-teal-600 transition-colors">
-              Pricing
-            </a>
-            <Button className="bg-red-500 hover:bg-red-600 text-white">
-              Start Now
-            </Button>
-          </div>
-        </div>
-        
-        {/* Mobile menu */}
-        {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 border-t border-teal-100">
-            <div className="flex flex-col space-y-4 pt-4">
-              <a 
-                href="#features" 
-                className="text-gray-600 hover:text-teal-600 transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
+            
+            {/* Mobile menu button */}
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              aria-label="Toggle mobile menu"
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+            
+            {/* Desktop nav */}
+            <div className="hidden md:flex items-center space-x-6">
+              <a href="#features" className="text-gray-600 hover:text-teal-600 transition-colors">
                 Features
               </a>
-              <a 
-                href="#pricing" 
-                className="text-gray-600 hover:text-teal-600 transition-colors"
-                onClick={() => setMobileMenuOpen(false)}
-              >
+              <a href="#pricing" className="text-gray-600 hover:text-teal-600 transition-colors">
                 Pricing
               </a>
-              <Button 
-                className="bg-red-500 hover:bg-red-600 text-white"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Start Now
+              <a href="/blog" className="text-gray-600 hover:text-teal-600 transition-colors">
+                Blog
+              </a>
+              <a href="/login" className="text-gray-600 hover:text-teal-600 transition-colors">
+                Login
+              </a>
+              <Button className="bg-teal-600 hover:bg-teal-700 text-white">
+                <Link href='/signup'>Start Now</Link>
               </Button>
             </div>
           </div>
-        )}
-      </div>
-    </nav>
+        </div>
+      </nav>
+
+      {/* Mobile sidebar overlay */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 z-40 md:hidden">
+          <div 
+            className="fixed inset-0 bg-black/50"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div className="fixed top-0 right-0 h-full w-64 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out">
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-8">
+                <div className="flex items-center space-x-2">
+                  <div className="w-8 h-8 bg-gradient-to-br from-teal-600 to-teal-700 rounded-lg flex items-center justify-center">
+                    <span className="text-white font-bold text-sm">Z</span>
+                  </div>
+                  <span className="text-xl font-bold text-teal-800">
+                    <Link href='/'>Zuriscale</Link>
+                  </span>
+                </div>
+                <button 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  aria-label="Close mobile menu"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+              
+              <div className="flex flex-col space-y-6">
+                <a 
+                  href="#features" 
+                  className="flex items-center space-x-3 text-gray-600 hover:text-teal-600 transition-colors text-lg font-medium"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Star size={20} />
+                  <span>Features</span>
+                </a>
+                <a 
+                  href="#pricing" 
+                  className="flex items-center space-x-3 text-gray-600 hover:text-teal-600 transition-colors text-lg font-medium"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <DollarSign size={20} />
+                  <span>Pricing</span>
+                </a>
+                <a 
+                  href="/blog" 
+                  className="flex items-center space-x-3 text-gray-600 hover:text-teal-600 transition-colors text-lg font-medium"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <BookOpen size={20} />
+                  <span>Blog</span>
+                </a>
+                <a 
+                  href="/login" 
+                  className="flex items-center space-x-3 text-gray-600 hover:text-teal-600 transition-colors text-lg font-medium"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <LogIn size={20} />
+                  <span>Login</span>
+                </a>
+                <div className="pt-4 border-t border-gray-200">
+                  <Button 
+                    className="w-full bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center space-x-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <Play size={16} />
+                    <span>Start Now</span>
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
