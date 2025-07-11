@@ -105,11 +105,11 @@ export default function ZuriscaleLogin() {
           email: 'Login succeeded but user data is missing. Please contact support.' 
         });
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       let errorMessage = 'An unexpected error occurred. Please try again.';
       
       // Handle Supabase errors
-      if (error?.message) {
+      if (error instanceof Error && error.message) {
         errorMessage = error.message;
         
         // Special handling for common error cases
@@ -144,7 +144,7 @@ export default function ZuriscaleLogin() {
       await new Promise(resolve => setTimeout(resolve, 1000));
       setResetEmailSent(true);
       setErrors({});
-    } catch (error) {
+    } catch (_error) {
       setErrors({ email: 'Failed to send reset email. Please try again.' });
     } finally {
       setIsLoading(false);
@@ -531,7 +531,7 @@ function PhoneLoginSection({ onSuccess }: { onSuccess: () => void }) {
       // Simulate OTP sending
       await new Promise(resolve => setTimeout(resolve, 1500));
       setOtpSent(true);
-    } catch (err) {
+    } catch (_error) {
       setError('Failed to send OTP. Please try again.');
     } finally {
       setIsLoading(false);
@@ -551,7 +551,7 @@ function PhoneLoginSection({ onSuccess }: { onSuccess: () => void }) {
       // Simulate OTP verification
       await new Promise(resolve => setTimeout(resolve, 1000));
       onSuccess();
-    } catch (err) {
+    } catch (_error) {
       setError('Invalid verification code. Please try again.');
     } finally {
       setIsLoading(false);
