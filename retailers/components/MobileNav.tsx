@@ -34,18 +34,18 @@ export default function MobileNav() {
             
             {/* Desktop nav */}
             <div className="hidden md:flex items-center space-x-6">
-              <a href="#features" className="text-gray-600 hover:text-teal-600 transition-colors">
+              <Link href="#features" className="text-gray-600 hover:text-teal-600 transition-colors">
                 Features
-              </a>
-              <a href="#pricing" className="text-gray-600 hover:text-teal-600 transition-colors">
+              </Link>
+              <Link href="#pricing" className="text-gray-600 hover:text-teal-600 transition-colors">
                 Pricing
-              </a>
-              <a href="/blog" className="text-gray-600 hover:text-teal-600 transition-colors">
+              </Link>
+              <Link href="/blog" className="text-gray-600 hover:text-teal-600 transition-colors">
                 Blog
-              </a>
-              <a href="/login" className="text-gray-600 hover:text-teal-600 transition-colors">
+              </Link>
+              <Link href="/login" className="text-gray-600 hover:text-teal-600 transition-colors">
                 Login
-              </a>
+              </Link>
               <Button className="bg-teal-600 hover:bg-teal-700 text-white">
                 <Link href='/signup'>Start Now</Link>
               </Button>
@@ -82,38 +82,38 @@ export default function MobileNav() {
               </div>
               
               <div className="flex flex-col space-y-6">
-                <a 
+                <Link 
                   href="#features" 
                   className="flex items-center space-x-3 text-gray-600 hover:text-teal-600 transition-colors text-lg font-medium"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <Star size={20} />
                   <span>Features</span>
-                </a>
-                <a 
+                </Link>
+                <Link 
                   href="#pricing" 
                   className="flex items-center space-x-3 text-gray-600 hover:text-teal-600 transition-colors text-lg font-medium"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <DollarSign size={20} />
                   <span>Pricing</span>
-                </a>
-                <a 
+                </Link>
+                <Link 
                   href="/blog" 
                   className="flex items-center space-x-3 text-gray-600 hover:text-teal-600 transition-colors text-lg font-medium"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <BookOpen size={20} />
                   <span>Blog</span>
-                </a>
-                <a 
+                </Link>
+                <Link 
                   href="/login" 
                   className="flex items-center space-x-3 text-gray-600 hover:text-teal-600 transition-colors text-lg font-medium"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <LogIn size={20} />
                   <span>Login</span>
-                </a>
+                </Link>
                 <div className="pt-4 border-t border-gray-200">
                   <Button 
                     className="w-full bg-teal-600 hover:bg-teal-700 text-white flex items-center justify-center space-x-2"
