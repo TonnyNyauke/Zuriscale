@@ -58,8 +58,6 @@ export default function ZuriscaleSignup({signupAction}: SignupProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [showEmailConfirmation, setShowEmailConfirmation] = useState(false);
-  const [userId, setUserId] = useState('');
-  const [isSessionChecked, setIsSessionChecked] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const router = useRouter();
 
@@ -71,8 +69,6 @@ export default function ZuriscaleSignup({signupAction}: SignupProps) {
         if (session) router.push('/dashboard');
       } catch (error) {
         console.error('Session check error:', error);
-      } finally {
-        setIsSessionChecked(true);
       }
     };
     checkSession();
@@ -136,25 +132,23 @@ export default function ZuriscaleSignup({signupAction}: SignupProps) {
       setFormError(null);
 
       // Create user account with email verification
-      const result = await signupAction(
+      await signupAction(
         formData.businessName,
         formData.email,
         formData.phone,
         formData.password
       );
-
-      setUserId(result.userId);
       
       // Show email confirmation screen
       setShowEmailConfirmation(true);
       
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Signup error:', error);
       
       let errorMessage = 'Failed to create your account. Please try again.';
       
       // Handle specific Supabase errors
-      if (error?.message) {
+      if (error instanceof Error && error.message) {
         if (error.message.includes('User already registered')) {
           errorMessage = 'This email is already registered. Please log in instead.';
           setErrors(prev => ({ ...prev, email: errorMessage }));

@@ -144,7 +144,7 @@ export default function ZuriscaleLogin() {
       await new Promise(resolve => setTimeout(resolve, 1000));
       setResetEmailSent(true);
       setErrors({});
-    } catch (_error) {
+    } catch (_) {
       setErrors({ email: 'Failed to send reset email. Please try again.' });
     } finally {
       setIsLoading(false);
@@ -531,7 +531,7 @@ function PhoneLoginSection({ onSuccess }: { onSuccess: () => void }) {
       // Simulate OTP sending
       await new Promise(resolve => setTimeout(resolve, 1500));
       setOtpSent(true);
-    } catch (_error) {
+    } catch (_) {
       setError('Failed to send OTP. Please try again.');
     } finally {
       setIsLoading(false);
@@ -551,7 +551,7 @@ function PhoneLoginSection({ onSuccess }: { onSuccess: () => void }) {
       // Simulate OTP verification
       await new Promise(resolve => setTimeout(resolve, 1000));
       onSuccess();
-    } catch (_error) {
+    } catch (_) {
       setError('Invalid verification code. Please try again.');
     } finally {
       setIsLoading(false);
