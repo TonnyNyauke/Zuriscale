@@ -44,11 +44,10 @@ export default function ZuriscaleLogin() {
   const [errors, setErrors] = useState<Partial<Record<keyof LoginFormData, string>>>({});
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [loginAttempts, setLoginAttempts] = useState(0);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotPasswordEmail, setForgotPasswordEmail] = useState('');
   const [resetEmailSent, setResetEmailSent] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -94,34 +93,38 @@ export default function ZuriscaleLogin() {
       setIsLoading(true);
       setErrors({});
       
-      //Login
-      const authData = await loginAction(formData.email, formData.password)
-
-       if (authData?.user){
-        router.push('/dashboard')
-       }
-      
-      // Simulate login failure for demo
-      if (loginAttempts < 2) {
-        setLoginAttempts(prev => prev + 1);
-        throw new Error('Invalid credentials');
-      }
-      
-      // Success - redirect to dashboard
-      console.log('Login successful! Redirecting to dashboard...');
-      
-    } catch (error) {
-      if (loginAttempts >= 2) {
-        setErrors({ 
-          email: 'Too many failed attempts. Please reset your password or try again later.' 
-        });
-        console.error(error)
+      // Call server action
+      const data = await loginAction(formData.email, formData.password);
+  
+      // If we get data without error, redirect to dashboard
+      if (data?.user) {
+        router.push('/dashboard');
       } else {
+        // This should not normally happen since errors throw, but added for safety
         setErrors({ 
-          email: 'Invalid email or password. Please check your credentials and try again.' 
+          email: 'Login succeeded but user data is missing. Please contact support.' 
         });
-        console.error(error)
       }
+    } catch (error: any) {
+      let errorMessage = 'An unexpected error occurred. Please try again.';
+      
+      // Handle Supabase errors
+      if (error?.message) {
+        errorMessage = error.message;
+        
+        // Special handling for common error cases
+        if (errorMessage.includes('Invalid login credentials')) {
+          errorMessage = 'Invalid email or password. Please check your credentials and try again.';
+        } else if (errorMessage.includes('too many attempts')) {
+          errorMessage = 'Too many failed attempts. Please reset your password or try again later.';
+        } else if (errorMessage.includes('Email not confirmed')) {
+          errorMessage = 'Please verify your email before logging in. Check your inbox.';
+        }
+      }
+      
+      setErrors({ 
+        email: errorMessage 
+      });
     } finally {
       setIsLoading(false);
     }
@@ -143,7 +146,6 @@ export default function ZuriscaleLogin() {
       setErrors({});
     } catch (error) {
       setErrors({ email: 'Failed to send reset email. Please try again.' });
-      console.error(error)
     } finally {
       setIsLoading(false);
     }
@@ -346,7 +348,7 @@ export default function ZuriscaleLogin() {
           </div>
 
           {/* Form */}
-          <form  className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email Field */}
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -432,7 +434,6 @@ export default function ZuriscaleLogin() {
             <button
               type="submit"
               disabled={isLoading}
-              onClick={handleSubmit}
               className="w-full py-3 px-4 bg-gradient-to-r from-teal-600 to-teal-700 text-white rounded-lg font-semibold hover:from-teal-700 hover:to-teal-800 disabled:from-gray-400 disabled:to-gray-500 disabled:cursor-not-allowed transition-all shadow-lg hover:shadow-xl"
             >
               {isLoading ? (
@@ -468,12 +469,9 @@ export default function ZuriscaleLogin() {
           <div className="mt-8 text-center">
             <p className="text-gray-600">
               Don&apos;t have an account?{' '}
-              <button 
-                onClick={() => console.log('Navigate to signup')}
-                className="text-teal-600 hover:text-teal-700 font-semibold hover:underline transition-colors"
-              >
-                <Link href='/signup'>Create free account</Link> 
-              </button>
+              <Link href='/signup' className="text-teal-600 hover:text-teal-700 font-semibold hover:underline transition-colors">
+                Create free account
+              </Link>
             </p>
             <p className="text-xs text-gray-500 mt-2">
               Join 500+ fashion retailers already growing with Zuriscale
@@ -535,7 +533,6 @@ function PhoneLoginSection({ onSuccess }: { onSuccess: () => void }) {
       setOtpSent(true);
     } catch (err) {
       setError('Failed to send OTP. Please try again.');
-      console.log(err)
     } finally {
       setIsLoading(false);
     }
@@ -556,7 +553,6 @@ function PhoneLoginSection({ onSuccess }: { onSuccess: () => void }) {
       onSuccess();
     } catch (err) {
       setError('Invalid verification code. Please try again.');
-      console.log(err)
     } finally {
       setIsLoading(false);
     }
@@ -673,5 +669,5 @@ function PhoneLoginSection({ onSuccess }: { onSuccess: () => void }) {
         </div>
       )}
     </div>
-  )
+  );
 }

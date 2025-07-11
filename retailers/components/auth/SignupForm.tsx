@@ -44,7 +44,6 @@ interface SignupProps {
   ) => Promise<{ userId: string }>;
 }
 
-
 export default function ZuriscaleSignup({signupAction}: SignupProps) {
   const [formData, setFormData] = useState<SignupFormData>({
     businessName: '',
@@ -59,16 +58,22 @@ export default function ZuriscaleSignup({signupAction}: SignupProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [showEmailConfirmation, setShowEmailConfirmation] = useState(false);
-  const [userId, setUserId] = useState('')
+  const [userId, setUserId] = useState('');
   const [isSessionChecked, setIsSessionChecked] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const router = useRouter();
 
   // Check existing session on mount
   useEffect(() => {
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) router.push('/dashboard');
-      setIsSessionChecked(true);
+      try {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) router.push('/dashboard');
+      } catch (error) {
+        console.error('Session check error:', error);
+      } finally {
+        setIsSessionChecked(true);
+      }
     };
     checkSession();
   }, [router]);
@@ -81,13 +86,16 @@ export default function ZuriscaleSignup({signupAction}: SignupProps) {
       [name]: type === 'checkbox' ? checked : value
     }));
     
-    // Clear error when user starts typing
+    // Clear errors when user starts typing
     if (errors[name as keyof SignupFormData]) {
       setErrors(prev => ({
         ...prev,
         [name]: undefined
       }));
     }
+    
+    // Clear form-level errors
+    if (formError) setFormError(null);
   };
 
   const validateCurrentStep = () => {
@@ -114,6 +122,7 @@ export default function ZuriscaleSignup({signupAction}: SignupProps) {
   const handleNext = async () => {
     if (!validateCurrentStep()) return;
     setCurrentStep(prev => prev + 1);
+    setFormError(null);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -124,6 +133,7 @@ export default function ZuriscaleSignup({signupAction}: SignupProps) {
     try {
       fullSchema.parse(formData);
       setIsLoading(true);
+      setFormError(null);
 
       // Create user account with email verification
       const result = await signupAction(
@@ -133,18 +143,33 @@ export default function ZuriscaleSignup({signupAction}: SignupProps) {
         formData.password
       );
 
-      console.log("This is the result:  " + result)
-      setUserId(result.userId)
-      console.log("This is the user Id:  " + userId)
-      console.log(isSessionChecked)
+      setUserId(result.userId);
       
       // Show email confirmation screen
       setShowEmailConfirmation(true);
       
+    } catch (error: any) {
+      console.error('Signup error:', error);
       
-    } catch (error) {
-      //setErrors("Failed to create account");
-      console.error(error)
+      let errorMessage = 'Failed to create your account. Please try again.';
+      
+      // Handle specific Supabase errors
+      if (error?.message) {
+        if (error.message.includes('User already registered')) {
+          errorMessage = 'This email is already registered. Please log in instead.';
+          setErrors(prev => ({ ...prev, email: errorMessage }));
+        } else if (error.message.includes('password')) {
+          errorMessage = 'Your password is too weak. Please use a stronger password.';
+          setErrors(prev => ({ ...prev, password: errorMessage }));
+        } else if (error.message.includes('phone')) {
+          errorMessage = 'This phone number is already in use. Please use a different number.';
+          setErrors(prev => ({ ...prev, phone: errorMessage }));
+        } else {
+          setFormError(error.message || errorMessage);
+        }
+      } else {
+        setFormError(errorMessage);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -154,8 +179,10 @@ export default function ZuriscaleSignup({signupAction}: SignupProps) {
     if (showEmailConfirmation) {
       setShowEmailConfirmation(false);
       setErrors({});
+      setFormError(null);
     } else {
       setCurrentStep(prev => prev - 1);
+      setFormError(null);
     }
   };
 
@@ -346,6 +373,16 @@ export default function ZuriscaleSignup({signupAction}: SignupProps) {
           {/* Form */}
           {!showEmailConfirmation && (
             <form onSubmit={currentStep === 3 ? handleSubmit : (e) => { e.preventDefault(); handleNext(); }}>
+              {/* Form-level error message */}
+              {formError && (
+                <div className="mb-4 p-4 bg-red-50 text-red-700 rounded-lg border border-red-200">
+                  <div className="flex items-center space-x-2">
+                    <AlertCircle className="w-5 h-5" />
+                    <span>{formError}</span>
+                  </div>
+                </div>
+              )}
+              
               <div className="space-y-6">
                 {/* Step 1: Business Info */}
                 {currentStep === 1 && (

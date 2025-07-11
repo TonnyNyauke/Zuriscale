@@ -1,6 +1,6 @@
 import { createClient } from "@/utils/supabase/client";
 
-const supabase = await createClient();
+const supabase = createClient();
 
 export async function getProspects() {
 

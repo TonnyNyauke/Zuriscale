@@ -2,7 +2,7 @@
 'use client'
 
 import React, { useState, useMemo, useEffect } from 'react';
-import { UserPlus } from 'lucide-react';
+import { UserPlus, AlertCircle, RefreshCw } from 'lucide-react';
 import DashboardStats from '@/components/customers/DashboardStats';
 import FiltersAndSearch from '@/components/customers/FiltersAndSearch';
 import AddProspectModal from '@/components/customers/AddProspectModal';
@@ -10,10 +10,14 @@ import { Customer, Prospect } from '@/app/types/types';
 import CustomersTable from '@/components/customers/CustomerTable';
 import { getProspects } from '@/app/actions/prospects/getProspect';
 import MobileTour, { TourStep } from '@/components/tour/MobileTour';
+import { useRouter } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
 
 const mockCustomers: Customer[] = [
   // Add mock data here if needed
 ];
+
+const supabase = createClient()
 
 export default function CustomersPage() {
   const customers = mockCustomers;
@@ -32,6 +36,12 @@ export default function CustomersPage() {
 
   // Mobile detection
   const [isMobile, setIsMobile] = useState(false);
+  const router = useRouter()
+
+  // Error and loading states
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isRetrying, setIsRetrying] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -78,17 +88,53 @@ export default function CustomersPage() {
     },
   ];
 
-  useEffect(() => {
-    const fetchProspects = async () => {
-      try {
-        const prospects = await getProspects();
-        setProspects(prospects);
-      } catch (error) {
-        console.error('Error fetching prospects:', error);
+  const fetchProspects = async (showRetrying = false) => {
+    try {
+      if (showRetrying) {
+        setIsRetrying(true);
+      } else {
+        setIsLoading(true);
       }
-    };
+      setError(null);
+
+      const {data: {session}} = await supabase.auth.getSession();
+      if(!session){
+        router.push('/login');
+        return;
+      }
+
+      const prospects = await getProspects();
+      setProspects(prospects);
+    } catch (error) {
+      console.error('Error fetching prospects:', error);
+      
+      // Handle different types of errors
+      if (error instanceof Error) {
+        if (error.message.includes('auth') || error.message.includes('unauthorized')) {
+          // Authentication error - redirect to login
+          router.push('/login');
+          return;
+        } else if (error.message.includes('network') || error.message.includes('fetch')) {
+          setError('Network error. Please check your connection and try again.');
+        } else {
+          setError('Failed to load customer data. Please try again.');
+        }
+      } else {
+        setError('An unexpected error occurred. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
+      setIsRetrying(false);
+    }
+  };
+
+  useEffect(() => {
     fetchProspects();
   }, []);
+
+  const handleRetry = () => {
+    fetchProspects(true);
+  };
 
   // Filter data based on search and filters
   const filteredData = useMemo(() => {
@@ -133,6 +179,52 @@ export default function CustomersPage() {
   const handleCloseTour = () => {
     setIsTourOpen(false);
   };
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="p-4 sm:p-6 max-w-7xl mx-auto">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-teal-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading customer data...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="p-4 sm:p-6 max-w-7xl mx-auto">
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center max-w-md">
+            <AlertCircle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">Something went wrong</h2>
+            <p className="text-gray-600 mb-4">{error}</p>
+            <button
+              onClick={handleRetry}
+              disabled={isRetrying}
+              className="inline-flex items-center px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isRetrying ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  Retrying...
+                </>
+              ) : (
+                <>
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Try Again
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 sm:p-6 max-w-7xl mx-auto">
