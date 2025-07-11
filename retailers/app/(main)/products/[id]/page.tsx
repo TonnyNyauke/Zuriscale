@@ -4,13 +4,14 @@ import ProductForm from '@/components/products/ProductForm';
 import React from 'react';
 
 interface ProductDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
-  const product = await fetchProductDetail(params.id);
+  const { id } = await params;
+  const product = await fetchProductDetail(id);
   
   return (
     <div className="p-6">
