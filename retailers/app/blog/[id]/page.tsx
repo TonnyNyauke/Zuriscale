@@ -23,10 +23,17 @@ function getRelatedArticles(currentId: string, limit: number = 3) {
     .slice(0, limit);
 }
 
+interface ArticlePageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
 // Main Page Component
-export default function ArticlePage({ params }: { params: { id: string } }) {
-  const article = fetchArticle(params.id);
-  const relatedArticles = getRelatedArticles(params.id);
+export default async function ArticlePage({ params }: ArticlePageProps ) {
+  const {id} = await params;
+  const article = fetchArticle(id);
+  const relatedArticles = getRelatedArticles(id);
 
   if (!article) {
     notFound();
