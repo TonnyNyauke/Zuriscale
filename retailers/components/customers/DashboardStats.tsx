@@ -2,7 +2,7 @@
 import React from 'react';
 import { Users, Target, ShoppingBag, DollarSign } from 'lucide-react';
 import StatsCard from './StatsCard';
-import { Customer, Prospect } from '@/app/types/customers';
+import { Customer, Prospect } from '@/app/types/types';
 
 interface DashboardStatsProps {
   customers: Customer[];
