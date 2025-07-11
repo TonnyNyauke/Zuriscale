@@ -3,8 +3,14 @@ import { fetchProductDetail } from '@/app/lib/inventoryData';
 import ProductForm from '@/components/products/ProductForm';
 import React from 'react';
 
-export default async function ProductDetailPage({id}) {
-  const product = await fetchProductDetail(id);
+interface ProductDetailPageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
+  const product = await fetchProductDetail(params.id);
   
   return (
     <div className="p-6">
