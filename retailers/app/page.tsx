@@ -577,11 +577,15 @@ export default function ZuriscaleLanding() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" className="bg-red-500 hover:bg-red-600 text-white shadow-lg">
-              Create Your Account Now
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <Link href='/signup'>
+                Create Your Account Now
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
             </Button>
             <Button variant="outline" size="lg" className="border-white text-teal-700 hover:bg-white hover:text-teal-800">
-              Talk to Our Team
+              <Link href='https://wa.me/+254742065623'>
+                Talk to Our Team
+              </Link>
             </Button>
           </div>
           
