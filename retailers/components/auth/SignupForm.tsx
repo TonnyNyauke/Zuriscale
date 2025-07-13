@@ -521,9 +521,9 @@ export default function ZuriscaleSignup({signupAction}: SignupProps) {
                       />
                       <label className="text-sm text-gray-600">
                         I agree to Zuriscale&apos;s{' '}
-                        <a href="#" className="text-teal-600 hover:underline">Terms of Service</a>
+                        <a href="/terms-of-service" className="text-teal-600 hover:underline">Terms of Service</a>
                         {' '}and{' '}
-                        <a href="#" className="text-teal-600 hover:underline">Privacy Policy</a>
+                        <a href="/privacy-policy" className="text-teal-600 hover:underline">Privacy Policy</a>
                       </label>
                     </div>
                     {errors.agreeToTerms && (
