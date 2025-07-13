@@ -610,7 +610,7 @@ export default function ZuriscaleLanding() {
             <div>
               <h4 className="font-bold mb-4">Contact</h4>
               <div className="space-y-2 text-gray-400">
-                <a href='https://wa.me/+254742065623' target='_blank' rel='noopener'>WhatsApp: +254 742 065 623</a>
+                <Link href='https://wa.me/+254742065623' target='_blank' rel='noopener'>WhatsApp: +254 742 065 623</Link>
                 <p>Email: support@zuriscale.com</p>
                 <p>Hours: 24/6 Support</p>
               </div>
@@ -619,10 +619,10 @@ export default function ZuriscaleLanding() {
             <div>
               <h4 className="font-bold mb-4">Quick Links</h4>
               <div className="space-y-2 text-gray-400">
-                <p><a href="#features" className="hover:text-white">Features</a></p>
-                <p><a href="#pricing" className="hover:text-white">Pricing</a></p>
-                <p><a href="#" className="hover:text-white">Privacy Policy</a></p>
-                <p><a href="#" className="hover:text-white">Terms of Service</a></p>
+                <p><Link href="#features" className="hover:text-white">Features</Link></p>
+                <p><Link href="#pricing" className="hover:text-white">Pricing</Link></p>
+                <p><Link href="/privacy-policy" className="hover:text-white">Privacy Policy</Link></p>
+                <p><Link href="terms-of-service" className="hover:text-white">Terms of Service</Link></p>
               </div>
             </div>
           </div>

@@ -46,9 +46,11 @@ export default function MobileNav() {
               <Link href="/blog" className="text-gray-600 hover:text-teal-600 transition-colors">
                 Blog
               </Link>
-              <Link href="/login" className="text-gray-600 hover:text-teal-600 transition-colors">
-                Login
-              </Link>
+              <Button className='border bg-white border-teal-600 hover:bg-white'>
+                <Link href="/login" className="text-gray-600 hover:text-teal-600 transition-colors">
+                  Login
+                </Link>
+              </Button>
               <Button className="bg-teal-600 hover:bg-teal-700 text-white">
                 <Link href='/signup'>Start Now</Link>
               </Button>
