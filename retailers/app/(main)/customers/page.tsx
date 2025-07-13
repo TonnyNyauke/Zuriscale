@@ -130,7 +130,7 @@ export default function CustomersPage() {
 
   useEffect(() => {
     fetchProspects();
-  }, []);
+  }, [fetchProspects]);
 
   const handleRetry = () => {
     fetchProspects(true);

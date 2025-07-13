@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Facebook, Instagram, Linkedin, MessageCircle, Users, Zap, TrendingUp, Heart, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Join Our Communities | Zuriscale - Fashion Retail Customer Retention Network',
@@ -173,7 +174,7 @@ export default function CommunitiesPage() {
                   
                   <div className="mb-8">
                     <h3 className="text-sm font-semibold text-gray-900 mb-4 uppercase tracking-wide">
-                      What You'll Get:
+                      What You&apos;ll Get:
                     </h3>
                     <ul className="space-y-2">
                       {community.benefits.map((benefit, benefitIndex) => (
@@ -189,7 +190,7 @@ export default function CommunitiesPage() {
                     asChild
                     className={`w-full ${community.color} ${community.hoverColor} text-white font-medium py-3 px-6 rounded-lg transition-all duration-300 group-hover:transform group-hover:scale-[1.02]`}
                   >
-                    <a 
+                    <Link 
                       href={community.url}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -197,7 +198,7 @@ export default function CommunitiesPage() {
                     >
                       <span>{community.cta}</span>
                       <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                    </a>
+                    </Link>
                   </Button>
                 </div>
               </article>
@@ -213,24 +214,24 @@ export default function CommunitiesPage() {
             Ready to Join Our Community?
           </h2>
           <p className="text-xl text-teal-100 mb-8 max-w-2xl mx-auto">
-            Don't miss out on valuable insights, networking opportunities, and the latest trends in fashion retail customer retention.
+            Don&apos;t miss out on valuable insights, networking opportunities, and the latest trends in fashion retail customer retention.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button 
               asChild
               className="bg-white text-teal-700 hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition-all duration-300"
             >
-              <a href="https://web.facebook.com/groups/748242847561563" target="_blank" rel="noopener noreferrer">
+              <Link href="https://web.facebook.com/groups/748242847561563" target="_blank" rel="noopener noreferrer">
                 Join Facebook Group
-              </a>
+              </Link>
             </Button>
             <Button 
               asChild
               className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-teal-700 font-medium py-3 px-8 rounded-lg transition-all duration-300"
             >
-              <a href="/signup">
+              <Link href="/signup">
                 Start Your Free Trial
-              </a>
+              </Link>
             </Button>
           </div>
         </div>
