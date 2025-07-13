@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Menu, X, Star, DollarSign, BookOpen, LogIn, Play } from 'lucide-react';
+import { Menu, X, Star, DollarSign, BookOpen, LogIn, Play, Users } from 'lucide-react';
 import Link from 'next/link';
 
 export default function MobileNav() {
@@ -39,6 +39,9 @@ export default function MobileNav() {
               </Link>
               <Link href="#pricing" className="text-gray-600 hover:text-teal-600 transition-colors">
                 Pricing
+              </Link>
+              <Link href="/communities" className="text-gray-600 hover:text-teal-600 transition-colors">
+                Communities
               </Link>
               <Link href="/blog" className="text-gray-600 hover:text-teal-600 transition-colors">
                 Blog
@@ -97,6 +100,14 @@ export default function MobileNav() {
                 >
                   <DollarSign size={20} />
                   <span>Pricing</span>
+                </Link>
+                <Link 
+                  href="/communities" 
+                  className="flex items-center space-x-3 text-gray-600 hover:text-teal-600 transition-colors text-lg font-medium"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <Users size={20} />
+                  <span>Communities</span>
                 </Link>
                 <Link 
                   href="/blog" 
