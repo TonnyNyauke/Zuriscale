@@ -81,7 +81,7 @@ export default function TermsOfService() {
                 <li>Send spam or unsolicited messages</li>
                 <li>Use our platform for illegal activities</li>
                 <li>Harass customers or send abusive content</li>
-                <li>Violate WhatsApp's terms of service</li>
+                <li>Violate WhatsApp&apos;s terms of service</li>
                 <li>Share your account with unauthorized users</li>
               </ul>
             </section>
@@ -148,7 +148,7 @@ export default function TermsOfService() {
                 Changes to Terms
               </h2>
               <p>
-                We may update these terms periodically. Continued use after changes constitutes acceptance. We'll notify you of significant changes via email or in-app notification.
+                We may update these terms periodically. Continued use after changes constitutes acceptance. We&apos;ll notify you of significant changes via email or in-app notification.
               </p>
             </section>
 

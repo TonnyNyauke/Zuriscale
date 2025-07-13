@@ -40,7 +40,7 @@ export default function PrivacyPolicy() {
                 </p>
               </div>
               <p>
-                At Zuriscale, we understand that your customer relationships are the lifeblood of your fashion business. We're committed to protecting both your data and your customers' information with the highest security standards.
+                At Zuriscale, we understand that your customer relationships are the lifeblood of your fashion business. We&apos;re committed to protecting both your data and your customers&apos; information with the highest security standards.
               </p>
             </section>
 
@@ -104,7 +104,7 @@ export default function PrivacyPolicy() {
                     How We Maintain Privacy
                 </h2>
                 <p>
-                    We've implemented a zero-access architecture where:
+                    We&apos;ve implemented a zero-access architecture where:
                 </p>
                 <ul className="list-disc pl-6 space-y-2 mt-2">
                     <li>Messages are encrypted before leaving your browser</li>
