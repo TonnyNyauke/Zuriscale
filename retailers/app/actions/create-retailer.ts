@@ -30,7 +30,6 @@ userId: string, businessName: string, email: string, phone: string) {
     
     return { success: true };
   } catch (error) {
-    console.error('Retailer creation error:', error);
     
     // Clean up auth user if retailer creation fails
     await (await supabase).auth.admin.deleteUser(userId);

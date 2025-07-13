@@ -6,7 +6,7 @@ const supabase = await createClient()
 
 export async function loginAction(email: string, password: string) {
     try {
-        const {data, error} = await (await supabase).auth
+        const {data, error} = await supabase.auth
         .signInWithPassword({
             email: email,
             password: password
@@ -16,7 +16,6 @@ export async function loginAction(email: string, password: string) {
 
         return data;
     } catch (error) {
-        console.error('Login error:', error);
         throw error;
     }
 }

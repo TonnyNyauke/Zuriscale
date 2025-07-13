@@ -10,6 +10,5 @@ export async function getProspects() {
     .select('*')
     .eq('retailer_id', session?.user?.id);
     if (error) throw error;
-    console.log(data);
     return data;
 }

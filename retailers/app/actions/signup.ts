@@ -17,12 +17,9 @@ export async function signupAction(
       password: password,
       email: email,
       options: {
-        emailRedirectTo: 'http://localhost:3000/dashboard'
+        emailRedirectTo: 'https://zuriscale.vercel.app/dashboard'
       }
     });
-
-    console.log('Signup data:', data);
-    console.log('Signup error:', error);
 
     if (error) throw error;
     if (!data.user) throw new Error('User creation failed');
@@ -42,7 +39,6 @@ export async function signupAction(
       userId: data.user.id
     };
   } catch (error) {
-    console.error('Signup error:', error);
     throw error; // Re-throw the error so the component can handle it
   }
 }

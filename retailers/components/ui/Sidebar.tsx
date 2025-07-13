@@ -35,18 +35,15 @@ const Sidebar = () => {
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         
         if (sessionError) {
-          console.error('Session error:', sessionError);
           return;
         }
 
         if (!session?.user) {
-          console.log('No session found, redirecting to login');
           router.push('/login');
           return;
         }
 
         setUser(session.user);
-        console.log('User ID:', session.user.id);
 
         // Fetch business name
         const { data: retailerData, error: retailerError } = await supabase
@@ -56,14 +53,13 @@ const Sidebar = () => {
           .single();
 
         if (retailerError) {
-          console.error('Error fetching retailer data:', retailerError);
-          // Don't return here, just log the error
+          throw retailerError;
         } else if (retailerData) {
           setBusinessName(retailerData.business_name);
         }
 
       } catch (error) {
-        console.error('Error in fetchUserAndBusiness:', error);
+        throw error;
       } finally {
         setIsLoading(false);
       }
@@ -106,12 +102,12 @@ const Sidebar = () => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) {
-        console.error('Error signing out:', error);
+        throw error;
       } else {
         router.push('/login');
       }
     } catch (error) {
-      console.error('Unexpected error during sign out:', error);
+      throw error
     }
   };
 

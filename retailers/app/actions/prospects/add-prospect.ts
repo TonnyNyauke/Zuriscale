@@ -27,7 +27,6 @@ export async function addProspect(formData: {
         
         if (error) throw error;
     } catch (error) {
-        console.error(error);
         throw error;
     }
 }
