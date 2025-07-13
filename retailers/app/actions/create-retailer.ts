@@ -30,7 +30,7 @@ userId: string, businessName: string, email: string, phone: string) {
     
     return { success: true };
   } catch (error) {
-    
+    throw error;
     // Clean up auth user if retailer creation fails
     await (await supabase).auth.admin.deleteUser(userId);
     throw new Error('Failed to create business profile');
