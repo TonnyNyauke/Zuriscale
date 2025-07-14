@@ -579,7 +579,6 @@ export default function ZuriscaleLanding() {
             <Button size="lg" className="bg-red-500 hover:bg-red-600 text-white shadow-lg">
               <Link href='/signup'>
                 Create Your Account Now
-                <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
             <Button variant="outline" size="lg" className="border-white text-teal-700 hover:bg-white hover:text-teal-800">
@@ -614,8 +613,9 @@ export default function ZuriscaleLanding() {
             <div>
               <h4 className="font-bold mb-4">Contact</h4>
               <div className="space-y-2 text-gray-400">
-                <Link href='https://wa.me/+254742065623' target='_blank' rel='noopener'>WhatsApp: +254 742 065 623</Link>
-                <p>Email: support@zuriscale.com</p>
+                <p><Link href='https://wa.me/+254742065623' target='_blank' rel='noopener'>WhatsApp: +254 742 065 623</Link></p>
+                <p><Link href='tel:+254742065623' target='_blank' rel='noopener'>Call: +254 742 065 623</Link></p>
+                <p><Link href='mail:nyaukeindustries@gmail.com' target='_blank' rel='noopener'>Email: support@zuriscale.com</Link></p>
                 <p>Hours: 24/6 Support</p>
               </div>
             </div>

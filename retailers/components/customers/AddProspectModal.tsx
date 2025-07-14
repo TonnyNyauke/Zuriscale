@@ -6,9 +6,14 @@ import { addProspect } from '@/app/actions/prospects/add-prospect';
 interface AddProspectModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onProspectAdded?: () => void;
 }
 
-const AddProspectModal: React.FC<AddProspectModalProps> = ({ isOpen, onClose }) => {
+const AddProspectModal: React.FC<AddProspectModalProps> = ({ 
+  isOpen, 
+  onClose, 
+  onProspectAdded 
+}) => {
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -17,24 +22,68 @@ const AddProspectModal: React.FC<AddProspectModalProps> = ({ isOpen, onClose }) 
   });
   
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError(null); // Clear any previous errors
     
     try {
+      // Validate form data
+      if (!formData.name.trim()) {
+        throw new Error('Name is required');
+      }
+      if (!formData.phone.trim()) {
+        throw new Error('Phone number is required');
+      }
+      if (!formData.inquiry.trim()) {
+        throw new Error('Inquiry is required');
+      }
+
+      // Validate budget if provided
+      const budget = formData.budget.trim() ? parseInt(formData.budget) : 0;
+      if (formData.budget.trim() && (isNaN(budget!) || budget! < 0)) {
+        throw new Error('Budget must be a valid positive number');
+      }
+
       await addProspect({
         name: formData.name.trim(),
         phone: formData.phone.trim(),
         inquiry: formData.inquiry.trim(),
-        budget: parseInt(formData.budget)
+        budget: budget
       });
       
       // Reset form
       setFormData({ name: '', phone: '', inquiry: '', budget: '' });
+      
+      // Call the callback to refresh the prospects data
+      if (onProspectAdded) {
+        onProspectAdded();
+      }
+      
       onClose();
     } catch (error) {
       console.error('Error adding prospect:', error);
+      
+      // Handle different types of errors
+      if (error instanceof Error) {
+        setError(error.message);
+      } else if (typeof error === 'object' && error !== null) {
+        // Handle Supabase/PostgreSQL errors
+        const dbError = error as any;
+        if (dbError.message) {
+          setError(dbError.message);
+        } else if (dbError.details) {
+          setError(dbError.details);
+        } else if (dbError.hint) {
+          setError(dbError.hint);
+        } else {
+          setError('An unexpected error occurred while adding the prospect');
+        }
+      } else {
+        setError('An unexpected error occurred while adding the prospect');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -42,6 +91,7 @@ const AddProspectModal: React.FC<AddProspectModalProps> = ({ isOpen, onClose }) 
 
   const handleClose = () => {
     setFormData({ name: '', phone: '', inquiry: '', budget: '' });
+    setError(null); // Clear errors when closing
     onClose();
   };
 
@@ -58,6 +108,13 @@ const AddProspectModal: React.FC<AddProspectModalProps> = ({ isOpen, onClose }) 
         </button>
         
         <h2 className="text-xl font-bold text-gray-900 mb-6">Add Walk-in Customer</h2>
+        
+        {/* Error Message */}
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-sm text-red-600">{error}</p>
+          </div>
+        )}
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -76,18 +133,24 @@ const AddProspectModal: React.FC<AddProspectModalProps> = ({ isOpen, onClose }) 
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Phone Number
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Phone Number *
             </label>
-            <input
-              type="tel"
-              value={formData.phone}
-              onChange={(e) => setFormData({...formData, phone: e.target.value})}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-600 focus:border-transparent"
-              placeholder="+254..."
-              disabled={isSubmitting}
-            />
-            <p className="text-xs text-gray-500 mt-1">Optional - for follow-up messages</p>
+            <div className="flex">
+              <div className="flex items-center justify-center px-4 border border-r-0 border-gray-300 rounded-l-lg bg-gray-50 text-gray-600 font-medium">
+                +254
+              </div>
+              <input
+                type="tel"
+                name="phone"
+                required
+                value={formData.phone}
+                onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                placeholder="712 345 678"
+                className={'w-full px-4 py-3 border rounded-r-lg focus:ring-2 focus:ring-teal-500 transition-colors'}
+                disabled={isSubmitting}
+              />
+            </div>
           </div>
           
           <div>

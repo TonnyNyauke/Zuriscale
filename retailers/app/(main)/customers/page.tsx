@@ -300,6 +300,7 @@ export default function CustomersPage() {
       <AddProspectModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
+        onProspectAdded={fetchProspects}
       />
     </div>
   );

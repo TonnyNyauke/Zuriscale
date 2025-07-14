@@ -15,11 +15,13 @@ export async function addProspect(formData: {
         // Get retailer ID from session
         const retailerId = session?.user?.id;
         if (!retailerId) throw new Error('User not authenticated');
+
+        const phone_number = formData.phone.replace(/^0/, '')
         
         // Insert prospect with retailer_id
         const { error } = await supabase.from('prospect').insert({
             name: formData.name,
-            phone: formData.phone,
+            phone: `+254${phone_number}`,
             inquiry: formData.inquiry,
             budget: formData.budget,
             retailer_id: retailerId
