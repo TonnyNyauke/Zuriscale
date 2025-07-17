@@ -280,7 +280,6 @@ const CustomersTable: React.FC<CustomersTableProps> = ({
   customers, 
   prospects, 
   selectedFilter,
-  onRefresh 
 }) => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [selectedProspect, setSelectedProspect] = useState<Prospect | null>(null);

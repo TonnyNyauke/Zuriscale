@@ -298,7 +298,6 @@ const handleRefresh = () => {
           customers={selectedFilter === 'prospects' ? [] : filteredData.customers}
           prospects={selectedFilter === 'customers' ? [] : filteredData.prospects}
           selectedFilter={selectedFilter}
-          onRefresh={handleRefresh} // Pass refresh function
         />
       </div>
 
