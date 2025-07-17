@@ -8,6 +8,7 @@ interface CustomersTableProps {
   customers: Customer[];
   prospects: Prospect[];
   selectedFilter: 'all' | 'customers' | 'prospects';
+  onRefresh?: () => void; // Add refresh callback
 }
 
 interface CustomerModalProps {
@@ -278,7 +279,8 @@ const ProspectModal: React.FC<ProspectModalProps> = ({ prospect, isOpen, onClose
 const CustomersTable: React.FC<CustomersTableProps> = ({ 
   customers, 
   prospects, 
-  selectedFilter 
+  selectedFilter,
+  onRefresh 
 }) => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [selectedProspect, setSelectedProspect] = useState<Prospect | null>(null);
