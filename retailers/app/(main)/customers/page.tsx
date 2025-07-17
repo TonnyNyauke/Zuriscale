@@ -136,11 +136,6 @@ export default function CustomersPage() {
     fetchProspects(true);
   };
 
-  // Add refresh handler for the table
-const handleRefresh = () => {
-  fetchProspects(true);
-};
-
   // Filter data based on search and filters
   const filteredData = useMemo(() => {
     let filteredCustomers = customers;

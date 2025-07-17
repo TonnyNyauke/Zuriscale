@@ -1,5 +1,5 @@
 // components/customers/CustomersTable.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Phone, Calendar, DollarSign, ShoppingBag, User, X, Eye } from 'lucide-react';
 import WhatsAppButton from './WhatsAppButton';
 import { Customer, Prospect } from '@/app/types/types';
