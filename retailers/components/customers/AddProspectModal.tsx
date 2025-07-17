@@ -9,6 +9,13 @@ interface AddProspectModalProps {
   onProspectAdded?: () => void;
 }
 
+// Type for database errors
+interface DatabaseError {
+  message?: string;
+  details?: string;
+  hint?: string;
+}
+
 const AddProspectModal: React.FC<AddProspectModalProps> = ({ 
   isOpen, 
   onClose, 
@@ -71,7 +78,7 @@ const AddProspectModal: React.FC<AddProspectModalProps> = ({
         setError(error.message);
       } else if (typeof error === 'object' && error !== null) {
         // Handle Supabase/PostgreSQL errors
-        const dbError = error as any;
+        const dbError = error as DatabaseError;
         if (dbError.message) {
           setError(dbError.message);
         } else if (dbError.details) {
