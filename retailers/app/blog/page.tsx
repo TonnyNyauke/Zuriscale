@@ -309,12 +309,12 @@ const BlogListingPage = () => {
                     Latest Fashion Retail Strategies
                   </h2>
                   <p className="text-gray-600 max-w-2xl mx-auto">
-                    Fresh insights and actionable tips to help your fashion boutique thrive in Kenya's competitive retail market
+                    Fresh insights and actionable tips to help your fashion boutique thrive in Kenya&apos;s competitive retail market
                   </p>
                 </header>
                 
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {otherArticles.map((article, index) => (
+                  {otherArticles.map((article) => (
                     <article 
                       key={article.id} 
                       className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
