@@ -4,6 +4,10 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
+  robots: {
+    index: true,
+    follow: true
+  },
   title: 'Join Our Communities | Zuriscale - Fashion Retail Customer Retention Network',
   description: 'Connect with fashion retailers across Kenya and beyond. Join our vibrant communities on Facebook, Instagram, LinkedIn for customer retention tips, networking, and product updates.',
   keywords: 'fashion retail community, customer retention network, Kenya fashion retailers, retail networking, fashion business community, customer engagement',

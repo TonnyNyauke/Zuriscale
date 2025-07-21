@@ -18,7 +18,7 @@ export default function MainLayout({
           
           {/* Scrollable Content Area */}
           <div className="flex flex-col flex-1 min-w-0">
-            <main className="flex-1 overflow-y-auto">
+            <main className="overflow-y-auto">
               {children}
             </main>
             <footer className="py-3 px-6 text-center text-sm text-gray-600 border-t bg-white flex-shrink-0">
@@ -35,7 +35,7 @@ export default function MainLayout({
           </div>
           
           {/* Scrollable Content Area */}
-          <main className="flex-1 overflow-y-auto">
+          <main className="overflow-y-auto">
             {children}
           </main>
           <footer className="py-2 px-4 text-center text-xs text-gray-600 border-t bg-white flex-shrink-0">

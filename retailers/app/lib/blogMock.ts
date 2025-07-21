@@ -1,4 +1,4 @@
-// data/blogMock.ts
+//lib/blogMock.ts
 import { Article } from "../types/types";
 
 export const blogData: { articles: Article[] } = {

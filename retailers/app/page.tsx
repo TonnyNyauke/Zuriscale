@@ -8,6 +8,10 @@ import Link from 'next/link';
 
 // Page-specific metadata that overrides layout defaults
 export const metadata: Metadata = {
+  robots:{
+    index: true,
+    follow: true
+  },
   // Specific title for landing page
   title: 'Zuriscale - WhatsApp Customer Retention for Kenyan Fashion Retailers | Reach KES 1M Sales',
   
@@ -33,14 +37,14 @@ export const metadata: Metadata = {
   
   // Canonical URL for this specific page
   alternates: {
-    canonical: 'https://zuriscale.com/',
+    canonical: 'https://www.zuriscale.com/',
   },
   
   // Page-specific Open Graph data
   openGraph: {
     title: 'Zuriscale - WhatsApp Customer Retention for Fashion Retailers',
     description: 'Help your fashion business reach KES 1M in sales with automated WhatsApp follow-ups and customer analytics. Used by 500+ Kenyan retailers.',
-    url: 'https://zuriscale.com',
+    url: 'https://www.zuriscale.com',
     siteName: 'Zuriscale',
     images: [
       {
@@ -70,9 +74,9 @@ const structuredData = {
   "@graph": [
     {
       "@type": "Organization",
-      "@id": "https://zuriscale.com/#organization",
+      "@id": "https://www.zuriscale.com/#organization",
       "name": "Zuriscale",
-      "url": "https://zuriscale.com",
+      "url": "https://www.zuriscale.com",
       "logo": {
         "@type": "ImageObject",
         "url": "https://zuriscale.com/logo.png",
@@ -98,12 +102,12 @@ const structuredData = {
     },
     {
       "@type": "WebSite",
-      "@id": "https://zuriscale.com/#website",
-      "url": "https://zuriscale.com",
+      "@id": "https://www.zuriscale.com/#website",
+      "url": "https://www.zuriscale.com",
       "name": "Zuriscale",
       "description": "WhatsApp customer retention platform for Kenyan fashion retailers",
       "publisher": {
-        "@id": "https://zuriscale.com/#organization"
+        "@id": "https://www.zuriscale.com/#organization"
       },
       "inLanguage": "en-KE"
     },
@@ -632,7 +636,7 @@ export default function ZuriscaleLanding() {
           </div>
           
           <div className="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Zuriscale. All rights reserved. Made with ❤️ in Kenya.</p>
+            <p>&copy; {new Date().getFullYear()} Zuriscale. All rights reserved. Made with ❤️ in Kenya.</p>
           </div>
         </div>
       </footer>
