@@ -9,6 +9,7 @@ import MobileNav from '@/components/MobileNav';
 import BlogInteractiveFeatures from '@/components/blogs/BlogInteractiveFeatures';
 import TheFooter from '@/components/ui/TheFooter';
 import { Metadata } from 'next';
+import { Article } from '@/app/types/types';
 
 // Fetch article data
 function fetchArticle(id: string) {
@@ -116,7 +117,7 @@ export async function generateMetadata({ params }: ArticlePageProps): Promise<Me
 }
 
 // Generate structured data for the article
-function generateArticleStructuredData(article: any, relatedArticles: any[]) {
+function generateArticleStructuredData(article: Article, relatedArticles: Article[]) {
   return {
     "@context": "https://schema.org",
     "@graph": [
