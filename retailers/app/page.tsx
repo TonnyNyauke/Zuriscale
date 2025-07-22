@@ -619,7 +619,7 @@ export default function ZuriscaleLanding() {
               <div className="space-y-2 text-gray-400">
                 <p><Link href='https://wa.me/+254742065623' target='_blank' rel='noopener'>WhatsApp: +254 742 065 623</Link></p>
                 <p><Link href='tel:+254742065623' target='_blank' rel='noopener'>Call: +254 742 065 623</Link></p>
-                <p><Link href='mail:support@zuriscale.com' target='_blank' rel='noopener'>Email: support@zuriscale.com</Link></p>
+                <p><Link href='mailto:support@zuriscale.com' target='_blank' rel='noopener'>Email: support@zuriscale.com</Link></p>
                 <p>Hours: 24/6 Support</p>
               </div>
             </div>
