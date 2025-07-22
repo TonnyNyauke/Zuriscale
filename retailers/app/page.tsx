@@ -1,4 +1,4 @@
-// app/page.tsx (SEO Optimized)
+//app/page.tsx (SEO Optimized)
 import { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
