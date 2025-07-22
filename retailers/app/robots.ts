@@ -4,7 +4,7 @@ import { blogData } from './lib/blogMock'
 
 export default function robots(): MetadataRoute.Robots {
   // Get all blog post IDs
-  const blogIds = blogData.articles.map(article => `/${article.id}`)
+  const blogIds = blogData.articles.map(article => `/blog/${article.id}`)
   
   return {
     rules: {
