@@ -12,11 +12,14 @@ async function fetchAllIds(): Promise<string[]> {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fetch all your dynamic IDs
   const ids = await fetchAllIds()
+
+  // Get current date for lastModified
+  const currentDate = new Date()
   
   // Generate dynamic routes for blog posts
   const dynamicRoutes: MetadataRoute.Sitemap = ids.map((id) => ({
     url: `https://www.zuriscale.com/${id}`,
-    lastModified: new Date('2025-07-21'),
+    lastModified: currentDate,
     changeFrequency: 'weekly' as const,
     priority: 0.8,
   }))
@@ -25,31 +28,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: 'https://www.zuriscale.com',
-      lastModified: new Date('2025-07-21'),
+      lastModified: currentDate,
       changeFrequency: 'daily',
       priority: 1.0,
     },
     {
       url: 'https://www.zuriscale.com/communities',
-      lastModified: new Date('2025-07-21'),
+      lastModified: currentDate,
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
       url: 'https://www.zuriscale.com/blog',
-      lastModified: new Date('2025-07-21'),
+      lastModified: currentDate,
       changeFrequency: 'daily',
       priority: 0.9,
     },
     {
       url: 'https://www.zuriscale.com/login',
-      lastModified: new Date('2025-07-21'),
+      lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.3,
     },
     {
       url: 'https://www.zuriscale.com/signup',
-      lastModified: new Date('2025-07-21'),
+      lastModified: currentDate,
       changeFrequency: 'monthly',
       priority: 0.3,
     },
