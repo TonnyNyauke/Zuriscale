@@ -27,7 +27,7 @@ const trackEvent = (eventName: string, properties?: TrackingProperties): void =>
     windowWithGtag.gtag?.('event', eventName, properties);
     
     // Custom analytics event (you can replace with your analytics service)
-    console.log(`Event tracked: ${eventName}`, properties);
+    // Note: Remove console.log in production for security
   }
 };
 
@@ -74,8 +74,9 @@ export default function ClientTrackingWrapper(): null {
               }
               return acc;
             }, {} as TrackingProperties);
-          } catch (error) {
-            console.warn('Invalid JSON in data-track-properties:', propertiesString);
+          } catch {
+            // Silently handle invalid JSON, fall back to empty properties object
+            properties = {};
           }
         }
         
