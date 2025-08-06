@@ -1,11 +1,11 @@
-// src/app/(main)/products/page.tsx
+//app/(main)/products/page.tsx
 import { fetchShopData } from '@/app/lib/inventoryData';
-import ProductGrid from '@/components/pos/ProductGrid';
+//import ProductGrid from '@/components/pos/ProductGrid';
 import CategoryFilter from '@/components/products/CategoryFilter';
 import React from 'react';
 
 export default async function ProductsPage() {
-  const { products, categories } = await fetchShopData();
+  const { categories } = await fetchShopData();
   
   return (
     <div className="p-6">
