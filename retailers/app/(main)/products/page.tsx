@@ -1,5 +1,6 @@
 // src/app/(main)/products/page.tsx
 import { fetchShopData } from '@/app/lib/inventoryData';
+import { Product } from '@/app/types/pos';
 import ProductGrid from '@/components/pos/ProductGrid';
 import CategoryFilter from '@/components/products/CategoryFilter';
 import React from 'react';
@@ -18,7 +19,9 @@ export default async function ProductsPage() {
       
       <CategoryFilter categories={categories} />
       
-      <ProductGrid products={products} categories={[]} />
+      <ProductGrid products={products} categories={[]} onAddToCart={function (product: Product): void {
+        throw new Error('Function not implemented.');
+      } } />
     </div>
   );
 }
