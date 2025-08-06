@@ -1,9 +1,8 @@
 'use client';
 import React from 'react';
 import { ShoppingCart, Receipt } from 'lucide-react';
-import { SaleItem } from '@/app/types/pos';
+import { SaleItem, formatCurrency } from '@/app/types/pos';
 import { SaleItemRow } from './SaleItemRow';
-import { formatCurrency } from '@/app/types/pos';
 
 interface CurrentSaleProps {
   saleItems: SaleItem[];
@@ -49,7 +48,7 @@ export const CurrentSale: React.FC<CurrentSaleProps> = ({
             <div className="flex justify-between items-center">
               <span className="text-lg lg:text-xl font-semibold text-gray-900">Total:</span>
               <span className="text-xl lg:text-2xl font-bold text-teal-600">
-                {formatCurrency(total)}
+                {formatCurrency(total || 0)}
               </span>
             </div>
           </div>

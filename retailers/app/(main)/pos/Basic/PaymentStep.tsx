@@ -26,11 +26,11 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({ customerData, total })
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm mb-3">
             <div className="flex justify-between">
               <span className="text-gray-600">Customer:</span>
-              <span className="font-medium">{customerData.name}</span>
+              <span className="font-medium">{customerData.customer_name}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Phone:</span>
-              <span className="font-medium">{customerData.phone}</span>
+              <span className="font-medium">{customerData.customer_phone}</span>
             </div>
           </div>
           <div className="flex justify-between font-bold text-xl border-t pt-3">

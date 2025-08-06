@@ -12,9 +12,17 @@ export const AddItemForm: React.FC<AddItemFormProps> = ({ onAddItem }) => {
 
   const handleSubmit = useCallback((e?: React.FormEvent) => {
     e?.preventDefault();
-    if (!itemName.trim() || !itemPrice) return;
     
-    onAddItem(itemName.trim(), parseFloat(itemPrice));
+    const trimmedName = itemName.trim();
+    const parsedPrice = parseFloat(itemPrice);
+    
+    // Validation
+    if (!trimmedName || !itemPrice || parsedPrice <= 0) {
+      return;
+    }
+    
+    // Add item and clear form
+    onAddItem(trimmedName, parsedPrice);
     setItemName('');
     setItemPrice('');
   }, [itemName, itemPrice, onAddItem]);
@@ -23,7 +31,9 @@ export const AddItemForm: React.FC<AddItemFormProps> = ({ onAddItem }) => {
 
   return (
     <section className="bg-white rounded-xl shadow-sm p-4 lg:p-6">
-      <h2 className="text-lg lg:text-xl font-semibold text-gray-900 mb-4">Add Item to Sale</h2>
+      <h2 className="text-lg lg:text-xl font-semibold text-gray-900 mb-4">
+        Add Item to Sale
+      </h2>
       
       <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-3 lg:gap-4">
         <div className="lg:col-span-1">

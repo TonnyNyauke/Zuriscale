@@ -14,7 +14,7 @@ export const RecentSales: React.FC<RecentSalesProps> = ({ sales }) => (
       {sales.map((sale) => (
         <div key={sale.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
           <div className="flex-1">
-            <p className="font-medium text-gray-900 text-sm">{sale.customer.name}</p>
+            <p className="font-medium text-gray-900 text-sm">{sale.customer.customer_name}</p>
             <p className="text-xs text-gray-600">
               {formatTime(sale.timestamp)} • {sale.items.length} items
             </p>

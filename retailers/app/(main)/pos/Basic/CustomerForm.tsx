@@ -30,8 +30,8 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({
           <input
             id="customer-name"
             type="text"
-            value={customerData.name}
-            onChange={(e) => onChange({ ...customerData, name: e.target.value })}
+            value={customerData.customer_name}
+            onChange={(e) => onChange({ ...customerData, customer_name: e.target.value })}
             placeholder="Enter customer name"
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent text-base"
             required
@@ -46,8 +46,8 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({
           <input
             id="customer-phone"
             type="tel"
-            value={customerData.phone}
-            onChange={(e) => onChange({ ...customerData, phone: e.target.value })}
+            value={customerData.customer_phone}
+            onChange={(e) => onChange({ ...customerData, customer_phone: e.target.value })}
             placeholder="0700000000"
             className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent text-base"
             required
@@ -62,8 +62,8 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({
       <div className="space-y-2 max-h-48 overflow-y-auto">
         {saleItems.map((item) => (
           <div key={item.id} className="flex justify-between text-sm">
-            <span>{item.name} x{item.quantity}</span>
-            <span>{formatCurrency(item.price * item.quantity)}</span>
+            <span>{item.item_name} x{item.quantity}</span>
+            <span>{formatCurrency(item.unit_price * item.quantity)}</span>
           </div>
         ))}
         <div className="border-t pt-2 mt-2">
