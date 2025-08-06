@@ -272,7 +272,7 @@ const Sidebar = () => {
             </nav>
 
             {/* Bottom Section */}
-            <div className="p-4 border-t border-gray-100">
+            <div className="mb-30 p-4 border-t border-gray-100">
               <div className="text-xs text-gray-500 mb-4 px-3">
                 Retailer: {businessName || 'Loading...'}
               </div>
