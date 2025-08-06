@@ -132,8 +132,12 @@ async function createSaleItems(supabase: any, saleId: string, items: any[]) {
   }
 }
 
-export async function getRecentSales(retailerId: string, limit = 10) {
+export async function getRecentSales() {
   const supabase = await createClient();
+
+  // 1. Get authenticated user
+  const { data: sessionData } = await supabase.auth.getSession();
+  const retailerId = sessionData.session?.user?.id;
   
   const { data, error } = await supabase
     .from('sales')
@@ -144,7 +148,7 @@ export async function getRecentSales(retailerId: string, limit = 10) {
     `)
     .eq('retailer_id', retailerId)
     .order('created_at', { ascending: false })
-    .limit(limit);
+    .limit(5);
 
   if (error) throw error;
   return data || [];

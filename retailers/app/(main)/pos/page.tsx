@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useSaleManagement } from './Basic/useSaleManagement';
-import { formatCurrency } from '@/app/types/pos';
+import { formatCurrency, SaleItem } from '@/app/types/pos';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
 import { AddItemForm } from './Basic/AddItemForm';
 import { CurrentSale } from './Basic/CurrentSale';
@@ -11,10 +11,27 @@ import { CustomerForm } from './Basic/CustomerForm';
 import { PaymentStep } from './Basic/PaymentStep';
 import { BottomCTA } from './Basic/BottomCTA';
 import { ErrorHandler, LoadingOverlay, SuccessNotification } from '@/components/ErrorHandler';
+import { getRecentSales } from './Basic/HelperFunctions/sales';
+
 
 export default function ZuriscalePOS() {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  // Updated type to match Supabase data structure
+  const [recentSales, setRecentSales] = useState<Array<{
+    id: string;
+    total_amount: number;
+    created_at: string;
+    customers: {
+      name: string;
+      phone_number: string;
+    } | null;
+    sale_items: Array<{
+      item_name: string;
+      quantity: number;
+      unit_price: number;
+    }>;
+  }>>([]);
   const {
     // State
     saleItems,
@@ -93,6 +110,21 @@ export default function ZuriscalePOS() {
     }
     return 'An unexpected error occurred. Please try again.';
   };
+
+  // Fixed useEffect to properly handle async function
+  React.useEffect(() => {
+    async function fetchRecentSales() {
+      try {
+        const salesData = await getRecentSales();
+        setRecentSales(salesData);
+      } catch (error) {
+        console.error('Failed to fetch recent sales:', error);
+        setError('Failed to load recent sales');
+      }
+    }
+    
+    fetchRecentSales();
+  }, []);
 
   // Clear success message after timeout
   React.useEffect(() => {
@@ -181,7 +213,7 @@ export default function ZuriscalePOS() {
                 </div>
                 
                 <div className="lg:col-span-1">
-                  <RecentSales sales={[]} /> {/* You can add recent sales logic */}
+                  <RecentSales sales={recentSales} />
                 </div>
               </div>
             </>

@@ -11,7 +11,8 @@ import {
   User,
   LogOut,
   Menu,
-  X
+  X,
+  ShoppingCart
 } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
@@ -113,6 +114,7 @@ const Sidebar = () => {
 
   const navItems = [
     { name: 'Dashboard', href: '/dashboard', icon: BarChart3 },
+    { name: 'Sales', href: '/pos', icon: ShoppingCart },
     { name: 'Customers', href: '/customers', icon: Users },
     { name: 'WhatsApp Inbox', href: '/inbox', icon: MessageCircle },
     { name: 'Campaigns', href: '/campaigns', icon: Megaphone },
