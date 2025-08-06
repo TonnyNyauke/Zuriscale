@@ -42,7 +42,7 @@ const communityData = [
   {
     name: 'Facebook Business Page',
     icon: Facebook,
-    url: 'https://web.facebook.com/profile.php?id=61569977734315',
+    url: 'https://web.facebook.com/profile.php?id=61578723004156',
     color: 'bg-blue-600',
     hoverColor: 'hover:bg-blue-700',
     description: 'Get the latest product updates, company news, and industry insights directly from Zuriscale.',
@@ -58,7 +58,7 @@ const communityData = [
   {
     name: 'Facebook Community Group',
     icon: Users,
-    url: 'https://web.facebook.com/groups/748242847561563',
+    url: 'https://web.facebook.com/groups/zuriscale',
     color: 'bg-blue-500',
     hoverColor: 'hover:bg-blue-600',
     description: 'Join our exclusive community of fashion retailers sharing strategies, tips, and supporting each other.',
@@ -225,7 +225,7 @@ export default function CommunitiesPage() {
               asChild
               className="bg-white text-teal-700 hover:bg-gray-100 font-medium py-3 px-8 rounded-lg transition-all duration-300"
             >
-              <Link href="https://web.facebook.com/groups/748242847561563" target="_blank" rel="noopener noreferrer">
+              <Link href="https://web.facebook.com/groups/zuriscale" target="_blank" rel="noopener noreferrer">
                 Join Facebook Group
               </Link>
             </Button>
