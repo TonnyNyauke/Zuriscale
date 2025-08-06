@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { useSaleManagement } from './Basic/useSaleManagement';
-import { formatCurrency, SaleItem } from '@/app/types/pos';
+import { formatCurrency, CustomerData } from '@/app/types/pos';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
 import { AddItemForm } from './Basic/AddItemForm';
 import { CurrentSale } from './Basic/CurrentSale';
@@ -65,9 +65,9 @@ export default function ZuriscalePOS() {
       setError(null);
       await processSale();
       setSuccessMessage('Sale completed successfully!');
-    } catch (error) {
-      console.error('Sale failed:', error);
-      const errorMessage = getErrorMessage(error);
+    } catch (err) {
+      console.error('Sale failed:', err);
+      const errorMessage = getErrorMessage(err);
       setError(errorMessage);
     }
   };
@@ -85,17 +85,19 @@ export default function ZuriscalePOS() {
       }
       addItem(name, price);
       setSuccessMessage('Item added to sale');
-    } catch (error) {
+    } catch (err) {
+      console.error('Failed to add item:', err);
       setError('Failed to add item');
     }
   };
 
   // Handle customer data updates with validation
-  const handleCustomerChange = (newCustomerData: any) => {
+  const handleCustomerChange = (newCustomerData: CustomerData) => {
     try {
       setCustomerData(newCustomerData);
       setError(null); // Clear any previous errors
-    } catch (error) {
+    } catch (err) {
+      console.error('Failed to update customer information:', err);
       setError('Failed to update customer information');
     }
   };
@@ -117,8 +119,8 @@ export default function ZuriscalePOS() {
       try {
         const salesData = await getRecentSales();
         setRecentSales(salesData);
-      } catch (error) {
-        console.error('Failed to fetch recent sales:', error);
+      } catch (err) {
+        console.error('Failed to fetch recent sales:', err);
         setError('Failed to load recent sales');
       }
     }

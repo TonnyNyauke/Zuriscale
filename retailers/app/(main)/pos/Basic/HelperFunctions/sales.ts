@@ -1,7 +1,8 @@
 'use server';
 
-import { CustomerData } from "@/app/types/pos";
+import { CustomerData, SaleItem } from "@/app/types/pos";
 import { createClient } from "@/utils/supabase/server";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 export async function createSale(saleData: CustomerData, total: number) {
   const supabase = await createClient();
@@ -47,7 +48,7 @@ export async function createSale(saleData: CustomerData, total: number) {
 }
 
 // Helper function to find or create customer
-async function findOrCreateCustomer(supabase: any, saleData: CustomerData, retailerId: string) {
+async function findOrCreateCustomer(supabase: SupabaseClient, saleData: CustomerData, retailerId: string) {
   // Check if customer exists
   const { data: existingCustomer, error: searchError } = await supabase
     .from('customers')
@@ -86,7 +87,7 @@ async function findOrCreateCustomer(supabase: any, saleData: CustomerData, retai
 }
 
 // Helper function to create sale record
-async function createSaleRecord(supabase: any, saleData: {
+async function createSaleRecord(supabase: SupabaseClient, saleData: {
   retailerId: string;
   customerId: string;
   total: number;
@@ -112,7 +113,7 @@ async function createSaleRecord(supabase: any, saleData: {
 }
 
 // Helper function to create sale items
-async function createSaleItems(supabase: any, saleId: string, items: any[]) {
+async function createSaleItems(supabase: SupabaseClient, saleId: string, items: SaleItem[]) {
   const saleItemsData = items.map(item => ({
     sale_id: saleId,
     product_id: null, // Basic tier
