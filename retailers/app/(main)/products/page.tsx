@@ -19,7 +19,7 @@ export default async function ProductsPage() {
       
       <CategoryFilter categories={categories} />
       
-      <ProductGrid products={products} categories={[]} onAddToCart={function (product: Product): void {
+      <ProductGrid products={products} categories={[]} onAddToCart={function (_product: Product): void {
         throw new Error('Function not implemented.');
       } } />
     </div>
