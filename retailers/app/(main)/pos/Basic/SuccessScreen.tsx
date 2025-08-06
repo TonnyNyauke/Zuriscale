@@ -18,17 +18,17 @@ export const SuccessScreen: React.FC<SuccessScreenProps> = ({ sale, onNewSale })
         </div>
         <h2 className="text-xl lg:text-2xl font-bold text-gray-900 mb-2">Sale Completed!</h2>
         <p className="text-gray-600 text-sm mb-4">
-          Receipt sent via WhatsApp to {sale.customer.phone}
+          Receipt sent via WhatsApp to {sale.customer.customer_phone}
         </p>
         
         <div className="bg-gray-50 rounded-lg p-4 mb-6 text-left">
           <div className="flex justify-between text-sm mb-2">
             <span className="text-gray-600">Customer:</span>
-            <span className="font-medium">{sale.customer.name}</span>
+            <span className="font-medium">{sale.customer.customer_name}</span>
           </div>
           <div className="flex justify-between text-sm mb-2">
             <span className="text-gray-600">Phone:</span>
-            <span className="font-medium">{sale.customer.phone}</span>
+            <span className="font-medium">{sale.customer.customer_phone}</span>
           </div>
           <div className="flex justify-between text-sm mb-2">
             <span className="text-gray-600">Items:</span>
