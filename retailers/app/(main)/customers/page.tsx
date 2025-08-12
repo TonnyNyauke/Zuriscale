@@ -12,16 +12,14 @@ import { getProspects } from '@/app/actions/prospects/getProspect';
 import MobileTour, { TourStep } from '@/components/tour/MobileTour';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/utils/supabase/client';
+import { getCustomers } from '@/app/actions/customers/getCustomers';
 
-const mockCustomers: Customer[] = [
-  // Add mock data here if needed
-];
 
 const supabase = createClient()
 
 export default function CustomersPage() {
-  const customers = mockCustomers;
   const [prospects, setProspects] = useState<Prospect[]>([]);
+  const [customers, setCusomers] = useState<Customer[]>([]);
   
   // Filter and search states
   const [searchTerm, setSearchTerm] = useState('');
@@ -128,8 +126,43 @@ export default function CustomersPage() {
     }
   };
 
+  const fetchCustomers = async (showRetrying = false) => {
+    try {
+      if (showRetrying) {
+        setIsRetrying(true);
+      } else {
+        setIsLoading(true);
+      }
+      setError(null);
+
+      const customers = await getCustomers();
+      setCusomers(customers);
+    } catch (error) {
+      console.error('Error fetching prospects:', error);
+      
+      // Handle different types of errors
+      if (error instanceof Error) {
+        if (error.message.includes('auth') || error.message.includes('unauthorized')) {
+          // Authentication error - redirect to login
+          router.push('/login');
+          return;
+        } else if (error.message.includes('network') || error.message.includes('fetch')) {
+          setError('Network error. Please check your connection and try again.');
+        } else {
+          setError('Failed to load customer data. Please try again.');
+        }
+      } else {
+        setError('An unexpected error occurred. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
+      setIsRetrying(false);
+    }
+  };
+
   useEffect(() => {
     fetchProspects();
+    fetchCustomers();
   }, []);
 
   const handleRetry = () => {
@@ -147,7 +180,7 @@ export default function CustomersPage() {
       filteredCustomers = customers.filter(
         (customer: Customer) => 
           customer.name.toLowerCase().includes(searchLower) ||
-          customer.phone.toLowerCase().includes(searchLower)
+          customer.phone_number.toLowerCase().includes(searchLower)
       );
       filteredProspects = prospects.filter(
         (prospect: Prospect) => 

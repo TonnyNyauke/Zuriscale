@@ -27,7 +27,7 @@
     "react-dom": "^19.0.0",
     "retailers": "file:",
     "tailwind-merge": "^3.2.0",
-    "twilio": "^5.7.1"
+    "twilio": "^5.8.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

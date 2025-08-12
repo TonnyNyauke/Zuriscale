@@ -22,6 +22,32 @@ interface ProspectModalProps {
   onClose: () => void;
 }
 
+//Function to calculate days from last purchase to current day.
+const calculateDaysSince = (dateString: string): number => {
+  const lastPurchaseDate = new Date(dateString);
+  const now = new Date();
+  const diffInTime = now.getTime() - lastPurchaseDate.getTime();
+  const diffInDays = Math.floor(diffInTime / (1000 * 3600 * 24));
+  return diffInDays;
+};
+
+//Function to format days.
+const formatDaysAgo = (days: number): string => {
+  if (days === 0) return 'Today';
+  if (days === 1) return '1 day ago';
+  if (days < 7) return `${days} days ago`;
+  if (days < 30) {
+    const weeks = Math.floor(days / 7);
+    return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
+  }
+  if (days < 365) {
+    const months = Math.floor(days / 30);
+    return months === 1 ? '1 month ago' : `${months} months ago`;
+  }
+  const years = Math.floor(days / 365);
+  return years === 1 ? '1 year ago' : `${years} years ago`;
+};
+
 const CustomerModal: React.FC<CustomerModalProps> = ({ customer, isOpen, onClose }) => {
   if (!isOpen) return null;
 
@@ -32,6 +58,9 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ customer, isOpen, onClose
       year: 'numeric'
     });
   };
+
+  // Fixed calculation
+  const daysSinceLastPurchase = calculateDaysSince(customer.last_purchase_date);
 
   const getStatusBadge = (status: string | null | undefined) => {
     const statusColors = {
@@ -83,7 +112,7 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ customer, isOpen, onClose
               <h3 className="text-lg font-medium text-gray-900">{customer.name}</h3>
               <div className="flex items-center text-gray-500 mt-1">
                 <Phone className="w-4 h-4 mr-2" />
-                {customer.phone}
+                {customer.phone_number}
               </div>
             </div>
           </div>
@@ -119,9 +148,12 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ customer, isOpen, onClose
           {/* Last Purchase */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Last Purchase</label>
-            <div className="flex items-center text-gray-900">
+            <div className="flex items-center text-gray-900 font-medium">
               <Calendar className="w-4 h-4 mr-2 text-gray-400" />
-              {formatDate(customer.last_purchase)}
+              {formatDaysAgo(daysSinceLastPurchase)}
+            </div>
+            <div className="text-sm text-gray-500 ml-6">
+              {formatDate(customer.last_purchase_date)}
             </div>
           </div>
         </div>
@@ -129,7 +161,7 @@ const CustomerModal: React.FC<CustomerModalProps> = ({ customer, isOpen, onClose
         {/* Actions */}
         <div className="px-6 pb-6 flex space-x-3">
           <WhatsAppButton
-            phone={customer.phone}
+            phone={customer.phone_number}
             name={customer.name}
             type={customer.status === 'churned' ? 'retention' : 'promotion'}
           />
@@ -282,7 +314,7 @@ const CustomersTable: React.FC<CustomersTableProps> = ({
 }) => {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
   const [selectedProspect, setSelectedProspect] = useState<Prospect | null>(null);
-
+  
   const getStatusBadge = (status: string | null | undefined) => {
     const statusColors = {
       // Customer statuses
@@ -334,7 +366,7 @@ const CustomersTable: React.FC<CustomersTableProps> = ({
             <div className="text-sm font-medium text-gray-900">{customer.name}</div>
             <div className="text-sm text-gray-500 flex items-center mt-1">
               <Phone className="w-3 h-3 mr-1" />
-              {customer.phone}
+              {customer.phone_number}
             </div>
           </div>
         </div>
@@ -357,12 +389,12 @@ const CustomersTable: React.FC<CustomersTableProps> = ({
       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
         <div className="flex items-center">
           <Calendar className="w-4 h-4 mr-1" />
-          {formatDate(customer.last_purchase)}
+          {formatDaysAgo(calculateDaysSince(customer.first_purchase_date))}
         </div>
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
         <WhatsAppButton
-          phone={customer.phone}
+          phone={customer.phone_number}
           name={customer.name}
           type={customer.status === 'churned' ? 'retention' : 'promotion'}
         />

@@ -6,7 +6,7 @@ import { formatCurrency, CustomerData } from '@/app/types/pos';
 import { ArrowLeft, CheckCircle } from 'lucide-react';
 import { AddItemForm } from './Basic/AddItemForm';
 import { CurrentSale } from './Basic/CurrentSale';
-import { RecentSales } from './Basic/RecentSale';
+import { RecentSales, SupabaseSale } from './Basic/RecentSale';
 import { CustomerForm } from './Basic/CustomerForm';
 import { PaymentStep } from './Basic/PaymentStep';
 import { BottomCTA } from './Basic/BottomCTA';
@@ -18,20 +18,7 @@ export default function ZuriscalePOS() {
   const [error, setError] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   // Updated type to match Supabase data structure
-  const [recentSales, setRecentSales] = useState<Array<{
-    id: string;
-    total_amount: number;
-    created_at: string;
-    customers: {
-      name: string;
-      phone_number: string;
-    } | null;
-    sale_items: Array<{
-      item_name: string;
-      quantity: number;
-      unit_price: number;
-    }>;
-  }>>([]);
+  const [recentSales, setRecentSales] = useState<Array<SupabaseSale>>([]);
   const {
     // State
     saleItems,

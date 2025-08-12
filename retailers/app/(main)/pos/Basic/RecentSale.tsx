@@ -3,7 +3,7 @@ import React from 'react';
 import { formatCurrency, formatTime } from '@/app/types/pos';
 
 // Updated interface to match Supabase data structure
-interface SupabaseSale {
+export interface SupabaseSale {
   id: string;
   total_amount: number;
   created_at: string;

@@ -39,6 +39,9 @@ export async function createSale(saleData: CustomerData, total: number) {
     // 5. Create sale items
     await createSaleItems(supabase, sale.id, saleData.items);
 
+    // 6. Update customer stats after successful sale
+    await updateCustomerStats(supabase, customerId, Number(total));
+
     return sale;
 
   } catch (error) {
@@ -52,7 +55,7 @@ async function findOrCreateCustomer(supabase: SupabaseClient, saleData: Customer
   // Check if customer exists
   const { data: existingCustomer, error: searchError } = await supabase
     .from('customers')
-    .select('id')
+    .select('id, name')
     .eq('retailer_id', retailerId)
     .eq('phone_number', saleData.customer_phone)
     .single();
@@ -64,6 +67,13 @@ async function findOrCreateCustomer(supabase: SupabaseClient, saleData: Customer
 
   // Return existing customer ID if found
   if (existingCustomer) {
+    // Update customer name if it has changed (optional enhancement)
+    if (existingCustomer.name !== saleData.customer_name) {
+      await supabase
+        .from('customers')
+        .update({ name: saleData.customer_name })
+        .eq('id', existingCustomer.id);
+    }
     return existingCustomer.id;
   }
 
@@ -120,7 +130,7 @@ async function createSaleItems(supabase: SupabaseClient, saleId: string, items: 
     item_name: String(item.item_name || ''),
     quantity: Number(item.quantity || 0),
     unit_price: Number(item.unit_price || 0),
-    buy_price: Number(item.unit_price || 0), // Basic tier
+    buy_price: Number(item.unit_price || 0), // Basic tier - no profit tracking
     discount: 0
   }));
 
@@ -131,6 +141,103 @@ async function createSaleItems(supabase: SupabaseClient, saleId: string, items: 
   if (error) {
     throw new Error(`Sale items creation failed: ${error.message}`);
   }
+}
+
+// Helper function to update customer statistics
+async function updateCustomerStats(supabase: SupabaseClient, customerId: string, saleAmount: number) {
+  try {
+    // Get current customer data
+    const { data: customer, error: fetchError } = await supabase
+      .from('customers')
+      .select('total_spent, first_purchase_date')
+      .eq('id', customerId)
+      .single();
+
+    if (fetchError) {
+      console.error('Failed to fetch customer for stats update:', fetchError);
+      return;
+    }
+
+    const now = new Date().toISOString();
+    const newTotalSpent = (customer.total_spent || 0) + saleAmount;
+    
+    // Prepare update data
+    const updateData: any = {
+      last_purchase_date: now,
+      total_spent: newTotalSpent
+    };
+
+    // If this is the first purchase, set first_purchase_date
+    if (!customer.first_purchase_date) {
+      updateData.first_purchase_date = now;
+    }
+
+    const { error: updateError } = await supabase
+      .from('customers')
+      .update(updateData)
+      .eq('id', customerId);
+
+    if (updateError) {
+      console.error('Failed to update customer stats:', updateError);
+    }
+
+  } catch (error) {
+    console.error('Unexpected error updating customer stats:', error);
+  }
+}
+
+// NEW: Function to search customers by phone (for autocomplete)
+export async function searchCustomersByPhone(phoneQuery: string) {
+  const supabase = await createClient();
+  
+  // Get authenticated user
+  const { data: sessionData } = await supabase.auth.getSession();
+  const retailerId = sessionData.session?.user?.id;
+
+  if (!retailerId || !phoneQuery.trim()) {
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from('customers')
+    .select('id, name, phone_number, total_spent, last_purchase_date')
+    .eq('retailer_id', retailerId)
+    .ilike('phone_number', `%${phoneQuery}%`)
+    .order('last_purchase_date', { ascending: false, nullsFirst: false })
+    .limit(5);
+
+  if (error) {
+    console.error('Customer search failed:', error);
+    return [];
+  }
+
+  return data || [];
+}
+
+// NEW: Function to get customer by exact phone match
+export async function getCustomerByPhone(phone: string) {
+  const supabase = await createClient();
+  
+  const { data: sessionData } = await supabase.auth.getSession();
+  const retailerId = sessionData.session?.user?.id;
+
+  if (!retailerId || !phone.trim()) {
+    return null;
+  }
+
+  const { data, error } = await supabase
+    .from('customers')
+    .select('id, name, phone_number, total_spent, last_purchase_date')
+    .eq('retailer_id', retailerId)
+    .eq('phone_number', phone)
+    .single();
+
+  if (error && error.code !== 'PGRST116') {
+    console.error('Customer lookup failed:', error);
+    return null;
+  }
+
+  return data;
 }
 
 export async function getRecentSales() {
@@ -145,7 +252,7 @@ export async function getRecentSales() {
     .select(`
       *,
       customers (name, phone_number),
-      sale_items (item_name, quantity, unit_price)
+      sale_items!sale_id (item_name, quantity, unit_price)
     `)
     .eq('retailer_id', retailerId)
     .order('created_at', { ascending: false })

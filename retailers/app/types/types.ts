@@ -9,9 +9,9 @@ export interface DashboardCustomer {
 export interface Customer {
     id: string;
     name: string;
-    phone: string;
-    first_purchase: string;
-    last_purchase: string;
+    phone_number: string;
+    first_purchase_date: string;
+    last_purchase_date: string;
     purchase_count: number,
     total_spent: number;
     status: 'new' | 'repeat' | 'churned';

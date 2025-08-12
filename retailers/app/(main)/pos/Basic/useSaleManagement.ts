@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo } from 'react';
 import { SaleItem, CustomerData, Sale } from '@/app/types/pos';
 import { createSale } from './HelperFunctions/sales';
+import { createMessage } from './HelperFunctions/WhatsappReceipt';
 
 type Step = 'sale' | 'customer' | 'payment' | 'complete';
 
@@ -75,6 +76,8 @@ export const useSaleManagement = () => {
 
       // Submit to database
       await createSale(saleDataToSubmit, total);
+      //Send receipt
+      await createMessage()
       
       // Create completed sale object
       const newSale: Sale = {
