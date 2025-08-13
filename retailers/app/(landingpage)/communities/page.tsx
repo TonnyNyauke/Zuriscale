@@ -300,7 +300,7 @@ export default function CommunitiesPage() {
                 Why Join Our Fashion Retail Community?
               </h2>
               <p className="text-lg text-gray-600 text-center mb-12 max-w-3xl mx-auto">
-                Being a fashion retailer in Kenya comes with unique challenges. From seasonal trends to customer retention, inventory management to digital marketing - you&apos;re juggling it all. That&apos;s exactly why our community exists.
+                Being a boutique owner in Kenya comes with unique challenges. From seasonal trends to customer retention, inventory management to digital marketing - you&apos;re juggling it all. That&apos;s exactly why our community exists.
               </p>
               
               <div className="grid md:grid-cols-3 gap-8 mb-12">
