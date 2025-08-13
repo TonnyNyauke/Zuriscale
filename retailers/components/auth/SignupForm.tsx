@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import { z } from 'zod';
-import { Check, ArrowRight, ArrowLeft, Sparkles, Shield, Clock, Users, Eye, EyeOff, AlertCircle, Star, Phone, User, Lock, Zap, TrendingUp, MessageSquare, Mail, CheckCircle } from 'lucide-react';
+import { Check, ArrowRight, ArrowLeft, Sparkles, Shield, Clock, Users, Eye, EyeOff, AlertCircle, Star, Phone, User, Lock, Zap, TrendingUp, MessageSquare, Mail, CheckCircle, Home } from 'lucide-react';
 import { createClient } from '@/utils/supabase/client';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 const supabase = createClient();
 
@@ -190,6 +191,13 @@ export default function ZuriscaleSignup({signupAction}: SignupProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-teal-50 flex">
+      <Link 
+        href="/"
+        className="absolute top-4 left-4 z-10 flex items-center space-x-2 text-gray-600 hover:text-teal-600 transition-colors bg-white/80 backdrop-blur-sm px-3 py-2 rounded-lg border border-gray-200/50"
+      >
+        <Home className="w-4 h-4" />
+        <span className="text-sm font-medium">Back to Home</span>
+      </Link>
       {/* Left Side - Value Proposition */}
       <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-teal-600 to-teal-700 p-12 flex-col justify-between text-white">
         <div>

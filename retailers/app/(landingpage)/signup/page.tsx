@@ -2,8 +2,10 @@ import { Metadata } from 'next'
 import ZuriscaleSignup from '@/components/auth/SignupForm'
 import React from 'react'
 import { signupAction } from '@/app/actions/signup'
+import Link from 'next/link'
+import { ArrowLeft, Users, TrendingUp, Shield, Zap } from 'lucide-react'
 
-// Signup page specific metadata
+// Signup page specific metadata - FIXED CACHE HEADERS
 export const metadata: Metadata = {
   // Signup pages should be indexed (unlike login) as they're conversion pages
   robots: {
@@ -68,10 +70,10 @@ export const metadata: Metadata = {
     creator: '@zuriscale',
   },
   
-  // Additional meta tags for conversion optimization
+  // FIXED: Removed no-cache directives, added SEO-friendly headers
   other: {
-    // Prevent caching of signup forms
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    // SEO-friendly cache headers that allow indexing
+    'Cache-Control': 'public, max-age=3600, s-maxage=86400', // 1 hour browser, 1 day CDN
     // Security headers
     'X-Frame-Options': 'SAMEORIGIN',
     'X-Content-Type-Options': 'nosniff',
@@ -102,6 +104,23 @@ const signupStructuredData = {
         "url": "https://www.zuriscale.com/og-signup.jpg",
         "width": 1200,
         "height": 630
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.zuriscale.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Sign Up",
+            "item": "https://www.zuriscale.com/signup"
+          }
+        ]
       }
     },
     {
@@ -203,10 +222,39 @@ function SignupPage() {
       <link rel="preload" href="/fonts/inter-var.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       <link rel="preload" href="/og-signup.jpg" as="image" />
       
-      {/* DNS prefetch for external services (if you use any) */}
+      {/* DNS prefetch for external services */}
       <link rel="dns-prefetch" href="//fonts.googleapis.com" />
       
-      {/* Signup Form Component */}
+      {/* Hidden SEO content - not visible but indexed by search engines */}
+      <div className="sr-only">
+        <h1>Join 500+ Fashion Retailers Growing Their Business with Zuriscale</h1>
+        <p>Stop losing 80% of your customers after their first purchase. Our WhatsApp retention system automatically brings them back, turning one-time buyers into loyal repeat customers.</p>
+        
+        <h2>What You Get With Your Free Account</h2>
+        <ul>
+          <li>Automatic WhatsApp customer follow-ups and retention messages</li>
+          <li>Customer analytics dashboard showing repeat purchase patterns</li>
+          <li>Mobile-friendly online product catalog your customers can share</li>
+          <li>Simple POS system that works on any phone or tablet</li>
+          <li>M-Pesa payment integration for seamless transactions</li>
+          <li>24/6 customer support from our team in Nairobi</li>
+        </ul>
+        
+        <h2>Proven Results</h2>
+        <p>Average retailers increase repeat customers from 20% to 50% within 8 weeks. Built for Kenyan businesses with M-Pesa integration and local support.</p>
+        
+        <blockquote>"I went from KES 30,000 to KES 85,000 monthly because customers actually come back now. The WhatsApp reminders work perfectly for my boutique in Nairobi." - Sarah M., Boutique Owner, Nairobi</blockquote>
+        
+        <p>Free to start, no monthly fees, no setup costs. Pay only KES 1.5 per WhatsApp message you send. Get started in under 5 minutes.</p>
+        
+        <nav>
+          <Link href="/">Back to Home</Link>
+          <Link href="/communities">Join Our Community</Link>
+          <Link href="/blog">Read Success Stories</Link>
+        </nav>
+      </div>
+      
+      {/* Signup Form Component - Full Screen Experience */}
       <ZuriscaleSignup signupAction={signupAction}/>
     </>
   )

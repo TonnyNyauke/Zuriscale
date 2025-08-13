@@ -1,4 +1,4 @@
-//app/page.tsx (Conversion Optimized - Server Component)
+//app/page.tsx (Conversion Optimized - Server Component with ROI Calculator)
 import { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -6,8 +6,10 @@ import { Check, ArrowRight, MessageSquare, TrendingUp, Users, ShoppingBag, Star,
 import MobileNav from '@/components/MobileNav';
 import Link from 'next/link';
 import ClientTrackingWrapper from '@/components/ClientTrackingWrapper';
+import ROICalculator from '@/components/ROICalculator';
+import HeroSection from '@/components/HeroSection';
 
-// Page-specific metadata
+// Page-specific metadata (same as before)
 export const metadata: Metadata = {
   robots:{
     index: true,
@@ -60,7 +62,7 @@ export const metadata: Metadata = {
   },
 };
 
-// Structured data
+// Structured data (same as before)
 const structuredData = {
   "@context": "https://schema.org",
   "@graph": [
@@ -119,96 +121,48 @@ export default function ZuriscaleLanding() {
         <MobileNav />
 
         {/* Problem-Aware Hero Section */}
-        <section className="container mx-auto px-4 py-12 md:py-20">
-          
-          {/* Attention-Grabbing Problem Statement */}
-          <div className="text-center mb-8">
-            <div className="bg-red-100 border border-red-200 rounded-lg p-4 mb-6 inline-block">
-              <div className="flex items-center gap-2 text-red-800">
-                <AlertTriangle className="h-5 w-5" />
-                <span className="font-semibold">Alert for Kenyan Boutique Owners</span>
-              </div>
-            </div>
-            
-            <h1 className="text-3xl md:text-5xl font-bold mb-6 text-gray-800 leading-tight">
-              Your Boutique Business is Losing 
-              <span className="block text-red-600 mt-2">80% of Customers</span>
-              <span className="block text-gray-800 mt-2">After One Purchase</span>
-            </h1>
+        <HeroSection />
 
-            <p className="text-lg md:text-xl text-gray-600 mb-6 max-w-3xl mx-auto">
-              Most Kenyan boutique businesses don&apos;t realize that <strong>8 out of 10 customers</strong> who buy from their boutique 
-              <strong> never come back</strong>. That&apos;s thousands of shillings in lost boutique revenue every month.
-            </p>
-
-            {/* Money Lost Calculator */}
-            <div className="bg-gradient-to-r from-red-500 to-red-600 text-white px-6 py-4 rounded-xl mb-8 shadow-lg max-w-md mx-auto">
-              <p className="text-sm opacity-90 mb-1">If your boutique serves 100 customers monthly:</p>
-              <p className="text-2xl font-bold">
-                You&apos;re losing KES 240,000+
+        {/* NEW: ROI Calculator Section */}
+        <section id="roi-calculator" className="bg-gradient-to-br from-red-50 to-orange-50 py-16">
+          <div className="container mx-auto px-4">
+            {/* Problem Reinforcement Header */}
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
+                Calculate How Much Your Boutique is Actually Losing
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Most boutique owners are shocked when they see their real numbers. 
+                Use this calculator to see exactly how much revenue you're missing every month.
               </p>
-              <p className="text-sm opacity-90">in potential boutique revenue every year</p>
             </div>
-          </div>
-
-          {/* Solution Promise */}
-          <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-800">
-              Zuriscale Keeps Your Boutique Customers Coming Back
-            </h2>
-            <p className="text-lg text-gray-600 mb-6 max-w-2xl mx-auto">
-              Our WhatsApp retention system automatically follows up with your boutique customers, 
-              sends personalized offers, and tracks what actually works for your boutique business.
-            </p>
-          </div>
-
-          {/* Single Primary CTA */}
-          <div className="text-center mb-8">
-            <Button 
-              size="lg" 
-              className="bg-red-500 hover:bg-red-600 text-white shadow-lg px-8 py-4 text-lg"
-              asChild
-            >
-              <Link href="/signup" data-track-event="hero_cta_click" data-track-properties='{"position":"primary"}'>
-                Start Free - No Setup Fees
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
             
-            <p className="text-sm text-gray-500 mt-3">
-              Free to start • Pay only when you send messages • M-Pesa accepted
-            </p>
+            {/* ROI Calculator Component */}
+            <ROICalculator />
             
-            {/* Secondary Education Link */}
-            <div className="mt-4">
-              <button 
-                className="text-teal-600 hover:text-teal-700 underline text-sm"
-                data-track-event="hero_learn_more_click"
-              >
-                See how it works in 30 seconds ↓
-              </button>
-            </div>
-          </div>
-
-          {/* Enhanced Social Proof */}
-          <div className="text-center">
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm">
-              <div className="flex items-center gap-2">
-                <div className="flex" role="img" aria-label="5 star rating">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="h-4 w-4 fill-current text-amber-400" />
-                  ))}
+            {/* Social Proof Integration */}
+            <div className="max-w-2xl mx-auto mt-6">
+              <div className="bg-white/60 backdrop-blur-sm rounded-lg p-4 border border-white/80 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-emerald-400 to-emerald-500 rounded-full flex items-center justify-center">
+                    <span className="text-white font-semibold text-sm">GK</span>
+                  </div>
+                  <div>
+                    <p className="text-sm italic text-gray-700">
+                      "I was losing KES 45,000 monthly and didn't even know it. 
+                      Now I keep 60% of my customers coming back."
+                    </p>
+                    <p className="text-xs text-gray-600 mt-1">- Grace K., Boutique Owner, Westlands</p>
+                  </div>
                 </div>
-                <span className="text-gray-600">4.8/5 from retailers</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-emerald-500" />
-                <span className="text-gray-600">Growing Kenyan businesses</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-emerald-500" />
-                <span className="text-gray-600">24/6 Support</span>
-              </div>
+            </div>
+            
+            {/* Bridge to Solution */}
+            <div className="text-center mt-8">
+              <p className="text-gray-600 mb-4">
+                These numbers don't have to be permanent. Here's how to fix it ↓
+              </p>
             </div>
           </div>
         </section>
@@ -337,7 +291,7 @@ export default function ZuriscaleLanding() {
                 Choose Your Boutique Business Growth Plan
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                Start free, scale as your boutique grows. All plans include M-Pesa payments and 24/6 support.
+                Start with our affordable Basic plan, scale as your boutique grows. All plans include M-Pesa payments and 24/6 support.
               </p>
             </div>
 
@@ -348,9 +302,9 @@ export default function ZuriscaleLanding() {
                 <div className="text-center mb-6">
                   <h3 className="text-xl font-bold text-gray-800 mb-2">Basic</h3>
                   <div className="text-3xl font-bold text-gray-800 mb-2">
-                    Free to Start
+                    $13<span className="text-lg text-gray-500">/month</span>
                   </div>
-                  <p className="text-sm text-gray-600">Pay only for WhatsApp messages</p>
+                  <p className="text-sm text-gray-600">Perfect for starting boutique businesses</p>
                   <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 mt-2">
                     Most Popular for New Boutiques
                   </Badge>
@@ -359,7 +313,7 @@ export default function ZuriscaleLanding() {
                 <div className="space-y-3 mb-6">
                   <div className="flex items-center gap-3">
                     <Check className="h-4 w-4 text-emerald-500" />
-                    <span className="text-sm">WhatsApp messaging (KES 1.5/message)</span>
+                    <span className="text-sm">1,000 WhatsApp messages included</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Check className="h-4 w-4 text-emerald-500" />
@@ -377,6 +331,10 @@ export default function ZuriscaleLanding() {
                     <Check className="h-4 w-4 text-emerald-500" />
                     <span className="text-sm">M-Pesa integration</span>
                   </div>
+                  <div className="flex items-center gap-3">
+                    <Check className="h-4 w-4 text-emerald-500" />
+                    <span className="text-sm">24/6 customer support</span>
+                  </div>
                 </div>
 
                 <Button 
@@ -384,9 +342,18 @@ export default function ZuriscaleLanding() {
                   asChild
                 >
                   <Link href="/signup" data-track-event="pricing_cta_click" data-track-properties='{"plan":"basic"}'>
-                    Start Free
+                    Start Basic Plan
                   </Link>
                 </Button>
+                
+                <div className="mt-3 text-center">
+                  <p className="text-xs text-emerald-600 font-semibold">
+                    90-Day Money-Back Guarantee
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    Additional messages: $0.01 each
+                  </p>
+                </div>
               </div>
 
               {/* Standard Plan */}
@@ -410,7 +377,7 @@ export default function ZuriscaleLanding() {
                   </div>
                   <div className="flex items-center gap-3">
                     <Check className="h-4 w-4 text-emerald-500" />
-                    <span className="text-sm">500 FREE WhatsApp messages/month</span>
+                    <span className="text-sm">5,000 WhatsApp messages included</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Check className="h-4 w-4 text-emerald-500" />
@@ -438,6 +405,15 @@ export default function ZuriscaleLanding() {
                     Choose Standard
                   </Link>
                 </Button>
+                
+                <div className="mt-3 text-center">
+                  <p className="text-xs text-emerald-600 font-semibold">
+                    90-Day Money-Back Guarantee
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    Additional messages: $0.008 each
+                  </p>
+                </div>
               </div>
 
               {/* Pro Plan */}
@@ -457,7 +433,7 @@ export default function ZuriscaleLanding() {
                   </div>
                   <div className="flex items-center gap-3">
                     <Check className="h-4 w-4 text-emerald-500" />
-                    <span className="text-sm">2000 FREE WhatsApp messages/month</span>
+                    <span className="text-sm">15,000 WhatsApp messages included</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Check className="h-4 w-4 text-emerald-500" />
@@ -485,13 +461,29 @@ export default function ZuriscaleLanding() {
                     Choose Pro
                   </Link>
                 </Button>
+                
+                <div className="mt-3 text-center">
+                  <p className="text-xs text-emerald-600 font-semibold">
+                    90-Day Money-Back Guarantee
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    Additional messages: $0.006 each
+                  </p>
+                </div>
               </div>
             </div>
 
-            {/* Message Pricing Note */}
+            {/* Updated Message Pricing Note */}
             <div className="text-center mt-8">
-              <p className="text-sm text-gray-600">
-                Additional WhatsApp messages: KES 1.5 each • M-Pesa payments accepted • Cancel anytime
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 max-w-3xl mx-auto">
+                <h4 className="font-semibold text-blue-800 mb-2">Flexible Message System</h4>
+                <p className="text-sm text-blue-700">
+                  When you exceed your monthly message limit, you can purchase additional messages or upgrade to a higher plan. 
+                  No service interruption - you stay in control of your boutique messaging.
+                </p>
+              </div>
+              <p className="text-sm text-gray-600 mt-4">
+                M-Pesa payments accepted • 90-day money-back guarantee • Cancel anytime
               </p>
             </div>
           </div>
@@ -545,7 +537,7 @@ export default function ZuriscaleLanding() {
             </h2>
             <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto">
               Join the Kenyan boutique owners who are keeping their customers coming back. 
-              Start your free boutique growth account in under 2 minutes.
+              Start your free trial and begin retaining customers in minutes.
             </p>
             
             <Button 
@@ -554,13 +546,13 @@ export default function ZuriscaleLanding() {
               asChild
             >
               <Link href="/signup" data-track-event="final_cta_click">
-                Create Free Account Now
+                Start Growing Your Boutique Today
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
             
             <p className="text-sm mt-4 opacity-75">
-              Free to start • No setup fees • 24/6 support • Cancel anytime
+              $13/month with 1,000 messages • 90-day money-back guarantee • 24/6 support
             </p>
           </div>
         </section>
