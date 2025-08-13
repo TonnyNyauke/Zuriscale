@@ -48,7 +48,7 @@ export default function CustomerProfile({ customer,
           </div>
           
           <h2 className="text-xl font-bold text-gray-900 mb-1">{customer.name}</h2>
-          <p className="text-sm text-gray-600 mb-2">{customer.phone}</p>
+          <p className="text-sm text-gray-600 mb-2">{customer.phone_number}</p>
           
           <div className="flex justify-center space-x-2">
             <span className={`px-3 py-1 text-xs font-semibold rounded-full ${
@@ -114,7 +114,7 @@ export default function CustomerProfile({ customer,
               <div className="bg-gray-50 rounded-lg p-4">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-gray-700">Customer Since</span>
-                  <span className="text-sm text-gray-900">{new Date(customer.first_purchase).toLocaleDateString()}</span>
+                  <span className="text-sm text-gray-900">{new Date(customer.first_purchase_date).toLocaleDateString()}</span>
                 </div>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium text-gray-700">Last Order</span>
@@ -122,7 +122,7 @@ export default function CustomerProfile({ customer,
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm font-medium text-gray-700">Last Purchase</span>
-                  <span className="text-sm text-gray-900">{new Date(customer.last_purchase).toLocaleDateString()}</span>
+                  <span className="text-sm text-gray-900">{new Date(customer.last_purchase_date).toLocaleDateString()}</span>
                 </div>
               </div>
             </div>
