@@ -3,12 +3,22 @@
 import { Button } from '@/components/ui/button';
 import { Check, ArrowRight, Star, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
+import { MouseEvent, useCallback } from 'react';
+
+// Extend Window interface for gtag
+declare global {
+  interface Window {
+    gtag?: (command: string, eventName: string, params: Record<string, string>) => void;
+  }
+}
 
 export default function HeroSection() {
-  const handleScrollToCalculator = () => {
-    // Track the click
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'hero_learn_more_click', {
+  const handleScrollToCalculator = useCallback((e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    
+    // Track the click with type safety
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'hero_learn_more_click', {
         section: 'hero',
         target: 'roi_calculator'
       });
@@ -16,7 +26,7 @@ export default function HeroSection() {
     
     // Scroll to calculator
     document.getElementById('roi-calculator')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  }, []);
 
   return (
     <section className="container mx-auto px-4 py-12 md:py-20">
@@ -67,14 +77,14 @@ export default function HeroSection() {
             Start for just $13/month - includes 1,000 WhatsApp messages
           </p>
           <p className="text-emerald-700 text-sm">
-            That's enough to follow up with 200+ customers monthly
+            That&apos;s enough to follow up with 200+ customers monthly
           </p>
         </div>
         
         {/* Money Back Guarantee Badge */}
         <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-full mb-6 shadow-lg max-w-sm mx-auto">
           <p className="font-bold text-lg">90-Day Money-Back Guarantee</p>
-          <p className="text-sm opacity-90">If you don't see results, get 100% refunded</p>
+          <p className="text-sm opacity-90">If you don&apos;t see results, get 100% refunded</p>
         </div>
       </div>
 
@@ -85,7 +95,11 @@ export default function HeroSection() {
           className="bg-red-500 hover:bg-red-600 text-white shadow-lg px-8 py-4 text-lg"
           asChild
         >
-          <Link href="/signup" data-track-event="hero_cta_click" data-track-properties='{"position":"primary"}'>
+          <Link 
+            href="/signup" 
+            data-track-event="hero_cta_click" 
+            data-track-properties='{"position":"primary"}'
+          >
             Start Growing Your Boutique Today
             <ArrowRight className="ml-2 h-5 w-5" />
           </Link>
@@ -100,6 +114,7 @@ export default function HeroSection() {
           <button 
             className="text-teal-600 hover:text-teal-700 underline text-sm"
             onClick={handleScrollToCalculator}
+            aria-label="Calculate your boutique revenue losses"
           >
             Calculate your exact losses first ↓
           </button>

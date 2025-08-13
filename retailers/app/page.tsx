@@ -2,7 +2,7 @@
 import { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Check, ArrowRight, MessageSquare, TrendingUp, Users, ShoppingBag, Star, AlertTriangle } from 'lucide-react';
+import { Check, ArrowRight, MessageSquare, TrendingUp, Users, ShoppingBag, Star } from 'lucide-react';
 import MobileNav from '@/components/MobileNav';
 import Link from 'next/link';
 import ClientTrackingWrapper from '@/components/ClientTrackingWrapper';
@@ -133,7 +133,7 @@ export default function ZuriscaleLanding() {
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                 Most boutique owners are shocked when they see their real numbers. 
-                Use this calculator to see exactly how much revenue you're missing every month.
+                Use this calculator to see exactly how much revenue you&apos;re missing every month.
               </p>
             </div>
             
@@ -149,8 +149,8 @@ export default function ZuriscaleLanding() {
                   </div>
                   <div>
                     <p className="text-sm italic text-gray-700">
-                      "I was losing KES 45,000 monthly and didn't even know it. 
-                      Now I keep 60% of my customers coming back."
+                      &quot;I was losing KES 45,000 monthly and didn&apos;t even know it. 
+                      Now I keep 60% of my customers coming back.&quot;
                     </p>
                     <p className="text-xs text-gray-600 mt-1">- Grace K., Boutique Owner, Westlands</p>
                   </div>
@@ -161,7 +161,7 @@ export default function ZuriscaleLanding() {
             {/* Bridge to Solution */}
             <div className="text-center mt-8">
               <p className="text-gray-600 mb-4">
-                These numbers don't have to be permanent. Here's how to fix it ↓
+                These numbers don&apos;t have to be permanent. Here&apos;s how to fix it ↓
               </p>
             </div>
           </div>
