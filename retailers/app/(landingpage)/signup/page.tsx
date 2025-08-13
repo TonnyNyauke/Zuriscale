@@ -3,7 +3,6 @@ import ZuriscaleSignup from '@/components/auth/SignupForm'
 import React from 'react'
 import { signupAction } from '@/app/actions/signup'
 import Link from 'next/link'
-import { ArrowLeft, Users, TrendingUp, Shield, Zap } from 'lucide-react'
 
 // Signup page specific metadata - FIXED CACHE HEADERS
 export const metadata: Metadata = {
@@ -243,7 +242,7 @@ function SignupPage() {
         <h2>Proven Results</h2>
         <p>Average retailers increase repeat customers from 20% to 50% within 8 weeks. Built for Kenyan businesses with M-Pesa integration and local support.</p>
         
-        <blockquote>"I went from KES 30,000 to KES 85,000 monthly because customers actually come back now. The WhatsApp reminders work perfectly for my boutique in Nairobi." - Sarah M., Boutique Owner, Nairobi</blockquote>
+        <blockquote>&quot;I went from KES 30,000 to KES 85,000 monthly because customers actually come back now. The WhatsApp reminders work perfectly for my boutique in Nairobi.&quot; - Sarah M., Boutique Owner, Nairobi</blockquote>
         
         <p>Free to start, no monthly fees, no setup costs. Pay only KES 1.5 per WhatsApp message you send. Get started in under 5 minutes.</p>
         
