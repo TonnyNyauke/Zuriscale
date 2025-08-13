@@ -11,20 +11,13 @@ interface TrackingProperties {
   [key: string]: string | number | boolean | undefined;
 }
 
-interface WindowWithGtag extends Window {
-  gtag?: (
-    command: 'event',
-    eventName: string,
-    properties?: TrackingProperties
-  ) => void;
-}
-
 // Analytics tracking function
 const trackEvent = (eventName: string, properties?: TrackingProperties): void => {
   if (typeof window !== 'undefined') {
     // Google Analytics 4 event tracking
-    const windowWithGtag = window as WindowWithGtag;
-    windowWithGtag.gtag?.('event', eventName, properties);
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', eventName, properties || {});
+    }
     
     // Custom analytics event (you can replace with your analytics service)
     // Note: Remove console.log in production for security
