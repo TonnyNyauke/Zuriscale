@@ -300,7 +300,7 @@ export default function CommunitiesPage() {
                 Why Join Our Fashion Retail Community?
               </h2>
               <p className="text-lg text-gray-600 text-center mb-12 max-w-3xl mx-auto">
-                Being a fashion retailer in Kenya comes with unique challenges. From seasonal trends to customer retention, inventory management to digital marketing - you're juggling it all. That's exactly why our community exists.
+                Being a fashion retailer in Kenya comes with unique challenges. From seasonal trends to customer retention, inventory management to digital marketing - you&apos;re juggling it all. That's exactly why our community exists.
               </p>
               
               <div className="grid md:grid-cols-3 gap-8 mb-12">
@@ -310,7 +310,7 @@ export default function CommunitiesPage() {
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">Peer Learning & Support</h3>
                   <p className="text-gray-600">
-                    Learn from retailers who've solved the same problems you're facing. Get practical advice from people who understand the Kenyan market, customer behavior, and local business challenges.
+                    Learn from retailers who&apos;ve solved the same problems you&apos;re facing. Get practical advice from people who understand the Kenyan market, customer behavior, and local business challenges.
                   </p>
                 </div>
                 
@@ -518,7 +518,7 @@ export default function CommunitiesPage() {
                 How to Get the Most from Our Community
               </h2>
               <p className="text-lg text-gray-600 text-center mb-12">
-                Joining is just the first step. Here's how to maximize your community experience and accelerate your business growth.
+                Joining is just the first step. Here&apos;s how to maximize your community experience and accelerate your business growth.
               </p>
               
               <div className="grid md:grid-cols-2 gap-8 mb-12">
@@ -575,7 +575,7 @@ export default function CommunitiesPage() {
                 <h4 className="font-semibold text-gray-900 mb-2">💡 Pro Tip for Maximum Value:</h4>
                 <p className="text-gray-700">
                   The most successful community members are those who actively share their experiences - both successes and failures. 
-                  Don't wait until you're "successful enough" to contribute. Your current challenges are exactly what someone else needs to hear about.
+                  Don&apos;t wait until you&apos;re &qupt;successful enough&qupt; to contribute. Your current challenges are exactly what someone else needs to hear about.
                 </p>
               </div>
             </div>
@@ -589,7 +589,7 @@ export default function CommunitiesPage() {
               Community Guidelines & Values
             </h2>
             <p className="text-lg text-gray-600 text-center mb-12">
-              Our community thrives because we maintain high standards of engagement and mutual respect. Here's what we expect from all members.
+              Our community thrives because we maintain high standards of engagement and mutual respect. Here&apos;s what we expect from all members.
             </p>
             
             <div className="grid gap-6">

@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Calculator, TrendingUp, ArrowDown, Clock, CheckCircle, AlertTriangle } from 'lucide-react';
 
+// Define types
 interface CalculatorState {
   monthlyCustomers: number;
   averageOrderValue: number;
@@ -17,6 +18,27 @@ interface PlanDetails {
   color: string;
   bgColor: string;
   borderColor: string;
+}
+
+interface CalculatorResults {
+  currentRevenue: number;
+  lostRevenue: number;
+  potentialRevenue: number;
+  yearlyIncrease: number;
+  daysToBreakEven: number;
+  competitorAdvantage: number;
+  recommendedPlan: string;
+  planCost: number;
+  messagesNeeded: number;
+  totalMonthlyCost: number;
+  roi: number;
+}
+
+// Extend Window interface for gtag
+declare global {
+  interface Window {
+    gtag?: (command: string, eventName: string, params: Record<string, unknown>) => void;
+  }
 }
 
 const plans: Record<string, PlanDetails> = {
@@ -57,7 +79,7 @@ export default function ROICalculator() {
   });
 
   const [selectedPlan, setSelectedPlan] = useState<string>('basic');
-  const [results, setResults] = useState({
+  const [results, setResults] = useState<CalculatorResults>({
     currentRevenue: 0,
     lostRevenue: 0,
     potentialRevenue: 0,
@@ -72,58 +94,59 @@ export default function ROICalculator() {
   });
 
   // Determine recommended plan based on business size
-  const getRecommendedPlan = (monthlyCustomers: number): string => {
+  const getRecommendedPlan = useCallback((monthlyCustomers: number): string => {
     if (monthlyCustomers <= 75) return 'basic';
     if (monthlyCustomers <= 300) return 'standard';
     return 'pro';
-  };
+  }, []);
 
-  // Calculate messages needed (assuming 3-5 messages per customer per month for retention)
-  const calculateMessagesNeeded = (monthlyCustomers: number): number => {
-    return monthlyCustomers * 4; // 4 messages per customer per month on average
-  };
+  // Calculate messages needed
+  const calculateMessagesNeeded = useCallback((monthlyCustomers: number): number => {
+    return monthlyCustomers * 4;
+  }, []);
 
-  // Calculate total monthly cost including overages
-  const calculateTotalMonthlyCost = (messagesNeeded: number, plan: PlanDetails): number => {
+  // Calculate total monthly cost
+  const calculateTotalMonthlyCost = useCallback((
+    messagesNeeded: number, 
+    plan: PlanDetails
+  ): number => {
     const planCostUSD = plan.monthlyPrice;
     if (messagesNeeded <= plan.messagesIncluded) {
-      return planCostUSD * 130; // Convert to KES
+      return planCostUSD * 130;
     }
     const overageMessages = messagesNeeded - plan.messagesIncluded;
     const overageCost = overageMessages * plan.additionalMessageCost;
-    return (planCostUSD + overageCost) * 130; // Convert to KES
-  };
+    return (planCostUSD + overageCost) * 130;
+  }, []);
 
-  useEffect(() => {
+  // Calculate results
+  const calculateResults = useCallback(() => {
     const currentRevenue = values.monthlyCustomers * values.averageOrderValue;
     
-    // Calculate current retention rate from actual numbers
-    const currentRetentionRate = values.monthlyCustomers > 0 ? (values.returningCustomers / values.monthlyCustomers) * 100 : 0;
+    const currentRetentionRate = values.monthlyCustomers > 0 ? 
+      (values.returningCustomers / values.monthlyCustomers) * 100 : 0;
     const currentRetentionRevenue = currentRevenue * (currentRetentionRate / 100);
     
-    // S-Curve Adoption Model for realistic retention improvement
-    // Formula: y = L / (1 + e^(-k(x-x0))) where L = limit, k = growth rate, x0 = inflection point
     const currentRateDecimal = currentRetentionRate / 100;
-    const targetImprovement = Math.min(0.65, currentRateDecimal + 0.35); // Target max 65% or +35%, whichever is lower
+    const targetImprovement = Math.min(0.65, currentRateDecimal + 0.35);
     const improvementPotential = targetImprovement - currentRateDecimal;
     
     // S-curve parameters
-    const L = improvementPotential; // Maximum improvement possible
-    const k = 0.8; // Growth rate (how quickly we reach target)
-    const x0 = 3; // Inflection point (month 3)
+    const L = improvementPotential;
+    const k = 0.8;
+    const x0 = 3;
     
-    // Calculate retention improvement over time using S-curve
+    // Calculate retention improvement over time
     const getRetentionAtMonth = (month: number) => {
       const sCurveProgress = L / (1 + Math.exp(-k * (month - x0)));
       return currentRateDecimal + sCurveProgress;
     };
     
-    // Monthly retention rates (more realistic progression)
-    const month1Retention = getRetentionAtMonth(1) * 100; // ~5-10% improvement
-    const month2Retention = getRetentionAtMonth(2) * 100; // ~15-25% improvement  
-    const month3Retention = getRetentionAtMonth(3) * 100; // ~40-50% improvement
-    const month6Retention = getRetentionAtMonth(6) * 100; // ~80-90% of target
-    const month12Retention = getRetentionAtMonth(12) * 100; // Near full target
+    // Monthly retention rates
+    const month1Retention = getRetentionAtMonth(1) * 100;
+    const month2Retention = getRetentionAtMonth(2) * 100;
+    const month3Retention = getRetentionAtMonth(3) * 100;
+    const month6Retention = getRetentionAtMonth(6) * 100;
     
     // Revenue calculations
     const month1Revenue = currentRevenue * (month1Retention / 100);
@@ -136,93 +159,91 @@ export default function ROICalculator() {
     const month3Increase = month3Revenue - currentRetentionRevenue;
     const month6Increase = month6Revenue - currentRetentionRevenue;
     
-    // Use month 6 as "steady state" for calculations
     const monthlyIncrease = month6Increase;
-    
-    // Realistic yearly calculation using cumulative improvements
-    const yearlyIncrease = month1Increase + month2Increase + month3Increase + 
-                          (month6Increase * 9); // Months 4-12 at near-target performance
-    
+    const yearlyIncrease = month1Increase + month2Increase + month3Increase + (month6Increase * 9);
+
     // Lost revenue calculation
-    const maxPossibleRetention = currentRevenue * 0.70; // 70% theoretical max
+    const maxPossibleRetention = currentRevenue * 0.70;
     const lostRevenue = maxPossibleRetention - currentRetentionRevenue;
 
-    // Recommend plan based on customer size
+    // Recommend plan
     const recommendedPlan = getRecommendedPlan(values.monthlyCustomers);
     
-    // Calculate costs for current selected plan
+    // Calculate costs
     const messagesNeeded = calculateMessagesNeeded(values.monthlyCustomers);
     const currentPlan = plans[selectedPlan];
     const totalMonthlyCost = calculateTotalMonthlyCost(messagesNeeded, currentPlan);
 
-    // Cohort-based Break-Even Analysis (industry standard)
-    // Account for implementation friction and gradual adoption
-    const implementationFriction = 0.6; // 40% initial friction/resistance
+    // Break-even analysis
+    const implementationFriction = 0.6;
     const effectiveMonth1Increase = month1Increase * implementationFriction;
-    const effectiveMonth2Increase = month2Increase * 0.8; // Less friction month 2
-    const effectiveMonth3Increase = month3Increase * 0.9; // Minimal friction month 3
+    const effectiveMonth2Increase = month2Increase * 0.8;
+    const effectiveMonth3Increase = month3Increase * 0.9;
     
-    // Weighted average for break-even (first 3 critical months)
     const weightedAverageIncrease = (effectiveMonth1Increase * 0.5) + 
                                    (effectiveMonth2Increase * 0.3) + 
                                    (effectiveMonth3Increase * 0.2);
     
-    // Break-even using proven business model: 
-    // Days = (Initial Investment / Daily Cash Flow Improvement) + Implementation Time
     const dailyCashFlowImprovement = weightedAverageIncrease / 30;
-    const implementationDays = 14; // 2 weeks setup/training time
+    const implementationDays = 14;
     
     let daysToBreakEven = 0;
     if (dailyCashFlowImprovement > 0) {
       daysToBreakEven = Math.ceil((totalMonthlyCost / dailyCashFlowImprovement) + implementationDays);
       
-      // Apply business reality constraints
+      // Apply business constraints
       if (values.monthlyCustomers < 50) {
-        daysToBreakEven = Math.max(45, daysToBreakEven); // Small businesses need more time
+        daysToBreakEven = Math.max(45, daysToBreakEven);
       } else if (values.monthlyCustomers < 150) {
-        daysToBreakEven = Math.max(30, daysToBreakEven); // Medium businesses
+        daysToBreakEven = Math.max(30, daysToBreakEven);
       } else {
-        daysToBreakEven = Math.max(21, daysToBreakEven); // Large businesses
+        daysToBreakEven = Math.max(21, daysToBreakEven);
       }
       
-      // Cap at reasonable maximum
       daysToBreakEven = Math.min(90, daysToBreakEven);
     }
 
-    // ROI calculation based on month 6 performance (steady state)
-    const roi = totalMonthlyCost > 0 ? ((monthlyIncrease - totalMonthlyCost) / totalMonthlyCost) * 100 : 0;
+    // ROI calculation
+    const roi = totalMonthlyCost > 0 ? 
+      ((monthlyIncrease - totalMonthlyCost) / totalMonthlyCost) * 100 : 0;
 
-    // Competitor advantage calculation
+    // Competitor advantage
     const competitorAdvantage = lostRevenue * 0.6;
 
-    setResults({
+    return {
       currentRevenue,
       lostRevenue,
       potentialRevenue: monthlyIncrease,
       yearlyIncrease,
-      daysToBreakEven: daysToBreakEven,
+      daysToBreakEven,
       competitorAdvantage,
       recommendedPlan,
       planCost: currentPlan.monthlyPrice * 130,
       messagesNeeded,
       totalMonthlyCost,
       roi
-    });
+    };
+  }, [
+    values, 
+    selectedPlan, 
+    getRecommendedPlan, 
+    calculateMessagesNeeded, 
+    calculateTotalMonthlyCost
+  ]);
 
-    // Auto-select recommended plan if user hasn't manually changed it
-    if (selectedPlan !== recommendedPlan && results.recommendedPlan === selectedPlan) {
-      setSelectedPlan(recommendedPlan);
-    }
-  }, [values, selectedPlan]);
+  useEffect(() => {
+    const newResults = calculateResults();
+    setResults(newResults);
+  }, [values, selectedPlan, calculateResults]);
 
-  const formatCurrency = (amount: number) => {
+  const formatCurrency = useCallback((amount: number) => {
     return new Intl.NumberFormat('en-KE', {
       style: 'currency',
       currency: 'KES',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
-  };
+  }, []);
 
   const handleInputChange = (field: keyof CalculatorState, value: string) => {
     const numValue = parseInt(value) || 0;
@@ -234,37 +255,36 @@ export default function ROICalculator() {
   };
 
   const handleCalculatorCTA = (type: 'primary' | 'secondary') => {
-    // Enhanced tracking with plan information
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'calculator_cta_click', {
+    // Enhanced tracking with type safety
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('event', 'calculator_cta_click', {
         cta_type: type,
         selected_plan: selectedPlan,
         recommended_plan: results.recommendedPlan,
         monthly_customers: values.monthlyCustomers,
         avg_order_value: values.averageOrderValue,
         returning_customers: values.returningCustomers,
-        current_retention: values.monthlyCustomers > 0 ? (values.returningCustomers / values.monthlyCustomers) * 100 : 0,
+        current_retention: values.monthlyCustomers > 0 ? 
+          (values.returningCustomers / values.monthlyCustomers) * 100 : 0,
         calculated_loss: results.lostRevenue,
         potential_increase: results.potentialRevenue,
         yearly_impact: results.yearlyIncrease,
         plan_cost: results.totalMonthlyCost,
         roi_percentage: results.roi,
         break_even_days: results.daysToBreakEven,
-        user_segment: values.monthlyCustomers < 75 ? 'small' : values.monthlyCustomers < 300 ? 'medium' : 'large'
+        user_segment: values.monthlyCustomers < 75 ? 'small' : 
+          values.monthlyCustomers < 300 ? 'medium' : 'large'
       });
     }
 
     if (type === 'primary') {
-      // Redirect to signup with plan parameter
       window.location.href = `/signup?plan=${selectedPlan}`;
     } else {
-      // Scroll to pricing
       document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   const currentPlan = plans[selectedPlan];
-  const isRecommended = selectedPlan === results.recommendedPlan;
 
   return (
     <div className="bg-white rounded-2xl shadow-xl border border-red-100 p-6 max-w-3xl mx-auto">

@@ -14,7 +14,8 @@ const productionLogger: SafeLogger = {
       const safeMessage = `${message} - ${sanitizeError(error)}`;
       process.stderr.write(`${new Date().toISOString()} [ERROR] ${safeMessage}\n`);
     } catch (loggingError) {
-      process.stderr.write('Logging mechanism failed!\n');
+      // Use the caught error in the fallback message
+      process.stderr.write(`Logging mechanism failed: ${sanitizeMessage(String(loggingError))}\n`);
     }
   }
 };
@@ -43,7 +44,8 @@ function sanitizeMessage(message: string): string {
   return message
     .replace(/authToken=\w+/g, 'authToken=[REDACTED]')
     .replace(/accountSid=\w+/g, 'accountSid=[REDACTED]')
-    .replace(/\d{4,}/g, '[REDACTED]'); // Remove long numbers
+    .replace(/\d{4,}/g, '[REDACTED]') // Remove long numbers
+    .substring(0, 500); // Limit message length
 }
 
 // Define message options interface
@@ -71,7 +73,7 @@ export async function POST(request: NextRequest) {
     // Validate phone number format
     if (!to || !/^\+[1-9]\d{1,14}$/.test(to)) {
       return NextResponse.json(
-        { success: false, error: 'Invalid phone number format. Use E.164 format (e.g., +14155552671)' },
+        { success: false, error: 'Invalid phone number format. Use E.164 format (e.g., +254700123456)' },
         { status: 400 }
       );
     }
@@ -93,6 +95,11 @@ export async function POST(request: NextRequest) {
       messageOptions.mediaUrl = Array.isArray(mediaUrl) 
         ? mediaUrl.filter(url => isValidMediaUrl(url))
         : [mediaUrl].filter(url => isValidMediaUrl(url));
+      
+      // Limit to 10 media items (Twilio limitation)
+      if (messageOptions.mediaUrl.length > 10) {
+        messageOptions.mediaUrl = messageOptions.mediaUrl.slice(0, 10);
+      }
     }
 
     const message = await client.messages.create(messageOptions);
@@ -125,9 +132,28 @@ export async function POST(request: NextRequest) {
 function isValidMediaUrl(url: string): boolean {
   try {
     const parsed = new URL(url);
-    return ['https:', 'http:'].includes(parsed.protocol) &&
-           !parsed.hostname.includes('localhost') &&
-           !parsed.hostname.includes('127.0.0.1');
+    
+    // Block potentially dangerous protocols
+    if (!['https:', 'http:'].includes(parsed.protocol)) {
+      return false;
+    }
+    
+    // Block internal/private addresses
+    const hostname = parsed.hostname.toLowerCase();
+    if (
+      hostname === 'localhost' ||
+      hostname.endsWith('.localhost') ||
+      hostname === '127.0.0.1' ||
+      hostname === '[::1]' ||
+      /(^|\.)internal$/.test(hostname) ||
+      /^10\./.test(parsed.host) ||       // Private IP range
+      /^192\.168\./.test(parsed.host) || // Private IP range
+      /^172\.(1[6-9]|2\d|3[0-1])\./.test(parsed.host) // Private IP range
+    ) {
+      return false;
+    }
+    
+    return true;
   } catch {
     return false;
   }
@@ -137,6 +163,7 @@ export async function GET() {
   return NextResponse.json({
     status: 'operational',
     timestamp: new Date().toISOString(),
-    version: process.env.APP_VERSION || '1.0.0'
+    version: process.env.APP_VERSION || '1.0.0',
+    environment: process.env.NODE_ENV || 'development'
   });
 }

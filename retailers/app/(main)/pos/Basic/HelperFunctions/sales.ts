@@ -4,6 +4,12 @@ import { CustomerData, SaleItem } from "@/app/types/pos";
 import { createClient } from "@/utils/supabase/server";
 import { SupabaseClient } from "@supabase/supabase-js";
 
+interface UpdateDate {
+  first_purchase_date?: string,
+  last_purchase_date: string,
+  total_spent: number
+}
+
 export async function createSale(saleData: CustomerData, total: number) {
   const supabase = await createClient();
 
@@ -162,7 +168,7 @@ async function updateCustomerStats(supabase: SupabaseClient, customerId: string,
     const newTotalSpent = (customer.total_spent || 0) + saleAmount;
     
     // Prepare update data
-    const updateData: any = {
+    const updateData: UpdateDate = {
       last_purchase_date: now,
       total_spent: newTotalSpent
     };
