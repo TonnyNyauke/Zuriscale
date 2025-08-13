@@ -5,13 +5,6 @@ import { Check, ArrowRight, Star, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 import { MouseEvent, useCallback } from 'react';
 
-// Extend Window interface for gtag
-declare global {
-  interface Window {
-    gtag?: (command: string, eventName: string, params: Record<string, string>) => void;
-  }
-}
-
 export default function HeroSection() {
   const handleScrollToCalculator = useCallback((e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
