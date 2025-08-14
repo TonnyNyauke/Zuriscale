@@ -5,7 +5,7 @@ import MessageInput from '@/components/inbox/MessageInput';
 import ConversationList from '@/components/inbox/ConversationList';
 import MessageThread from '@/components/inbox/MessageThread';
 import CustomerProfile from '@/components/inbox/CustomerProfile';
-import { fetchInboxData, fetchCustomerById } from '@/app/lib/data';
+import { InboxService } from '@/app/lib/inboxService';
 import { Conversation, Customer } from '@/app/types/types';
 
 // Mobile view states
@@ -18,11 +18,22 @@ export default function InboxPage() {
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const handleMessageSent = (newMessage: any) => {
+    // Update the conversation's last message and activity
+    if (selectedConversation) {
+      setSelectedConversation(prev => prev ? {
+        ...prev,
+        last_message: newMessage.text,
+        last_activity: new Date().toISOString()
+      } : null);
+    }
+  };
+
   // Fetch data on component mount
   useEffect(() => {
     const loadInboxData = async () => {
       try {
-        const { conversations, activeConversation, customer } = await fetchInboxData();
+        const { conversations, activeConversation, customer } = await InboxService.fetchInboxData();
         setConversations(conversations);
         setSelectedConversation(activeConversation);
         setCustomer(customer);
@@ -41,9 +52,8 @@ export default function InboxPage() {
     setMobileView('chat');
     
     // Fetch customer data for the selected conversation
-    // This mimics how you'd query the database by customer ID
     try {
-      const selectedCustomer = await fetchCustomerById(conversation.customer_id);
+      const selectedCustomer = await InboxService.fetchCustomerById(conversation.customer_id);
       setCustomer(selectedCustomer);
     } catch (error) {
       console.error('Error loading customer data:', error);
@@ -100,7 +110,12 @@ export default function InboxPage() {
           
           {selectedConversation && (
             <div className="border-t border-gray-200 p-4 bg-white">
-              <MessageInput />
+              <MessageInput 
+                conversationId={selectedConversation.id}
+                customerPhone={customer?.phone_number}
+                customerId={customer?.id}
+                onMessageSent={handleMessageSent}
+              />
             </div>
           )}
         </div>
@@ -176,7 +191,12 @@ export default function InboxPage() {
             
             {selectedConversation && (
               <div className="border-t border-gray-200 p-4 bg-white flex-shrink-0">
-                <MessageInput />
+                <MessageInput 
+                  conversationId={selectedConversation.id}
+                  customerPhone={customer?.phone_number}
+                  customerId={customer?.id}
+                  onMessageSent={handleMessageSent}
+                />
               </div>
             )}
           </div>

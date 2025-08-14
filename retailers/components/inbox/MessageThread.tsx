@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MessageBubble from './MessageBubble';
-import { Conversation } from '@/app/types/types';
+import { Conversation, Message } from '@/app/types/types';
+import { InboxService } from '@/app/lib/inboxService';
 
 interface MessageThreadProps {
   conversation: Conversation;
@@ -16,6 +17,27 @@ export default function MessageThread({
   hideHeader = false 
 }: MessageThreadProps) {
   const [showActions, setShowActions] = useState(false);
+  const [messages, setMessages] = useState<Message[]>(conversation.messages || []);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+
+  // Load messages when conversation changes
+  useEffect(() => {
+    const loadMessages = async () => {
+      if (conversation.id) {
+        setLoadingMessages(true);
+        try {
+          const conversationMessages = await InboxService.fetchConversationMessages(conversation.id);
+          setMessages(conversationMessages);
+        } catch (error) {
+          console.error('Error loading messages:', error);
+        } finally {
+          setLoadingMessages(false);
+        }
+      }
+    };
+
+    loadMessages();
+  }, [conversation.id]);
 
   const getCustomerStatusColor = (type: string) => {
     switch (type) {
@@ -195,8 +217,13 @@ export default function MessageThread({
         )}
 
         {/* Messages List */}
-        {conversation.messages?.length ? (
-          conversation.messages.map((message) => (
+        {loadingMessages ? (
+          <div className="text-center py-8 text-gray-500">
+            <div className="text-4xl mb-2">⏳</div>
+            <p>Loading messages...</p>
+          </div>
+        ) : messages.length ? (
+          messages.map((message) => (
             <MessageBubble key={message.id} message={message} />
           ))
         ) : (

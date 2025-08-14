@@ -2,14 +2,60 @@
 'use client';
 
 import React, { useState } from 'react';
+import { InboxService } from '@/app/lib/inboxService';
+import { TwilioService } from '@/app/lib/twilioService';
 
-export default function MessageInput() {
+interface MessageInputProps {
+  conversationId?: string;
+  customerPhone?: string;
+  customerId?: string;
+  onMessageSent?: (message: any) => void;
+}
+
+export default function MessageInput({ conversationId, customerPhone, customerId, onMessageSent }: MessageInputProps) {
   const [message, setMessage] = useState('');
+  const [sending, setSending] = useState(false);
   
-  const handleSend = () => {
-    if (message.trim()) {
-      console.log('Sending message:', message);
-      setMessage('');
+  const handleSend = async () => {
+    if (message.trim() && conversationId) {
+      setSending(true);
+      try {
+        let sentMessage;
+        
+        // If we have customer phone and ID, send via Twilio and save to inbox
+        if (customerPhone && customerId) {
+          const twilioResponse = await TwilioService.sendMessageWithInboxSync(
+            customerPhone,
+            message.trim(),
+            customerId
+          );
+          
+          if (twilioResponse.success) {
+            // Create a message object for the UI
+            sentMessage = {
+              id: twilioResponse.messageSid || Date.now().toString(),
+              text: message.trim(),
+              sender: 'agent' as const,
+              timestamp: new Date().toISOString(),
+              status: 'sent' as const
+            };
+          } else {
+            throw new Error(twilioResponse.error || 'Failed to send message');
+          }
+        } else {
+          // Fallback to just saving to inbox database
+          sentMessage = await InboxService.sendNewMessage(conversationId, message.trim());
+        }
+        
+        if (sentMessage && onMessageSent) {
+          onMessageSent(sentMessage);
+        }
+        setMessage('');
+      } catch (error) {
+        console.error('Error sending message:', error);
+      } finally {
+        setSending(false);
+      }
     }
   };
   
@@ -33,13 +79,13 @@ export default function MessageInput() {
         <button 
           onClick={handleSend}
           className={`p-2 rounded-full ${
-            message 
+            message && !sending
               ? 'bg-[#00C49A] text-white' 
               : 'bg-gray-200 text-gray-500'
           }`}
-          disabled={!message}
+          disabled={!message || sending}
         >
-          ➤
+          {sending ? '⏳' : '➤'}
         </button>
       </div>
     </div>
