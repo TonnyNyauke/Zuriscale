@@ -151,81 +151,142 @@ export default function HomePage() {
           {/* Hero Section */}
           <HeroSection />
 
-          {/* Features Section */}
-          <section id="features" className="py-16 bg-gray-50">
+          {/* ROI Calculator Section */}
+          <section className="py-16 bg-gradient-to-br from-slate-50 to-teal-50">
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                  Everything You Need to Grow Your Boutique Business
+                  Calculate Your Boutique Business Growth Potential
                 </h2>
                 <p className="text-gray-600 max-w-2xl mx-auto">
-                  From customer retention to inventory management, Zuriscale gives you the tools 
-                  to turn one-time buyers into loyal customers.
+                  See exactly how much more revenue you can generate by keeping customers coming back to your boutique
+                </p>
+              </div>
+              <ROICalculator />
+            </div>
+          </section>
+
+          {/* How It Works Section */}
+          <section className="py-16 bg-white">
+            <div className="container mx-auto px-4">
+              <div className="text-center mb-12">
+                <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                  How Zuriscale Works for Your Boutique
+                </h2>
+                <p className="text-gray-600 max-w-3xl mx-auto">
+                  Simple 3-step process that turns one-time buyers into loyal, returning customers
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                {/* Feature 1 */}
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
-                    <MessageSquare className="h-6 w-6 text-red-600" />
+              <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl font-bold text-red-600">1</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    WhatsApp Customer Retention
-                  </h3>
-                  <p className="text-gray-600">
-                    Automatically follow up with customers after purchases to increase repeat sales. 
-                    Turn one-time buyers into loyal customers.
-                  </p>
+                  <h3 className="text-xl font-bold mb-2">Customer Makes First Purchase</h3>
+                  <p className="text-gray-600">Customer buys from your boutique and gets added to your customer database</p>
                 </div>
 
-                {/* Feature 2 */}
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                  <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
-                    <TrendingUp className="h-6 w-6 text-teal-600" />
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl font-bold text-teal-600">2</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    Customer Analytics Dashboard
-                  </h3>
-                  <p className="text-gray-600">
-                    Track customer behavior, purchase patterns, and retention rates. 
-                    Make data-driven decisions to grow your boutique.
-                  </p>
+                  <h3 className="text-xl font-bold mb-2">Automated Follow-up Messages</h3>
+                  <p className="text-gray-600">System automatically sends personalized WhatsApp messages to bring them back</p>
                 </div>
 
-                {/* Feature 3 */}
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                    <Users className="h-6 w-6 text-blue-600" />
+                <div className="text-center">
+                  <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span className="text-2xl font-bold text-emerald-600">3</span>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    Customer Database Management
-                  </h3>
-                  <p className="text-gray-600">
-                    Organize customer information, purchase history, and preferences. 
-                    Build lasting relationships with your boutique customers.
-                  </p>
+                  <h3 className="text-xl font-bold mb-2">Customer Returns to Your Boutique</h3>
+                  <p className="text-gray-600">They come back for repeat purchases, increasing your boutique's monthly revenue</p>
                 </div>
+              </div>
 
-                {/* Feature 4 */}
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                    <ShoppingBag className="h-6 w-6 text-purple-600" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    Boutique POS System
+              {/* Quick Result Promise */}
+              <div className="text-center mt-12">
+                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6 max-w-2xl mx-auto">
+                  <h3 className="text-xl font-bold text-emerald-800 mb-2">
+                    Result: 30-50% More Monthly Boutique Sales
                   </h3>
-                  <p className="text-gray-600">
-                    Track boutique sales and inventory on any phone or tablet. 
-                    Perfect for Kenyan boutique businesses.
+                  <p className="text-emerald-700">
+                    Instead of losing 80% of boutique customers, you keep 40-60% coming back regularly
                   </p>
                 </div>
               </div>
             </div>
           </section>
 
+          {/* Condensed Social Proof */}
+          <section className="bg-gradient-to-r from-teal-50 to-emerald-50 py-12">
+            <div className="container mx-auto px-4">
+              <div className="max-w-3xl mx-auto text-center">
+                <div className="bg-white p-6 rounded-2xl shadow-sm border border-teal-100">
+                  <div className="flex justify-center mb-3">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="h-5 w-5 fill-current text-amber-400" />
+                    ))}
+                  </div>
+                  <blockquote className="text-lg font-medium mb-3 text-gray-800">
+                    "I went from KES 30,000 to KES 85,000 monthly because customers actually come back now. 
+                    The WhatsApp reminders work perfectly for my boutique in Nairobi."
+                  </blockquote>
+                  <cite className="text-gray-600">
+                    - Sarah M., Boutique Owner, Nairobi
+                  </cite>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Streamlined Features */}
+          <section id="features" className="bg-white py-16">
+            <div className="container mx-auto px-4">
+              <div className="text-center mb-12">
+                <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
+                  Everything Your Boutique Business Needs to Retain Customers
+                </h2>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+                  <MessageSquare className="h-8 w-8 text-teal-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">WhatsApp Boutique Messaging</h3>
+                    <p className="text-gray-600">Automatically send follow-ups, new arrival alerts, and personalized offers to bring boutique customers back.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+                  <TrendingUp className="h-8 w-8 text-amber-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">Boutique Analytics Dashboard</h3>
+                    <p className="text-gray-600">See which boutique customers buy what, when they're likely to return, and what messages work best.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+                  <ShoppingBag className="h-8 w-8 text-red-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">Online Boutique Catalog</h3>
+                    <p className="text-gray-600">Beautiful mobile-friendly boutique store that customers can browse and share with friends.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
+                  <Users className="h-8 w-8 text-emerald-600 flex-shrink-0 mt-1" />
+                  <div>
+                    <h3 className="text-xl font-bold mb-2">Boutique POS System</h3>
+                    <p className="text-gray-600">Track boutique sales and inventory on any phone or tablet. Perfect for Kenyan boutique businesses.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* New Tiered Pricing */}
-          <section id='pricing' className="py-16">
+          <section id="pricing" className="py-16">
             <TieredPricing />
           </section>
 
