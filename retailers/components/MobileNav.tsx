@@ -37,7 +37,7 @@ export default function MobileNav() {
               <Link href="#features" className="text-gray-600 hover:text-teal-600 transition-colors">
                 Features
               </Link>
-              <Link href="#pricing" className="text-gray-600 hover:text-teal-600 transition-colors">
+              <Link href="/pricing" className="text-gray-600 hover:text-teal-600 transition-colors">
                 Pricing
               </Link>
               <Link href="/communities" className="text-gray-600 hover:text-teal-600 transition-colors">
@@ -46,11 +46,9 @@ export default function MobileNav() {
               <Link href="/blog" className="text-gray-600 hover:text-teal-600 transition-colors">
                 Blog
               </Link>
-              <Button className='border bg-white border-teal-600 hover:bg-white'>
-                <Link href="/login" className="text-gray-600 hover:text-teal-600 transition-colors">
-                  Login
-                </Link>
-              </Button>
+              <Link href="/login" className="text-gray-600 hover:text-teal-600 transition-colors">
+                Login
+              </Link>
               <Button className="bg-teal-600 hover:bg-teal-700 text-white">
                 <Link href='/signup'>Start Now</Link>
               </Button>
@@ -96,7 +94,7 @@ export default function MobileNav() {
                   <span>Features</span>
                 </Link>
                 <Link 
-                  href="#pricing" 
+                  href="/pricing" 
                   className="flex items-center space-x-3 text-gray-600 hover:text-teal-600 transition-colors text-lg font-medium"
                   onClick={() => setMobileMenuOpen(false)}
                 >

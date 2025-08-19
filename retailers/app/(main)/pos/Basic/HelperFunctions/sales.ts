@@ -1,7 +1,8 @@
 'use server';
 
 import { TwilioService } from '@/app/lib/twilioService';
-import { Sale, Customer, CartItem } from '@/app/types/pos';
+import { CartItem } from '@/app/types/pos';
+import { Customer } from '@/app/types/types';
 
 export interface SaleData {
   customer: Customer;
@@ -34,19 +35,19 @@ export async function processSaleWithReceipt(saleData: SaleData): Promise<{
       })),
       total: saleData.total,
       customerId: saleData.customer.id,
-      customerName: saleData.customer.customer_name,
-      customerPhone: saleData.customer.customer_phone
+      customerName: saleData.customer.name,
+      customerPhone: saleData.customer.phone_number
     };
 
     // Send receipt via WhatsApp and save to inbox
     const response = await TwilioService.sendWhatsAppReceipt(
-      saleData.customer.customer_phone,
+      saleData.customer.phone_number,
       receiptData,
       false // Set to true if you want to include media
     );
 
     if (response.success) {
-      console.log(`Sale processed successfully. Receipt sent to ${saleData.customer.customer_phone}`);
+      console.log(`Sale processed successfully. Receipt sent to ${saleData.customer.phone_number}`);
       return {
         success: true,
         messageSid: response.messageSid

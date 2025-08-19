@@ -1,14 +1,12 @@
 //app/page.tsx (Conversion Optimized - Server Component with ROI Calculator)
 import { Metadata } from 'next';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Check, ArrowRight, MessageSquare, TrendingUp, Users, ShoppingBag, Star } from 'lucide-react';
+import { ArrowRight, MessageSquare, TrendingUp, Users, ShoppingBag } from 'lucide-react';
 import MobileNav from '@/components/MobileNav';
 import Link from 'next/link';
-import ClientTrackingWrapper from '@/components/ClientTrackingWrapper';
 import ROICalculator from '@/components/ROICalculator';
 import HeroSection from '@/components/HeroSection';
-import TieredPricing from '@/shared/components/TieredPricing';
+import TieredPricing from '@/src/shared/components/TieredPricing';
 
 // Page-specific metadata (same as before)
 export const metadata: Metadata = {
@@ -115,27 +113,28 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      
-      <ClientTrackingWrapper>
+
         <div className="min-h-screen bg-white">
           {/* Navigation */}
-          <nav className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+          <nav className="bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200 sticky top-0 z-50">
             <div className="container mx-auto px-4">
               <div className="flex items-center justify-between h-16">
                 {/* Logo */}
-                <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-teal-600 to-teal-700 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">Z</span>
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-teal-500 via-teal-600 to-teal-700 rounded-xl flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-lg">Z</span>
                   </div>
-                  <span className="text-xl font-bold text-gray-800">Zuriscale</span>
+                  <Link href="/" className="text-2xl font-bold bg-gradient-to-r from-teal-600 to-teal-800 bg-clip-text text-transparent hover:from-teal-700 hover:to-teal-900 transition-all duration-200">Zuriscale</Link>
                 </div>
 
                 {/* Desktop Navigation */}
                 <div className="hidden md:flex items-center space-x-8">
-                  <a href="#features" className="text-gray-600 hover:text-gray-800">Features</a>
-                  <a href="#pricing" className="text-gray-600 hover:text-gray-800">Pricing</a>
-                  <a href="#faq" className="text-gray-600 hover:text-gray-800">FAQ</a>
-                  <Link href="/signup" className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-medium">
+                  <a href="#features" className="text-gray-600 hover:text-gray-800 transition-colors duration-200 font-medium">Features</a>
+                  <Link href="/pricing" className="text-gray-600 hover:text-gray-800 transition-colors duration-200 font-medium">Pricing</Link>
+                  <Link href="/blog" className="text-gray-600 hover:text-gray-800 transition-colors duration-200 font-medium">Blog</Link>
+                  <Link href="/communities" className="text-gray-600 hover:text-gray-800 transition-colors duration-200 font-medium">Communities</Link>
+                  <Link href="/login" className="text-gray-600 hover:text-gray-800 transition-colors duration-200 font-medium">Login</Link>
+                  <Link href="/signup" className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white px-6 py-2.5 rounded-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5">
                     Start Free
                   </Link>
                 </div>
@@ -151,147 +150,103 @@ export default function HomePage() {
           {/* Hero Section */}
           <HeroSection />
 
-          {/* ROI Calculator Section */}
-          <section className="py-16 bg-gradient-to-br from-slate-50 to-teal-50">
+          {/* Features Section */}
+          <section id="features" className="py-16 bg-gray-50">
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
                 <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                  Calculate Your Boutique Business Growth Potential
+                  Everything You Need to Grow Your Boutique Business
                 </h2>
                 <p className="text-gray-600 max-w-2xl mx-auto">
-                  See exactly how much more revenue you can generate by keeping customers coming back to your boutique
-                </p>
-              </div>
-              <ROICalculator />
-            </div>
-          </section>
-
-          {/* How It Works Section */}
-          <section className="py-16 bg-white">
-            <div className="container mx-auto px-4">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl font-bold text-gray-800 mb-4">
-                  How Zuriscale Works for Your Boutique
-                </h2>
-                <p className="text-gray-600 max-w-3xl mx-auto">
-                  Simple 3-step process that turns one-time buyers into loyal, returning customers
+                  From customer retention to inventory management, Zuriscale gives you the tools 
+                  to turn one-time buyers into loyal customers.
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-2xl font-bold text-red-600">1</span>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                {/* Feature 1 */}
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-4">
+                    <MessageSquare className="h-6 w-6 text-red-600" />
                   </div>
-                  <h3 className="text-xl font-bold mb-2">Customer Makes First Purchase</h3>
-                  <p className="text-gray-600">Customer buys from your boutique and gets added to your customer database</p>
-                </div>
-
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-2xl font-bold text-teal-600">2</span>
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">Automated Follow-up Messages</h3>
-                  <p className="text-gray-600">System automatically sends personalized WhatsApp messages to bring them back</p>
-                </div>
-
-                <div className="text-center">
-                  <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span className="text-2xl font-bold text-emerald-600">3</span>
-                  </div>
-                  <h3 className="text-xl font-bold mb-2">Customer Returns to Your Boutique</h3>
-                  <p className="text-gray-600">They come back for repeat purchases, increasing your boutique's monthly revenue</p>
-                </div>
-              </div>
-
-              {/* Quick Result Promise */}
-              <div className="text-center mt-12">
-                <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-6 max-w-2xl mx-auto">
-                  <h3 className="text-xl font-bold text-emerald-800 mb-2">
-                    Result: 30-50% More Monthly Boutique Sales
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                    WhatsApp Customer Retention
                   </h3>
-                  <p className="text-emerald-700">
-                    Instead of losing 80% of boutique customers, you keep 40-60% coming back regularly
+                  <p className="text-gray-600">
+                    Automatically follow up with customers after purchases to increase repeat sales. 
+                    Turn one-time buyers into loyal customers.
+                  </p>
+                </div>
+
+                {/* Feature 2 */}
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                  <div className="w-12 h-12 bg-teal-100 rounded-lg flex items-center justify-center mb-4">
+                    <TrendingUp className="h-6 w-6 text-teal-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                    Customer Analytics Dashboard
+                  </h3>
+                  <p className="text-gray-600">
+                    Track customer behavior, purchase patterns, and retention rates. 
+                    Make data-driven decisions to grow your boutique.
+                  </p>
+                </div>
+
+                {/* Feature 3 */}
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                    <Users className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                    Customer Database Management
+                  </h3>
+                  <p className="text-gray-600">
+                    Organize customer information, purchase history, and preferences. 
+                    Build lasting relationships with your boutique customers.
+                  </p>
+                </div>
+
+                {/* Feature 4 */}
+                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                    <ShoppingBag className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                    Boutique POS System
+                  </h3>
+                  <p className="text-gray-600">
+                    Track boutique sales and inventory on any phone or tablet. 
+                    Perfect for Kenyan boutique businesses.
                   </p>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Condensed Social Proof */}
-          <section className="bg-gradient-to-r from-teal-50 to-emerald-50 py-12">
-            <div className="container mx-auto px-4">
-              <div className="max-w-3xl mx-auto text-center">
-                <div className="bg-white p-6 rounded-2xl shadow-sm border border-teal-100">
-                  <div className="flex justify-center mb-3">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 fill-current text-amber-400" />
-                    ))}
-                  </div>
-                  <blockquote className="text-lg font-medium mb-3 text-gray-800">
-                    "I went from KES 30,000 to KES 85,000 monthly because customers actually come back now. 
-                    The WhatsApp reminders work perfectly for my boutique in Nairobi."
-                  </blockquote>
-                  <cite className="text-gray-600">
-                    - Sarah M., Boutique Owner, Nairobi
-                  </cite>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Streamlined Features */}
-          <section id="features" className="bg-white py-16">
+          {/* ROI Calculator Section */}
+          <section className="py-16 bg-white">
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
-                <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
-                  Everything Your Boutique Business Needs to Retain Customers
+                <h2 className="text-3xl font-bold text-gray-800 mb-4">
+                  Calculate Your Potential ROI
                 </h2>
+                <p className="text-gray-600 max-w-2xl mx-auto">
+                  See how much revenue you could generate by improving customer retention with Zuriscale.
+                </p>
               </div>
-
-              <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
-                  <MessageSquare className="h-8 w-8 text-teal-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="text-xl font-bold mb-2">WhatsApp Boutique Messaging</h3>
-                    <p className="text-gray-600">Automatically send follow-ups, new arrival alerts, and personalized offers to bring boutique customers back.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
-                  <TrendingUp className="h-8 w-8 text-amber-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="text-xl font-bold mb-2">Boutique Analytics Dashboard</h3>
-                    <p className="text-gray-600">See which boutique customers buy what, when they're likely to return, and what messages work best.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
-                  <ShoppingBag className="h-8 w-8 text-red-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="text-xl font-bold mb-2">Online Boutique Catalog</h3>
-                    <p className="text-gray-600">Beautiful mobile-friendly boutique store that customers can browse and share with friends.</p>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4 p-6 bg-gray-50 rounded-lg">
-                  <Users className="h-8 w-8 text-emerald-600 flex-shrink-0 mt-1" />
-                  <div>
-                    <h3 className="text-xl font-bold mb-2">Boutique POS System</h3>
-                    <p className="text-gray-600">Track boutique sales and inventory on any phone or tablet. Perfect for Kenyan boutique businesses.</p>
-                  </div>
-                </div>
+              <div className="max-w-4xl mx-auto">
+                <ROICalculator />
               </div>
             </div>
           </section>
 
           {/* New Tiered Pricing */}
-          <section id="pricing" className="py-16">
+          <section className="py-16">
             <TieredPricing />
           </section>
 
           {/* Condensed FAQ */}
-          <section id="faq" className="bg-white py-16">
+          <section className="bg-white py-16">
             <div className="container mx-auto px-4">
               <div className="text-center mb-12">
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-800">
@@ -343,7 +298,7 @@ export default function HomePage() {
               
               <Button 
                 size="lg" 
-                className="bg-white text-red-600 hover:bg-gray-100 shadow-lg px-8 py-4 text-lg"
+                className="bg-white text-red-600 hover:bg-gray-100 shadow-lg hover:shadow-xl px-8 py-4 text-lg font-semibold transition-all duration-200 transform hover:-translate-y-0.5"
                 asChild
               >
                 <Link href="/signup" data-track-event="final_cta_click">
@@ -359,14 +314,14 @@ export default function HomePage() {
           </section>
 
           {/* Simplified Footer */}
-          <footer className="bg-gray-800 text-white py-8">
+          <footer className="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-12">
             <div className="container mx-auto px-4">
               <div className="text-center space-y-4">
-                <div className="flex items-center justify-center space-x-2">
-                  <div className="w-8 h-8 bg-gradient-to-br from-teal-600 to-teal-700 rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">Z</span>
+                <div className="flex items-center justify-center space-x-3">
+                  <div className="w-12 h-12 bg-gradient-to-br from-teal-500 via-teal-600 to-teal-700 rounded-xl flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-lg">Z</span>
                   </div>
-                  <span className="text-xl font-bold">Zuriscale</span>
+                  <span className="text-2xl font-bold bg-gradient-to-r from-teal-300 to-teal-100 bg-clip-text text-transparent">Zuriscale</span>
                 </div>
                 
                 <p className="text-gray-400 text-sm max-w-md mx-auto">
@@ -374,13 +329,13 @@ export default function HomePage() {
                 </p>
                 
                 <div className="flex justify-center space-x-6 text-sm text-gray-400">
-                  <Link href="https://wa.me/+254742065623" className="hover:text-white">
+                  <Link href="https://wa.me/+254742065623" className="hover:text-white transition-colors duration-200 font-medium">
                     WhatsApp: +254 742 065 623
                   </Link>
-                  <Link href="/privacy-policy" className="hover:text-white">
+                  <Link href="/privacy-policy" className="hover:text-white transition-colors duration-200 font-medium">
                     Privacy Policy
                   </Link>
-                  <Link href="/terms-of-service" className="hover:text-white">
+                  <Link href="/terms-of-service" className="hover:text-white transition-colors duration-200 font-medium">
                     Terms of Service
                   </Link>
                 </div>
@@ -392,7 +347,6 @@ export default function HomePage() {
             </div>
           </footer>
         </div>
-      </ClientTrackingWrapper>
-    </>
+      </>
   );
 }
